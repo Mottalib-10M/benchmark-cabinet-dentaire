@@ -1,0 +1,35 @@
+import { defineDep } from '../../lib/dep-types';
+
+export default defineDep({
+  code: '31',
+  fr: {
+    body: (h) => {
+      const o = h.D.omni, f = h.F.omni, od = h.D.odf, r = h.rang('omni');
+      return `
+<h2>Haute-Garonne : beaucoup de fauteuils pour une moyenne tout en bas du classement</h2>
+<p>La Haute-Garonne réunit ${h.num(o.eff)} chirurgiens-dentistes omnipraticiens en libéral, soit ${h.num(o.dens)} pour 100 000 habitants, un écart de ${h.ecart(o.dens, f.dens)} avec la densité française de ${h.num(f.dens)}. Rares sont les départements aussi bien pourvus, et la contrepartie apparaît dans les honoraires : ${h.eur(o.tot)} par praticien actif à part entière, ${h.ecart(o.tot, f.tot)} face à la moyenne nationale et ${h.ecart(o.tot, h.R.omni?.tot)} face à celle de l'Occitanie. Le département figure au rang ${r?.rank} sur ${r?.total}. Chaque cabinet suit en moyenne ${h.num(o.patients)} patients différents dans l'année, loin des ${h.num(f.patients)} observés en France : la demande de l'agglomération toulousaine se répartit entre un grand nombre de praticiens.</p>
+<p>Le décrochage touche les deux composantes du chiffre. ${h.eur(o.hsd)} proviennent des actes au tarif de convention et ${h.eur(o.dep)} des dépassements, la part facturée au-delà de ces tarifs, en prothèse surtout. Les deux montants restent sous leurs équivalents nationaux (${h.eur(f.hsd)} et ${h.eur(f.dep)}), ce qui écarte l'idée d'un simple effet de prix sur la prothèse.</p>
+<h2>Une profession jeune et féminisée, presque sans exercice mixte</h2>
+<p>${h.pct(o.femmes)} des omnipraticiens haut-garonnais sont des femmes, contre ${h.pct(f.femmes)} au niveau national, et ${h.pct(o.m35)} ont moins de 35 ans. À l'autre bout de la pyramide, ${h.pct(o.p60)} seulement ont atteint 60 ans (France : ${h.pct(f.p60)}). L'effectif est passé de ${h.num(o.eff5)} à ${h.num(o.eff)} en cinq ans, porté sans doute par la faculté d'odontologie de Toulouse, qui forme sur place une bonne partie des nouveaux installés.</p>
+<p>Un point distingue la Haute-Garonne d'autres départements denses : l'exercice mixte n'y explique presque rien. ${h.pct(o.mixte, 1)} des praticiens combinent libéral et salariat, quand la moyenne française est de ${h.pct(f.mixte, 1)}. Le niveau modeste des honoraires tient donc plutôt à la jeunesse des cabinets, aux années de montée en charge et, peut-être, à un temps partiel choisi que l'open data ne mesure pas. Pour une reprise, la conséquence est directe : un cabinet établi qui dépasse la moyenne locale peut rester sous la moyenne nationale sans que sa patientèle soit fragile.</p>
+<h2>Orthodontie : une spécialité dense, en forte progression depuis 2015</h2>
+<p>Les ${h.num(od?.eff)} orthodontistes qualifiés en orthopédie dento-faciale représentent ${h.num(od?.dens, 1)} spécialistes pour 100 000 habitants, pour ${h.num(h.F.odf.dens, 1)} en France. Leur moyenne atteint ${h.eur(od?.tot)}, ${h.ecart(od?.tot, h.F.odf.tot)} par rapport à la référence nationale, avec ${h.num(od?.patients)} patients par praticien. La trajectoire compte autant que le niveau : ${h.eur(od?.hist['2015'])} en 2015, ${h.eur(od?.hist['2019'])} en 2019, ${h.eur(od?.tot)} en 2025. Côté omnipratique, la hausse est plus modérée, de ${h.eur(o.hist['2015'])} à ${h.eur(o.tot)}, soit ${h.ecart(o.tot, o.hist['2015'])} en dix ans.</p>
+<p>Le contraste avec le reste de l'Occitanie est net. L'Aveyron, le Tarn-et-Garonne ou le Lot affichent des densités bien plus faibles et des moyennes nettement plus hautes, et ${h.a('dep-81', 'le Tarn')} voisin en donne un autre exemple. Le ${h.a('classement-departements', 'classement des départements')} permet de situer chaque spécialité face au reste du pays.</p>`;
+    },
+  },
+  en: {
+    body: (h) => {
+      const o = h.D.omni, f = h.F.omni, od = h.D.odf, r = h.rang('omni');
+      return `
+<h2>Haute-Garonne: one of France's best-supplied markets, and one of its lowest averages</h2>
+<p>There are ${h.num(o.eff)} general dentists in private practice in Haute-Garonne, which works out at ${h.num(o.dens)} per 100,000 residents. That is ${h.ecart(o.dens, f.dens)} on the French density of ${h.num(f.dens)}, and few départements (France's county-level administrative areas) come close. The flip side shows up in billing. A full-time active practitioner averages ${h.eur(o.tot)} in fees, ${h.ecart(o.tot, f.tot)} against France and ${h.ecart(o.tot, h.R.omni?.tot)} against the Occitanie region, which leaves the département at position ${r?.rank} of ${r?.total}. Each practice also sees fewer people: ${h.num(o.patients)} distinct patients a year, where the national figure is ${h.num(f.patients)}. With so many chairs around Toulouse, demand is thinly spread.</p>
+<p>Both parts of the total sit below national level. ${h.eur(o.hsd)} comes from treatment billed at the convention rate, the tariff agreed with the national health insurer, and ${h.eur(o.dep)} from dépassements, the extra fees charged above that tariff, mostly on crowns and bridges. The French equivalents are ${h.eur(f.hsd)} and ${h.eur(f.dep)}. A gap on both lines points to volume rather than pricing alone.</p>
+<h2>Young, largely female, and almost entirely private</h2>
+<p>Women make up ${h.pct(o.femmes)} of general dentists here (France: ${h.pct(f.femmes)}), and ${h.pct(o.m35)} of the profession is under 35. Only ${h.pct(o.p60)} are 60 or older, below the national ${h.pct(f.p60)}. Headcount climbed from ${h.num(o.eff5)} to ${h.num(o.eff)} over five years, a rise that the Toulouse dental school, training graduates locally, probably helps to sustain.</p>
+<p>What the low average does not reflect is mixed practice. Just ${h.pct(o.mixte, 1)} of dentists combine private work with a salaried post, against ${h.pct(f.mixte, 1)} nationally, so hospital or health-centre sessions cannot account for the shortfall. Practices still building up their patient list, and possibly part-time schedules the open data cannot capture, are the likelier factors. For anyone valuing a practice to buy, this means a list that beats the local mean can still trail the French one without being weak.</p>
+<h2>Orthodontics in Haute-Garonne: dense supply and a steep rise since 2015</h2>
+<p>The ${h.num(od?.eff)} specialists in dentofacial orthopaedics (ODF, the French orthodontic qualification) amount to ${h.num(od?.dens, 1)} per 100,000 residents, against ${h.num(h.F.odf.dens, 1)} across France. They average ${h.eur(od?.tot)}, ${h.ecart(od?.tot, h.F.odf.tot)} on the national orthodontist mark, and see ${h.num(od?.patients)} patients each. The ten-year path is striking: ${h.eur(od?.hist['2015'])} in 2015, ${h.eur(od?.hist['2019'])} in 2019 and ${h.eur(od?.tot)} in 2025. General practice grew more slowly over the same decade, from ${h.eur(o.hist['2015'])} to ${h.eur(o.tot)}, a change of ${h.ecart(o.tot, o.hist['2015'])}.</p>
+<p>The rest of Occitanie looks very different. Aveyron, Tarn-et-Garonne and Lot have far fewer dentists per head and clearly higher averages, and neighbouring ${h.a('dep-81', 'Tarn')} follows the same pattern. The ${h.a('classement-departements', 'département ranking')} puts each specialty in national context.</p>`;
+    },
+  },
+});

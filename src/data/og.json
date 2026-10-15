@@ -1,0 +1,20 @@
+{
+ "accent": "#0B4F8A",
+ "symbol": "dent",
+ "variants": [
+  {
+   "file": "og-fr.png",
+   "title": "Votre cabinet dentaire\nface à vos confrères",
+   "subtitle": "Honoraires · BNC · Charges · CA par fauteuil · Par département",
+   "badge": "Données Assurance Maladie 2025",
+   "brand": "Dentimètre"
+  },
+  {
+   "file": "og-en.png",
+   "title": "Your French dental practice\nagainst your peers",
+   "subtitle": "Fees · Profit · Costs · Revenue per chair · By département",
+   "badge": "Assurance Maladie 2025 data",
+   "brand": "Dentimetre"
+  }
+ ]
+}

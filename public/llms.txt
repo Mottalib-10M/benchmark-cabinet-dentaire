@@ -1,0 +1,15 @@
+# Dentimètre (dentimetre.fr)
+
+> Comparateur gratuit des cabinets dentaires libéraux en France : il situe les honoraires d'un chirurgien-dentiste omnipraticien, d'un orthodontiste (ODF) ou d'un stomatologue face aux moyennes 2025 de l'Assurance Maladie de son département, de sa région et de la France, estime son bénéfice et son taux de charges (statistiques UNASA 2024) et place ce bénéfice dans la distribution des revenus des dentistes (DREES 2021). Édité par Radif Partners. Calcul dans le navigateur, aucune donnée transmise.
+
+## Données
+- Honoraires moyens par praticien actif à part entière, effectifs, densité, âge, exercice mixte, patientèle, 2015-2025, 101 départements : open data data.ameli.fr (SNDS, licence ODbL), publié le 12 octobre 2026.
+- Comptes 2024 des cabinets (UNASA), revenus 2021 (DREES), revenus 2022 (Insee), barème CARCDSF 2026, grille IDCC 1619 2026, taux Urssaf 2026.
+- Limites : moyennes et non percentiles pour les honoraires ; actes hors nomenclature (implants, parodontie) absents des données publiques.
+
+## Pages principales
+- [Simulateur](https://dentimetre.fr/fr/) · [English](https://dentimetre.fr/en/)
+- [Classement des 101 départements](https://dentimetre.fr/fr/honoraires-dentistes-par-departement/)
+- [Méthode et sources](https://dentimetre.fr/fr/methode/)
+- Spécialités : [omnipraticien](https://dentimetre.fr/fr/honoraires-chirurgien-dentiste/), [orthodontiste](https://dentimetre.fr/fr/honoraires-orthodontiste/), [stomatologue](https://dentimetre.fr/fr/honoraires-stomatologue-chirurgie-orale/)
+- Gestion : [taux de charges](https://dentimetre.fr/fr/taux-de-charges-cabinet-dentaire/), [CA par fauteuil](https://dentimetre.fr/fr/chiffre-affaires-par-fauteuil/), [salaire assistante dentaire](https://dentimetre.fr/fr/salaire-assistante-dentaire/), [SELARL ou BNC](https://dentimetre.fr/fr/selarl-ou-bnc-dentiste/), [revenu d'un dentiste](https://dentimetre.fr/fr/revenu-dentiste/), [cotisations CARCDSF](https://dentimetre.fr/fr/cotisations-carcdsf/)

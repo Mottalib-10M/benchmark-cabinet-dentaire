@@ -1,0 +1,26 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { YEAR, LAST_UPDATED, AUTHOR_NAME, CONTACT_EMAIL, AUTHOR_ROLE } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { personSchema, organizationSchema, breadcrumbSchema, profilePageSchema } from '../../lib/seo';
+import { displayDate } from '../../lib/format';
+import { DATA_YEAR } from '../../lib/engine/data';
+const lang = 'fr';
+---
+<PageLayout title="Dentimètre : qui compare les cabinets dentaires, et comment" description={`Qui édite Dentimètre, pourquoi un comparateur de cabinets dentaires fondé sur les données ${DATA_YEAR} de l’Assurance Maladie, son financement, ses corrections.`} lang={lang} jsonLd={[personSchema(lang), organizationSchema(lang), profilePageSchema({ path: route('about', lang), lang }), breadcrumbSchema([{ name: 'Accueil', path: route('home', lang) }, { name: 'À propos', path: route('about', lang) }])]} breadcrumbs={[{ label: 'À propos' }]}>
+  <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">À propos de Dentimètre</h1></header>
+  <div class="prose prose-slate max-w-none">
+    <div class="not-prose mb-6"><p class="text-lg font-semibold text-navy-900">{AUTHOR_NAME}</p><p class="text-navy-700">{AUTHOR_ROLE[lang]}</p></div>
+    <p>Dentimètre est édité par la société Radif Partners. Il s’adresse aux chirurgiens-dentistes, aux orthodontistes et aux stomatologues libéraux qui veulent savoir où se situe leur cabinet : en activité depuis longtemps, juste installés, ou en train de préparer une reprise, une association ou un recrutement.</p>
+    <h2>Pourquoi ce site</h2>
+    <p>Quand un praticien cherche « honoraires moyens d’un dentiste » ou « taux de charges d’un cabinet dentaire », il trouve surtout des fourchettes nationales sans date ni source, des études publiées par des cabinets comptables pour présenter leurs services, et des PDF statistiques qui n’aident pas à se situer soi-même. Les données utiles existent pourtant : l’Assurance Maladie publie chaque année, département par département et spécialité par spécialité, les honoraires moyens des praticiens. <strong>Dentimètre fait mieux que ces pages parce qu’il met vos propres honoraires en face de la moyenne officielle des confrères de votre spécialité dans votre département</strong>, et non d’une moyenne nationale qui mélange Paris et la Haute-Saône.</p>
+    <h2>Notre méthode</h2>
+    <p>Les moyennes viennent de l’open data de l’Assurance Maladie, téléchargé par un script que n’importe qui peut relancer ; les charges des comptes publiés par l’UNASA ; les revenus de la DREES et de l’Insee ; les cotisations de la CARCDSF et de l’Urssaf ; les salaires de la convention collective des cabinets dentaires. Chaque valeur est écrite une seule fois dans un fichier daté, et des tests automatiques recalculent à la main des cas tirés des fichiers officiels avant chaque publication. Le détail, avec les limites, est sur la page <a href={route('method', lang)}>méthode et sources</a>.</p>
+    <h2>Ce que nous ne sommes pas</h2>
+    <p>Radif Partners n’est ni un expert-comptable, ni une association de gestion agréée, ni un conseil en installation, ni un courtier. Nous ne demandons ni e-mail ni téléphone pour afficher un résultat, nous ne revendons aucun contact et nous ne mettons en avant aucun prestataire. Le simulateur donne des repères chiffrés ; pour une décision, votre comptable et votre association de gestion restent les bons interlocuteurs.</p>
+    <h2>Financement</h2><p>Dentimètre ne facture rien aux praticiens et ne vend rien aux fournisseurs. Une éventuelle publicité future resterait sous le comparateur, jamais devant lui, et vos honoraires ou vos charges ne quittent jamais votre navigateur.</p>
+    <h2>Une version anglaise</h2><p>Chaque page existe en anglais pour les praticiens anglophones installés en France, avec les termes français expliqués et les montants en euros.</p>
+    <h2>Nous écrire</h2><p>Un chiffre vous paraît faux, une source a été mise à jour, un cas n’est pas couvert ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Voir aussi la <a href={route('editorial', lang)}>charte éditoriale</a> et les <a href={route('terms', lang)}>mentions légales</a>.</p>
+    <p class="text-sm text-navy-600">Données {DATA_YEAR}, paramètres {YEAR}, vérifiés le <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'fr-FR')}</time>.</p>
+  </div>
+</PageLayout>

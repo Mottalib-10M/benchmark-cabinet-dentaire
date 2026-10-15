@@ -1,0 +1,35 @@
+import { defineDep } from '../../lib/dep-types';
+
+const enOrd = (n?: number) => {
+  if (n == null) return '';
+  const t = n % 100;
+  if (t >= 11 && t <= 13) return `${n}th`;
+  return `${n}${({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
+};
+const frOrd = (n?: number) => (n == null ? '' : n === 1 ? '1er' : `${n}e`);
+
+export default defineDep({
+  code: '01',
+  fr: {
+    body: (h) => `
+<h2>Ain : peu de dentistes, et pourtant une moyenne modeste</h2>
+<p>L'Ain déjoue la règle habituelle selon laquelle un territoire peu doté offre des honoraires élevés. Le département ne compte que ${h.num(h.D.omni.dens)} omnipraticiens libéraux pour 100 000 habitants, contre ${h.num(h.F.omni.dens)} en France, et la moyenne par praticien actif à part entière s'y établit pourtant à ${h.eur(h.D.omni.tot)} : ${h.ecart(h.D.omni.tot, h.F.omni.tot)} face à la moyenne nationale, ${h.ecart(h.D.omni.tot, h.R.omni?.tot)} face à celle d'Auvergne-Rhône-Alpes, et un ${frOrd(h.rang('omni')?.rank)} rang sur ${h.rang('omni')?.total}. Chaque praticien suit ${h.num(h.D.omni.patients)} patients différents par an, un peu moins que les ${h.num(h.F.omni.patients)} observés en France.</p>
+<p>Une hypothèse vient à l'esprit au vu de la géographie : le département est pris entre l'agglomération lyonnaise, la Bresse, le Bugey et le pays de Gex adossé à Genève, et une partie des habitants peut se faire soigner hors de ses limites, près de son lieu de travail. Les chiffres ne permettent pas de le vérifier, mais ils montrent que les départements de la région à densité comparable, comme la ${h.a('dep-42', 'Loire')}, dégagent une moyenne nettement supérieure. La faible densité, à elle seule, ne garantit donc pas une patientèle abondante.</p>
+<h2>Un effectif à l'arrêt depuis cinq ans</h2>
+<p>Là où la plupart des départements alpins voisins ont vu arriver de nombreux praticiens, l'Ain est resté presque immobile : ${h.num(h.D.omni.eff5)} omnipraticiens fin 2020, ${h.num(h.D.omni.eff)} fin 2025. La structure par âge est dans la moyenne, avec ${h.pct(h.D.omni.p60)} de 60 ans et plus (${h.pct(h.F.omni.p60)} en France) et ${h.pct(h.D.omni.m35)} de moins de 35 ans, ce qui laisse attendre un flux ordinaire de cessions. L'exercice mixte reste marginal, ${h.pct(h.D.omni.mixte, 1)} contre ${h.pct(h.F.omni.mixte, 1)} au niveau national : la moyenne mesure bien des cabinets libéraux à temps plein.</p>
+<p>Sur la durée, la moyenne a progressé de manière régulière mais sans à-coup, de ${h.eur(h.D.omni.hist['2015'])} en 2015 à ${h.eur(h.D.omni.hist['2019'])} en 2019, puis ${h.eur(h.D.omni.tot)} en 2025. Le chiffre se partage à parts presque égales entre soins au tarif de convention (${h.eur(h.D.omni.hsd)}) et dépassements (${h.eur(h.D.omni.dep)}), ces suppléments facturés au-dessus du tarif opposable pour la prothèse notamment. Ce que donnent ces montants une fois les charges déduites dépend de la structure du cabinet : la page ${h.a('taux-de-charges', 'taux de charges')} en détaille les postes.</p>
+<h2>L'orthodontie, point fort du département</h2>
+<p>Changement de décor pour les ${h.num(h.D.odf?.eff)} orthodontistes libéraux (${h.num(h.D.odf?.eff5)} en 2020). Leurs honoraires moyens atteignent ${h.eur(h.D.odf?.tot)}, ${h.ecart(h.D.odf?.tot, h.F.odf.tot)} par rapport à la moyenne française de la spécialité, ce qui place l'Ain au ${frOrd(h.rang('odf')?.rank)} rang sur ${h.rang('odf')?.total}. La hausse est spectaculaire sur dix ans, ${h.ecart(h.D.odf?.tot, h.D.odf?.hist['2015'])} depuis 2015, pour ${h.num(h.D.odf?.patients)} patients par spécialiste. ${h.pct(h.D.odf?.p60)} d'entre eux ont toutefois 60 ans ou plus, et la part d'exercice mixte y est de ${h.pct(h.D.odf?.mixte)}. Les ${h.num(h.D.stomato?.eff)} stomatologues libéraux sont trop peu nombreux pour que leurs honoraires soient publiés.</p>`,
+  },
+  en: {
+    body: (h) => `
+<h2>Ain: few dentists, yet a modest average</h2>
+<p>The usual rule says that an under-served area means higher fees per practitioner. Ain breaks it. There are only ${h.num(h.D.omni.dens)} general dentists in private practice per 100,000 residents, against ${h.num(h.F.omni.dens)} nationally, but the average for a full-time active dentist is just ${h.eur(h.D.omni.tot)}: ${h.ecart(h.D.omni.tot, h.F.omni.tot)} compared with France, ${h.ecart(h.D.omni.tot, h.R.omni?.tot)} compared with Auvergne-Rhône-Alpes, and ${enOrd(h.rang('omni')?.rank)} out of ${h.rang('omni')?.total}. Each dentist sees ${h.num(h.D.omni.patients)} different patients a year, slightly under the national ${h.num(h.F.omni.patients)}.</p>
+<p>Geography suggests one possible reading. Ain is wedged between greater Lyon, the Bresse plain, the Bugey hills and the Pays de Gex on the edge of Geneva, so some residents may well see a dentist near where they work rather than where they live. The data cannot confirm this. What it does show is that other départements in the region with similar density, such as the ${h.a('dep-42', 'Loire')}, achieve a clearly higher average. Low density alone is no guarantee of a full appointment book.</p>
+<h2>Five years with almost no new arrivals</h2>
+<p>While most of the Alpine départements nearby have attracted large numbers of new dentists, Ain has barely moved: ${h.num(h.D.omni.eff5)} general dentists at the end of 2020, ${h.num(h.D.omni.eff)} at the end of 2025. The age profile is middle of the road, with ${h.pct(h.D.omni.p60)} aged 60 or over (${h.pct(h.F.omni.p60)} nationally) and ${h.pct(h.D.omni.m35)} under 35, which points to a normal flow of practices for sale. Mixed practice, combining a surgery with salaried work, is marginal at ${h.pct(h.D.omni.mixte, 1)} versus ${h.pct(h.F.omni.mixte, 1)} in France, so the average reflects full-time private practices.</p>
+<p>Growth has been steady rather than dramatic, from ${h.eur(h.D.omni.hist['2015'])} in 2015 to ${h.eur(h.D.omni.hist['2019'])} in 2019 and ${h.eur(h.D.omni.tot)} in 2025. Fees split almost evenly between care at the agreed tariff (${h.eur(h.D.omni.hsd)}) and dépassements, the extra fees above the tariff that mainly come from prosthetics (${h.eur(h.D.omni.dep)}). How much of that is left once overheads are paid depends on the practice; the ${h.a('taux-de-charges', 'overhead ratio')} page breaks down the main costs.</p>
+<h2>Orthodontics is where Ain stands out</h2>
+<p>The picture changes completely for the ${h.num(h.D.odf?.eff)} private orthodontists (${h.num(h.D.odf?.eff5)} in 2020). They average ${h.eur(h.D.odf?.tot)}, ${h.ecart(h.D.odf?.tot, h.F.odf.tot)} against the French mean for the specialty, which ranks the département ${enOrd(h.rang('odf')?.rank)} of ${h.rang('odf')?.total}. The ten-year rise is striking, ${h.ecart(h.D.odf?.tot, h.D.odf?.hist['2015'])} since 2015, with ${h.num(h.D.odf?.patients)} patients per specialist. That said, ${h.pct(h.D.odf?.p60)} of them are 60 or older and the share in mixed practice is ${h.pct(h.D.odf?.mixte)}. The ${h.num(h.D.stomato?.eff)} private stomatologists are too few for their fees to be published under statistical confidentiality rules.</p>`,
+  },
+});

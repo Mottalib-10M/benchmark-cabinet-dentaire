@@ -1,0 +1,35 @@
+import { defineDep } from '../../lib/dep-types';
+
+export default defineDep({
+  code: '83',
+  fr: {
+    body: (h) => {
+      const o = h.D.omni, f = h.F.omni, od = h.D.odf, st = h.D.stomato, r = h.rang('omni'), ro = h.rang('odf');
+      return `
+<h2>Le Var, à mi-chemin entre Marseille et la Côte d'Azur</h2>
+<p>Pris entre deux marchés très différents, le Var occupe une position intermédiaire. Ses ${h.num(o.eff)} omnipraticiens libéraux, ${h.num(o.dens)} pour 100 000 habitants, déclarent ${h.eur(o.tot)} d'honoraires moyens par praticien actif à part entière, ${h.ecart(o.tot, f.tot)} par rapport à la moyenne française et ${h.ecart(o.tot, h.R.omni?.tot)} par rapport à la moyenne régionale. Le département se classe au rang ${r?.rank} sur ${r?.total}. Les ${h.a('dep-13', 'Bouches-du-Rhône')} font mieux, les Alpes-Maritimes nettement moins bien, et le Vaucluse, moins dense, affiche la moyenne la plus haute de Provence-Alpes-Côte d'Azur.</p>
+<p>${h.eur(o.hsd)} relèvent des tarifs de convention et ${h.eur(o.dep)} des dépassements, cette part facturée au-delà des tarifs, surtout en prothèse ; les deux montants restent un peu sous les valeurs nationales (${h.eur(f.hsd)} et ${h.eur(f.dep)}). Chaque praticien voit ${h.num(o.patients)} patients différents par an, pour ${h.num(f.patients)} en France, de Toulon à Fréjus en passant par Hyères et Draguignan.</p>
+<h2>Une croissance varoise soutenue sur cinq ans</h2>
+<p>Le Var a gagné des praticiens à un rythme rapide : ${h.num(o.eff5)} fin 2020, ${h.num(o.eff)} fin 2025, soit ${h.ecart(o.eff, o.eff5)}. ${h.pct(o.m35)} des omnipraticiens ont moins de 35 ans, une proportion un peu supérieure à la France (${h.pct(f.m35)}), et ${h.pct(o.p60)} ont 60 ans ou plus, au niveau national (${h.pct(f.p60)}). L'exercice mixte concerne ${h.pct(o.mixte, 1)} des praticiens, une part voisine de la moyenne française (${h.pct(f.mixte, 1)}) : la statistique varoise n'est ni gonflée ni minorée par le salariat, ce qui en fait une base de comparaison assez directe pour un cabinet à temps plein.</p>
+<p>Les nouveaux venus se répartissent une demande qui a elle-même progressé. Sur dix ans, la moyenne est passée de ${h.eur(o.hist['2015'])} en 2015 à ${h.eur(o.hist['2019'])} en 2019, puis à ${h.eur(o.tot)} en 2025, soit ${h.ecart(o.tot, o.hist['2015'])}, à un rythme comparable à celui de la France (${h.ecart(f.tot, f.hist['2015'])}).</p>
+<h2>Orthodontie et stomatologie dans le Var</h2>
+<p>Les ${h.num(od?.eff)} orthodontistes varois ont une activité proche de la norme nationale par le nombre de patients, ${h.num(od?.patients)} par praticien contre ${h.num(h.F.odf.patients)}, mais une moyenne d'honoraires plus basse : ${h.eur(od?.tot)}, ${h.ecart(od?.tot, h.F.odf.tot)} par rapport à la référence de la spécialité, au rang ${ro?.rank} sur ${ro?.total}. La différence se joue sur les dépassements, ${h.eur(od?.dep)} pour ${h.eur(h.F.odf.dep)} en France, plus que sur la part au tarif de convention (${h.eur(od?.hsd)}). ${h.pct(od?.mixte)} des orthodontistes ont aussi une activité salariée.</p>
+<p>La stomatologie est le segment le plus fragile : ${h.num(st?.eff)} stomatologues libéraux, contre ${h.num(st?.eff5)} fin 2020, dont ${h.pct(st?.p60)} ont 60 ans ou plus. Leur moyenne publiée, ${h.eur(st?.tot)}, se situe ${h.ecart(st?.tot, h.F.stomato.tot)} par rapport à la France. Un effectif en baisse et déjà âgé peut annoncer un recul de l'offre libérale de chirurgie orale dans le département. Le ${h.a('classement-departements', 'classement des départements')} permet de comparer chaque spécialité au reste du pays.</p>`;
+    },
+  },
+  en: {
+    body: (h) => {
+      const o = h.D.omni, f = h.F.omni, od = h.D.odf, st = h.D.stomato, r = h.rang('omni'), ro = h.rang('odf');
+      return `
+<h2>Var: the middle ground between Marseille and the Riviera</h2>
+<p>Caught between two very different markets, Var lands in between. Its ${h.num(o.eff)} general dentists in private practice, ${h.num(o.dens)} per 100,000 residents, average ${h.eur(o.tot)} in fees per full-time active practitioner, which is ${h.ecart(o.tot, f.tot)} against France and ${h.ecart(o.tot, h.R.omni?.tot)} against the regional mean. That ranks the département ${r?.rank} out of ${r?.total}. ${h.a('dep-13', 'Bouches-du-Rhône')} does better, Alpes-Maritimes clearly worse, and less crowded Vaucluse posts the highest average in Provence-Alpes-Côte d'Azur.</p>
+<p>${h.eur(o.hsd)} comes from treatment at the convention rate, the tariff agreed with the health insurer, and ${h.eur(o.dep)} from dépassements, the extra fees billed above it, mainly on prosthetics. Both are slightly below the national ${h.eur(f.hsd)} and ${h.eur(f.dep)}. Each dentist sees ${h.num(o.patients)} different patients a year, against ${h.num(f.patients)} in France, from Toulon to Fréjus by way of Hyères and Draguignan.</p>
+<h2>Five years of strong growth in Var</h2>
+<p>The département has added dentists quickly: ${h.num(o.eff5)} at the end of 2020, ${h.num(o.eff)} at the end of 2025, a change of ${h.ecart(o.eff, o.eff5)}. ${h.pct(o.m35)} of general dentists are under 35, a little above France (${h.pct(f.m35)}), and ${h.pct(o.p60)} are 60 or over, in line with the national ${h.pct(f.p60)}. Mixed practice, private work alongside a salaried job, covers ${h.pct(o.mixte, 1)} of dentists, close to the French ${h.pct(f.mixte, 1)}. The local mean is neither inflated nor depressed by salaried time, which makes it a fairly direct yardstick for a full-time practice.</p>
+<p>Newcomers have been sharing a demand that has itself expanded. Over ten years the average went from ${h.eur(o.hist['2015'])} in 2015 to ${h.eur(o.hist['2019'])} in 2019 and ${h.eur(o.tot)} in 2025, up ${h.ecart(o.tot, o.hist['2015'])}, much the same pace as France (${h.ecart(f.tot, f.hist['2015'])}). Women account for ${h.pct(o.femmes)} of the profession, a little below the national ${h.pct(f.femmes)}.</p>
+<h2>Orthodontics and stomatology: one steady, one shrinking</h2>
+<p>Var's ${h.num(od?.eff)} orthodontists see about as many patients as the national norm, ${h.num(od?.patients)} each against ${h.num(h.F.odf.patients)}, but bill less: ${h.eur(od?.tot)} on average, ${h.ecart(od?.tot, h.F.odf.tot)} relative to the specialty benchmark, at position ${ro?.rank} of ${ro?.total}. The gap lies in dépassements, ${h.eur(od?.dep)} against ${h.eur(h.F.odf.dep)} in France, more than in the tariff-based part (${h.eur(od?.hsd)}). ${h.pct(od?.mixte)} of orthodontists also hold a salaried position.</p>
+<p>Stomatology is the fragile segment. There are ${h.num(st?.eff)} stomatologists (doctors specialising in the mouth and jaw) in private practice, down from ${h.num(st?.eff5)} at the end of 2020, and ${h.pct(st?.p60)} of them are 60 or older. Their published average of ${h.eur(st?.tot)} sits ${h.ecart(st?.tot, h.F.stomato.tot)} against France. A shrinking, ageing group may foreshadow less private oral surgery capacity locally. The ${h.a('classement-departements', 'département ranking')} compares each specialty nationwide.</p>`;
+    },
+  },
+});

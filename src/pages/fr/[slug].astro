@@ -1,0 +1,16 @@
+---
+/** Spécialités, guides (src/content/guides/) et départements (lib/departements.ts) en fr : un fichier = une page. */
+import ContentPage from '../../components/ContentPage.astro';
+import DepartementPage from '../../components/DepartementPage.astro';
+import { PAGES } from '../../lib/guides';
+import { DEP_PAGES, type DepPage } from '../../lib/departements';
+import type { PageDef } from '../../lib/guide-types';
+export function getStaticPaths() {
+  return [
+    ...PAGES.map((page) => ({ params: { slug: page.fr.slug }, props: { page, dep: undefined } })),
+    ...DEP_PAGES.map((dep) => ({ params: { slug: dep.slug.fr }, props: { page: undefined, dep } })),
+  ];
+}
+const { page, dep } = Astro.props as { page?: PageDef; dep?: DepPage };
+---
+{page ? <ContentPage page={page} lang="fr" /> : <DepartementPage dep={dep!} lang="fr" />}

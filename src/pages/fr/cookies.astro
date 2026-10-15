@@ -1,0 +1,20 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { CONTACT_EMAIL, SITE_NAMES, LAST_UPDATED } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'fr';
+---
+<PageLayout title={`Cookies – ${SITE_NAMES[lang]}`} description="Dentimètre ne dépose aucun cookie : les honoraires, charges et effectifs que vous saisissez restent dans votre navigateur. Seule la stabilité des pages peut être mesurée, sans cookie." lang={lang} noindex={true} breadcrumbs={[{ label: 'Cookies' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Cookies</h1>
+    <p>Dentimètre <strong>ne dépose aucun cookie</strong>. Il n’y a donc rien à accepter, et pas de bandeau. Le détail des traitements est dans la <a href={route('privacy', lang)}>politique de confidentialité</a>.</p>
+    <h2>Vos chiffres restent chez vous</h2>
+    <p>Honoraires, part des actes non remboursables, fauteuils, salariés, charges, patientèle : le comparateur les traite dans votre navigateur. Ils ne sont envoyés nulle part, ni écrits dans un cookie ou dans le stockage du navigateur, et disparaissent à la fermeture de la page, sauf si vous copiez vous-même le lien de partage.</p>
+    <h2>Mesure de stabilité, sans cookie</h2>
+    <p>Pour repérer une page qui plante ou un simulateur trop lent, le site peut utiliser Microsoft Clarity en mode <strong>sans cookie</strong> : erreurs, temps de chargement, clics sans effet, défilement. Aucun cookie Clarity ou Microsoft n’est posé, les visites ne sont pas reliées entre elles et le texte comme les montants saisis sont masqués avant tout envoi. Responsable de l’outil : Microsoft Ireland Operations Limited, Dublin ; base : intérêt légitime (art. 6-1 f du RGPD) ; conservation : 30 jours pour les enregistrements, 13 mois pour les agrégats.</p>
+    <p>Aucune publicité, aucun bouton de réseau social, aucun autre outil de mesure. La version intégrée en iframe sur d’autres sites ne charge pas Clarity.</p>
+    <h2>Refuser cette mesure</h2>
+    <p>Bloquez le domaine clarity.ms dans votre navigateur : le site fonctionne de la même façon. Questions : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, ou la CNIL. Mise à jour : <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'fr-FR')}</time>.</p>
+  </div>
+</PageLayout>

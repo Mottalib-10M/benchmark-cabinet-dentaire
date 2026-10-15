@@ -1,0 +1,29 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'en';
+---
+<PageLayout title={`Editorial policy – ${SITE_NAMES[lang]}`} description="Where Dentimetre’s averages and benchmarks come from, who answers for them, when they are reviewed, and what happens when a practitioner reports a mistake to us." lang={lang} noindex={true} breadcrumbs={[{ label: 'Editorial policy' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Editorial and corrections policy</h1>
+    <p>A benchmark figure can weigh on a big decision: buying a patient list, hiring a second dental nurse, moving into a company structure. This is how the figures are chosen, checked and corrected.</p>
+    <h2>Responsibility</h2><p>{AUTHOR_NAME} answers for the published averages, the benchmarking engine and the texts; questions or doubts about a figure go to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Public, primary sources only</h2>
+    <ul>
+      <li><strong>Assurance Maladie</strong> open data (data.ameli.fr): fees, headcount, density, type of practice, patients;</li>
+      <li><strong>DREES</strong> and <strong>Insee</strong>: practitioners’ income and dental spending;</li>
+      <li><strong>UNASA</strong>: public professional statistics of approved management associations;</li>
+      <li><strong>CARCDSF</strong>, <strong>Urssaf</strong>, <strong>Légifrance</strong>, <strong>impots.gouv</strong>, <strong>service-public</strong>: contributions, agreed pay, minimum wage, tax.</li>
+    </ul>
+    <p>A survey released by an accounting firm, a bank or a forum is not a source: a figure we could not reread at its producer is not published.</p>
+    <h2>Averages, not league tables</h2><p>We publish averages and, where an official distribution exists, its quantiles. We never invent a percentile, a “typical practice” or a target. A gap to the average is an observation, never a judgement on a practitioner.</p>
+    <h2>Tests before release</h2><p>Every build replays cases recomputed by hand from the official files: département and regional averages, rankings, UNASA cost ratios, the example Urssaf publishes for the general relief, the CARCDSF scale, corporation tax. Any gap blocks the release.</p>
+    <h2>Review cycle</h2><p>Updated with each new year Assurance Maladie publishes (in October), each new CARCDSF or Urssaf scale, and fully reviewed at least every {REVIEW_CYCLE_MONTHS} months.</p>
+    <h2>Corrections</h2>
+    <ol><li>Check against the primary source.</li><li>Fix the data file or the engine, add a test.</li><li>New date on the pages; a significant correction is noted on the page concerned.</li></ol>
+    <h2>Independence</h2><p>No payment from any supplier, dental laboratory, bank, insurer or accounting firm. Any such relationship would be stated on the page concerned.</p>
+    <p>See also the <a href={route('method', lang)}>method</a>. Version: <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>

@@ -1,0 +1,24 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'en';
+---
+<PageLayout title={`Contact – ${SITE_NAMES[lang]}`} description="Write to Dentimetre: report a wrong figure or an updated source, ask about the method, or request to embed the dental practice benchmark on your own website." lang={lang} noindex={true} breadcrumbs={[{ label: 'Contact' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Contact</h1>
+    <p>One address, read every week: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Reporting a mistake</h2>
+    <p>Send the page address and, for a calculation, the calculator’s <strong>share link</strong> (it carries your inputs), plus the source that makes you doubt the figure: an Assurance Maladie dataset, UNASA statistics, the CARCDSF scale, the dental practices’ pay scale. Confirmed errors are fixed and turned into automated tests, as set out in the <a href={route('editorial', lang)}>editorial policy</a>.</p>
+    <h2>Embedding the benchmark</h2>
+    <p>Practitioners’ unions, management associations, professional journals and dental schools can embed the calculator for free. The code is on the <a href={route('widget', lang)}>embed page</a>.</p>
+    <h2>What we do not do</h2>
+    <p>No review of accounts, no practice-setup study, no personal tax or legal advice, no recommendation of providers. For your own practice, ask your accountant, your approved management association, CARCDSF or the local council of the Ordre des chirurgiens-dentistes.</p>
+    <h2>Response times</h2><p>Usually within five working days, errors first. Data are reviewed at each Assurance Maladie release and at least every {REVIEW_CYCLE_MONTHS} months.</p>
+    <h2>Publisher</h2>
+    <LegalIdentity lang={lang} />
+    <p>Assurance Maladie, UNASA and CARCDSF figures are checked by {AUTHOR_NAME}, which answers for the content; the legal details are in the <a href={route('terms', lang)}>legal notice</a>. Page reviewed on <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>

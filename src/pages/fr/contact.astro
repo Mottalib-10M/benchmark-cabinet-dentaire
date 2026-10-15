@@ -1,0 +1,24 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'fr';
+---
+<PageLayout title={`Contact – ${SITE_NAMES[lang]}`} description="Écrire à Dentimètre : signaler un chiffre faux ou une source mise à jour, poser une question sur la méthode, demander l’intégration du comparateur de cabinet sur un site." lang={lang} noindex={true} breadcrumbs={[{ label: 'Contact' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Contact</h1>
+    <p>Une seule adresse, lue chaque semaine : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Signaler une erreur</h2>
+    <p>Indiquez la page, et pour un calcul le <strong>lien de partage</strong> du simulateur (il reprend vos saisies), ainsi que la source qui vous fait douter : jeu de données de l’Assurance Maladie, statistiques de l’UNASA, barème de la CARCDSF, grille de la convention collective des cabinets dentaires. Une erreur confirmée est corrigée, puis transformée en test automatique, comme le prévoit la <a href={route('editorial', lang)}>charte éditoriale</a>.</p>
+    <h2>Intégrer le comparateur</h2>
+    <p>Syndicats de praticiens, associations de gestion, revues professionnelles, facultés : le simulateur s’intègre gratuitement en iframe. Le code est sur la page <a href={route('widget', lang)}>Intégrer le simulateur</a>.</p>
+    <h2>Ce que nous ne faisons pas</h2>
+    <p>Pas d’analyse de bilan, pas d’étude d’installation, pas de conseil fiscal ou juridique personnalisé, pas de recommandation de prestataire. Pour votre cabinet, adressez-vous à votre expert-comptable, à votre association de gestion agréée, à la CARCDSF ou au conseil départemental de l’Ordre.</p>
+    <h2>Délais</h2><p>Réponse sous cinq jours ouvrés en général, les erreurs en priorité. Les données sont revues à chaque publication de l’Assurance Maladie et au moins tous les {REVIEW_CYCLE_MONTHS} mois.</p>
+    <h2>Éditeur</h2>
+    <LegalIdentity lang={lang} />
+    <p>Les données de l’Assurance Maladie, de l’UNASA et de la CARCDSF sont relues par {AUTHOR_NAME}, qui répond du contenu ; le détail juridique figure aux <a href={route('terms', lang)}>mentions légales</a>. Page revue le <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'fr-FR')}</time>.</p>
+  </div>
+</PageLayout>

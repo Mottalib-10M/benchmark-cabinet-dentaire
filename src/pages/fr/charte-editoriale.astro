@@ -1,0 +1,29 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'fr';
+---
+<PageLayout title={`Charte éditoriale – ${SITE_NAMES[lang]}`} description="D’où viennent les moyennes et les références de Dentimètre, qui en répond, quand elles sont revues, et ce que nous faisons quand un praticien signale une erreur." lang={lang} noindex={true} breadcrumbs={[{ label: 'Charte éditoriale' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Charte éditoriale et politique de correction</h1>
+    <p>Un chiffre de comparaison peut peser sur une décision lourde : racheter une patientèle, embaucher une deuxième assistante, passer en société. Voici comment ces chiffres sont choisis, vérifiés et corrigés.</p>
+    <h2>Responsabilité</h2><p>{AUTHOR_NAME} répond des moyennes publiées, du moteur de comparaison et des textes ; une question ou un doute sur un chiffre s’adresse à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Sources publiques et primaires</h2>
+    <ul>
+      <li><strong>Assurance Maladie</strong>, open data data.ameli.fr : honoraires, effectifs, densités, exercice, patientèle ;</li>
+      <li><strong>DREES</strong> et <strong>Insee</strong> : revenus des praticiens et dépense de soins dentaires ;</li>
+      <li><strong>UNASA</strong> : statistiques professionnelles publiques des organismes de gestion agréés ;</li>
+      <li><strong>CARCDSF</strong>, <strong>Urssaf</strong>, <strong>Légifrance</strong>, <strong>impots.gouv</strong>, <strong>service-public</strong> : cotisations, salaires conventionnels, Smic, fiscalité.</li>
+    </ul>
+    <p>Une étude publiée par un cabinet comptable, une banque ou un forum n’est pas une source : un chiffre que nous n’avons pas pu relire chez son producteur n’est pas publié.</p>
+    <h2>Moyennes, pas palmarès</h2><p>Nous publions des moyennes et, quand une distribution officielle existe, des quantiles. Nous n’inventons ni percentile, ni « cabinet type », ni objectif chiffré. Un écart à la moyenne est un constat, jamais un jugement sur un praticien.</p>
+    <h2>Tests avant publication</h2><p>À chaque compilation, des cas recalculés à la main depuis les fichiers officiels sont rejoués : moyennes de départements et de régions, classement, taux de charges UNASA, exemple publié par l’Urssaf pour la réduction générale, barème CARCDSF, impôt sur les sociétés. Un écart bloque la publication.</p>
+    <h2>Rythme</h2><p>Mise à jour à chaque nouvelle année publiée par l’Assurance Maladie (en octobre), à chaque barème de la CARCDSF ou de l’Urssaf, et revue complète au moins tous les {REVIEW_CYCLE_MONTHS} mois.</p>
+    <h2>Correction</h2>
+    <ol><li>Vérification contre la source primaire.</li><li>Correction du fichier de données ou du moteur, ajout d’un test.</li><li>Nouvelle date sur les pages ; une correction notable est mentionnée sur la page concernée.</li></ol>
+    <h2>Indépendance</h2><p>Aucune rémunération d’un fournisseur, d’un laboratoire de prothèse, d’une banque, d’un assureur ou d’un cabinet comptable. Si une telle relation existait, elle serait écrite sur la page concernée.</p>
+    <p>Voir aussi la <a href={route('method', lang)}>méthode</a>. Version : <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'fr-FR')}</time>.</p>
+  </div>
+</PageLayout>

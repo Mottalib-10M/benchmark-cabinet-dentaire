@@ -1,0 +1,103 @@
+---
+/**
+ * Page département (RECETTE §6.2, §9.3) : simulateur pré-rempli, chiffres clés, texte rédigé propre au
+ * département (`src/content/departements/<code>.ts`), historique, voisins de région, FAQ générée.
+ * Ce qui sort d'un gabarit (chapeau, bloc citable, FAQ, tableaux) est marqué `data-chrome` : seul le
+ * texte rédigé fait l'unicité de la page (§6.4).
+ */
+import PageLayout from '../layouts/PageLayout.astro';
+import Benchmark from './calc/Benchmark';
+import Clamp from './Clamp.astro';
+import { route, ROUTES, type Locale } from '../i18n/routes';
+import { label } from '../i18n/nav';
+import { t } from '../i18n/ui';
+import { DEPS, REGS, FR, DATA_YEAR, DEP_CODES, type Stat } from '../lib/engine/data';
+import { depRank, depShare } from '../lib/engine/benchmark';
+import { depGen } from '../lib/dep-gen';
+import { regLabel } from '../lib/dep-fr';
+import { depPageByCode, type DepPage } from '../lib/departements';
+import { formatMoney, formatNumber, formatPercent, displayDate, fixOrdinals } from '../lib/format';
+import { AMELI } from '../lib/engine/data';
+import { articleSchema, faqSchema, breadcrumbSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
+import { AUTHOR_NAME } from '../data/site-config';
+import type { DepDef, DepHelpers } from '../lib/dep-types';
+interface Props { dep: DepPage; lang: Locale }
+const { dep, lang } = Astro.props;
+const fr = lang === 'fr';
+const ui = t(lang);
+const z = DEPS[dep.code];
+const reg = z.region ? REGS[z.region] : undefined;
+const g = depGen(dep.code, lang);
+const path = route(dep.id, lang);
+const mods = import.meta.glob<{ default: DepDef }>('../content/departements/*.ts', { eager: true });
+const text = Object.values(mods).map((m) => m.default).find((d) => d.code === dep.code);
+if (!text) throw new Error(`Texte manquant : src/content/departements/${dep.code}.ts`);
+const $ = (x: number | null | undefined) => (x == null ? '–' : formatMoney(x, 0, lang));
+const n = (x: number | null | undefined, d = 0) => (x == null ? '–' : formatNumber(x, d, lang));
+const pc = (x: number | null | undefined, d = 0) => (x == null ? '–' : formatPercent(x, d, lang));
+const h: DepHelpers = {
+  lang, region: regLabel(reg?.name ?? ''),
+  D: z.p as DepHelpers['D'], R: (reg?.p ?? {}) as DepHelpers['R'], F: FR.p as DepHelpers['F'],
+  rang: (s) => depRank(s, dep.code),
+  eur: $, num: n, pct: pc,
+  ecart: (a, b) => (a && b ? `${a / b - 1 >= 0 ? '+' : '−'}${formatPercent(Math.abs(a / b - 1), 0, lang)}` : '–'),
+  a: (id, txt) => (ROUTES.some((r) => r.id === id) ? `<a href="${route(id, lang)}">${txt}</a>` : txt),
+};
+const body = fixOrdinals(text[lang].body(h), lang);
+const specs = [['omni', fr ? 'Omnipraticiens' : 'General dentists'], ['odf', fr ? 'Orthodontistes (ODF)' : 'Orthodontists (ODF)'], ['stomato', fr ? 'Stomatologues' : 'Stomatologists']] as const;
+const cell = (s: Stat | undefined, k: keyof Stat) => s?.[k] as number | null | undefined;
+const years = ['2015', '2019', '2021', '2023', '2024', String(DATA_YEAR)];
+const voisins = DEP_CODES.filter((c) => DEPS[c].region === z.region && c !== dep.code);
+const jsonLd = [articleSchema({ title: g.h1, description: g.description, path, lang }), webPageSchema({ name: g.h1, description: g.description, path, lang }), webApplicationSchema({ name: g.h1, description: g.description, path, lang }), breadcrumbSchema([{ name: ui.breadcrumbHome, path: route('home', lang) }, { name: label('classement-departements', lang), path: route('classement-departements', lang) }, { name: dep.name, path }]), faqSchema(g.faqs, lang)];
+const sources = [
+  { name: fr ? `Assurance Maladie, data.ameli.fr : honoraires des professionnels de santé libéraux par territoire (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: private health professionals’ fees by territory (${DATA_YEAR})`, url: AMELI.meta.datasets['honoraires'] },
+  { name: fr ? `Assurance Maladie, data.ameli.fr : effectifs et densités (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: headcount and density (${DATA_YEAR})`, url: AMELI.meta.datasets['demographie-effectifs-et-les-densites'] },
+  { name: fr ? `Assurance Maladie, data.ameli.fr : patientèle (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: patient numbers (${DATA_YEAR})`, url: AMELI.meta.datasets['patientele'] },
+];
+const related = ['omnipraticien', 'orthodontiste', 'taux-de-charges', 'classement-departements'].filter((id) => ROUTES.some((r) => r.id === id)).map((id) => ({ href: route(id, lang), name: label(id, lang), description: '' }));
+const methodHref = route('method', lang);
+---
+<PageLayout title={g.title} description={g.description} lang={lang} jsonLd={jsonLd} faqs={g.faqs} faqChrome related={related} sources={sources} breadcrumbs={[{ label: label('classement-departements', lang), href: route('classement-departements', lang) }, { label: dep.name }]}>
+  <article>
+    <header class="mb-3 sm:mb-4">
+      <h1 class="text-[1.75rem] font-bold leading-tight text-navy-900 sm:text-3xl md:text-4xl">{g.h1}</h1>
+      <p class="mt-2 text-base text-navy-700 sm:text-lg" data-chrome>{g.intro}</p>
+    </header>
+    <div data-chrome><Clamp text={g.resume} lang={lang} id={`clamp-${dep.id}`} class="mb-3" /></div>
+    <div data-outil class="mb-4"><Benchmark client:load lang={lang} spec="omni" dep={dep.code} methodHref={methodHref} /></div>
+    <p class="mb-8 text-sm text-navy-600" data-chrome>{ui.reviewedBy} <a href={route('about', lang)} class="underline hover:text-navy-900">{AUTHOR_NAME}</a> · <a href={route('editorial', lang)} class="underline hover:text-navy-900">{ui.editorialPolicy}</a> · <a href={methodHref} class="underline hover:text-navy-900">{label('method', lang)}</a></p>
+    <div class="prose prose-slate max-w-none">
+      <h2>{fr ? `Les chiffres clés ${DATA_YEAR}` : `Key figures, ${DATA_YEAR}`}</h2>
+      <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
+        <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `${dep.name} face à sa région et à la France. Honoraires : moyenne par praticien actif à part entière.` : `${dep.name} against its region and France. Fees: average per full-time active practitioner.`}</caption>
+        <thead><tr><th scope="col" class="px-3 py-2 text-left"></th><th scope="col" class="px-3 py-2 text-right">{dep.name}</th><th scope="col" class="px-3 py-2 text-right">{regLabel(reg?.name ?? '')}</th><th scope="col" class="px-3 py-2 text-right">France</th></tr></thead>
+        <tbody>
+          {specs.map(([s, lab]) => z.p[s]?.eff ? (<>
+            <tr class="bg-navy-50"><th scope="row" colspan="4" class="px-3 py-2 text-left font-semibold text-navy-900">{lab}</th></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Praticiens libéraux' : 'Practitioners in private practice'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(z.p[s], 'eff'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(reg?.p[s], 'eff'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(FR.p[s], 'eff'))}</td></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Pour 100 000 habitants' : 'Per 100,000 residents'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(z.p[s], 'dens'), 1)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(reg?.p[s], 'dens'), 1)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(FR.p[s], 'dens'), 1)}</td></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Honoraires moyens' : 'Average fees'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right font-semibold">{$(cell(z.p[s], 'tot'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(cell(reg?.p[s], 'tot'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(cell(FR.p[s], 'tot'))}</td></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Part des dépassements' : 'Share of extra fees'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(depShare(z.p[s] ?? null))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(depShare(reg?.p[s] ?? null))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(depShare(FR.p[s] ?? null))}</td></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Patients différents par praticien' : 'Different patients per practitioner'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(z.p[s], 'patients'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(reg?.p[s], 'patients'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(FR.p[s], 'patients'))}</td></tr>
+            <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? '60 ans et plus' : 'Aged 60 and over'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(z.p[s], 'p60'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(reg?.p[s], 'p60'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(FR.p[s], 'p60'))}</td></tr>
+          </>) : null)}
+        </tbody></table></div>
+      <Fragment set:html={body} />
+      <h2>{fr ? 'Dix ans d’honoraires moyens' : 'Ten years of average fees'}</h2>
+      <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
+        <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `Honoraires totaux moyens par praticien actif à part entière, ${dep.name} (euros courants).` : `Average total fees per full-time active practitioner, ${dep.name} (current euros).`}</caption>
+        <thead><tr><th scope="col" class="px-3 py-2 text-left">{fr ? 'Année' : 'Year'}</th>{specs.filter(([s]) => z.p[s]?.tot).map(([, lab]) => <th scope="col" class="px-3 py-2 text-right">{lab}</th>)}</tr></thead>
+        <tbody>{years.map((y) => <tr><td class="border-b border-navy-100 px-3 py-2">{y}</td>{specs.filter(([s]) => z.p[s]?.tot).map(([s]) => <td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(z.p[s]?.hist[y])}</td>)}</tr>)}</tbody>
+      </table></div>
+      {voisins.length > 0 && (<>
+        <h2>{fr ? `Les autres départements ${regLabel(reg?.name ?? '') ? 'de la région' : ''}` : 'Other départements in the region'}</h2>
+        <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
+          <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `Omnipraticiens, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.` : `General dentists, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.`}</caption>
+          <thead><tr><th scope="col" class="px-3 py-2 text-left">{fr ? 'Département' : 'Département'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Praticiens' : 'Practitioners'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Pour 100 000 hab.' : 'Per 100,000'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Honoraires moyens' : 'Average fees'}</th></tr></thead>
+          <tbody>{voisins.map((c) => { const p = depPageByCode(c); const o = DEPS[c].p.omni; return <tr><td class="border-b border-navy-100 px-3 py-2">{p ? <a href={route(p.id, lang)} class="text-accent-700 underline">{DEPS[c].name}</a> : DEPS[c].name}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(o?.eff)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(o?.dens)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(o?.tot)}</td></tr>; })}</tbody>
+        </table></div>
+      </>)}
+      <p class="text-sm text-navy-600" data-chrome>{fr ? `Source : ${AMELI.meta.source}. Données ${DATA_YEAR} publiées le 12 octobre 2026, relevées le ${displayDate(AMELI.meta.retrieved_at, 'fr-FR')}. Un montant absent est couvert par le secret statistique.` : `Source: Assurance Maladie (Cnam), data.ameli.fr, private health professionals open data (SNDS), ODbL licence. ${DATA_YEAR} data published on 12 October 2026, retrieved on ${displayDate(AMELI.meta.retrieved_at, 'en-GB')}. A missing amount is covered by statistical confidentiality.`}</p>
+    </div>
+  </article>
+</PageLayout>

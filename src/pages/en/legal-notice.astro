@@ -1,0 +1,29 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, LEGAL, SITE_NAMES, SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'en';
+---
+<PageLayout title={`Legal notice – ${SITE_NAMES[lang]}`} description="Publisher, publication director, hosting provider, intellectual property, limitation of liability and governing law for this French dental practice benchmark and its practice-management guides." lang={lang} noindex={true} breadcrumbs={[{ label: 'Legal notice' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Legal notice</h1>
+    <p>Information published under Article 6 III-1 of French law no. 2004-575 of 21 June 2004 on confidence in the digital economy.</p>
+    <h2>Publisher</h2>
+    <LegalIdentity lang={lang} />
+    <p>Publication director: {AUTHOR_NAME}, responsible for content published on {SITE_URL}.</p>
+    <h2>Hosting provider</h2>
+    <LegalIdentity mode="hosting" lang={lang} />
+    <h2>Purpose and no advice</h2>
+    <p>The site offers, free of charge, a benchmark placing a dental practice’s fees against averages published by Assurance Maladie, and management guides based on official statistics and scales. Results are <strong>estimates</strong> built from the visitor’s own assumptions: neither personal legal, tax or accounting advice nor a promise of income. Only the competent bodies (Assurance Maladie, CARCDSF, Urssaf, tax office) and the texts in force are authoritative. The site is independent: it is not affiliated with any government body, professional order, union, approved management association or supplier. Method and limits: <a href={route('method', lang)}>method</a>.</p>
+    <h2>Liability</h2>
+    <p>Parameters are re-read at their sources whenever a text changes and the engine is checked by automated tests, with no guarantee that errors are absent. The publisher is not liable for a decision taken solely on the basis of an estimate. Errors can be reported via the <a href={route('contact', lang)}>contact</a> page.</p>
+    <h2>Intellectual property</h2>
+    <p>Texts, graphics and code are protected and remain the publisher’s property; short quotations with a link to the original page are allowed. Assurance Maladie data is reused under the Open Database License (ODbL) and other public data under the <a href="https://www.etalab.gouv.fr/licence-ouverte-open-licence" rel="nofollow noopener" target="_blank">Etalab open licence</a>.</p>
+    <h2>Embedding</h2><p>The calculator may be embedded free of charge in an iframe with the credit link kept visible: see the <a href={route('widget', lang)}>embed page</a>.</p>
+    <h2>Personal data</h2><p>Inputs never leave your browser. The site sets no cookies and the publisher records no personal data; page stability may be measured anonymously, without cookies, using Microsoft Clarity. See the <a href={route('privacy', lang)}>privacy policy</a> and the <a href={route('cookies', lang)}>cookies</a> page.</p>
+    <h2>Reporting</h2><p>Unlawful content: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, with the page address and the reason.</p>
+    <h2>Governing law</h2><p>French law. Failing an amicable settlement, the competent courts of {LEGAL.jurisdiction}. Updated: <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>

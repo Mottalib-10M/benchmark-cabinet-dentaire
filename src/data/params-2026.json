@@ -1,0 +1,330 @@
+{
+  "_lisezmoi": "Paramètres du site (RECETTE §4). Les honoraires par territoire vivent dans ameli.json (scripts/data/build-ameli.py), les comptes des cabinets dans unasa.json (scripts/data/build-unasa.py). Chaque bloc ci-dessous porte l'année de ses données et la clé de sa source.",
+  "year": 2026,
+  "retrieved_at": "2026-10-15",
+  "valid_from": "2026-01-01",
+  "valid_to": "2026-12-31",
+  "defauts": {
+    "omni": {
+      "recettes": 300000,
+      "horsNomenclature": 0,
+      "fauteuils": 2,
+      "salaries": 2,
+      "joursSemaine": 4.5,
+      "semaines": 45
+    },
+    "odf": {
+      "recettes": 740000,
+      "horsNomenclature": 0,
+      "fauteuils": 4,
+      "salaries": 4,
+      "joursSemaine": 4.5,
+      "semaines": 45
+    },
+    "stomato": {
+      "recettes": 530000,
+      "horsNomenclature": 0,
+      "fauteuils": 2,
+      "salaries": 2,
+      "joursSemaine": 4.5,
+      "semaines": 45
+    }
+  },
+  "revenus": {
+    "drees": {
+      "_source": "dreesRevenus",
+      "annee": 2021,
+      "champ": "chirurgiens-dentistes libéraux conventionnés, 70 ans ou moins, installés avant l'année, hors remplaçants ; revenu d'activité libéral et salarié, net de charges et de cotisations, avant impôt sur le revenu",
+      "moyen": 118100,
+      "liberal_moyen": 108900,
+      "femmes": 94900,
+      "hommes": 137700,
+      "installes_moins_10_ans": 94600,
+      "installes_10_29_ans": 136900,
+      "installes_30_ans_plus": 122700,
+      "quantiles": {
+        "d1": 35900,
+        "q1": 57500,
+        "mediane": 93700,
+        "q3": 145700,
+        "d9": 218700
+      },
+      "rapport_interdecile": 6.1,
+      "annee_precedente": {
+        "annee": 2017,
+        "moyen": 107100,
+        "mediane": 83500,
+        "d1": 32400,
+        "d9": 192100
+      }
+    },
+    "insee": {
+      "_source": "inseeNonSalaries",
+      "annee": 2022,
+      "champ": "pratique dentaire (NAF 86.23Z), non-salariés classiques, France hors Mayotte",
+      "mensuel_moyen": 10300,
+      "mensuel_mediane": 8280,
+      "mensuel_d1": 3130,
+      "mensuel_d9": 19730,
+      "effectifs": 38000,
+      "femmes": 0.466,
+      "plus_60_ans": 0.205
+    },
+    "carcdsf": {
+      "_source": "carcdsfChiffres",
+      "annee_statistiques": 2025,
+      "cotisants_dentistes": 41200,
+      "assiette_moyenne": 106635,
+      "cotisation_moyenne": 18663,
+      "affiliations": 2093,
+      "age_moyen_affiliation": 28.4
+    }
+  },
+  "cotisations_2026": {
+    "_source": "carcdsfBareme",
+    "pass": 48060,
+    "rbl_tranche1": 0.0873,
+    "rbl_tranche2": 0.0187,
+    "rc_forfait": 3210.6,
+    "rc_taux": 0.1135,
+    "rc_plancher_pass": 0.65,
+    "rc_plafond_pass": 5,
+    "pcv_forfait": 1663.6,
+    "pcv_taux": 0.00725,
+    "rid_forfait": 1235,
+    "rbl_assiette_minimale": 5409,
+    "_note": "Barème CARCDSF 2026 des chirurgiens-dentistes. La page de la caisse écrit « 40 060 € » pour un Pass : c'est 48 060 € (Urssaf), coquille relevée le 2026-10-15. Assiette minimale du régime de base : 450 × 12,02 € (Smic horaire au 1er janvier 2026)."
+  },
+  "salaires_2026": {
+    "_source": "ccn1619Salaires",
+    "accord": "accord du 12 février 2026 relatif aux salaires au 1er janvier 2026, étendu par arrêté du 15 juillet 2026",
+    "heures_mois": 151.67,
+    "horaire": {
+      "assistant_dentaire": 13.93,
+      "aide_dentaire": 12.56,
+      "secretaire_technique": 13.78,
+      "receptionniste": 12.02,
+      "personnel_entretien": 12.02,
+      "assistant_formation_moins_26": 10.82,
+      "assistant_formation_26_plus": 12.02
+    },
+    "smic_horaire": 12.31,
+    "smic_mensuel": 1867.02,
+    "smic_depuis": "2026-06-01",
+    "_source_smic": "spSmic"
+  },
+  "employeur_2026": {
+    "_source": "urssafTaux",
+    "_note": "Taux patronaux 2026 d'un cabinet de moins de 11 salariés, sous le plafond de la sécurité sociale. Maladie et allocations familiales aux taux de 13 % et 5,25 %, ceux sur lesquels l'Urssaf calcule la réduction générale dégressive unique (page RGDU) ; AT-MP limité à sa part mutualisée (0,49 %), celle que couvre la RGDU : le taux notifié par la Carsat au cabinet s'y substitue. Hors prévoyance et mutuelle de branche.",
+    "taux": {
+      "maladie": 0.13,
+      "csa": 0.003,
+      "vieillesse_deplafonnee": 0.0211,
+      "vieillesse_plafonnee": 0.0855,
+      "allocations_familiales": 0.0525,
+      "dialogue_social": 0.00016,
+      "chomage": 0.04,
+      "ags": 0.0025,
+      "fnal_moins_50": 0.001,
+      "formation_moins_11": 0.0055,
+      "taxe_apprentissage": 0.0059,
+      "taxe_apprentissage_solde": 0.0009,
+      "agirc_arrco_patronal_t1": 0.0601,
+      "at_mp_mutualise": 0.0049
+    },
+    "rgdu": {
+      "_source": "urssafRgdu",
+      "tmin": 0.02,
+      "tdelta_moins_50": 0.3781,
+      "tdelta_50_plus": 0.3821,
+      "p": 1.75,
+      "seuil_smic": 2.9293,
+      "seuil_depuis": "2026-06-01"
+    },
+    "plafond_mensuel": 4005
+  },
+  "fiscal_2026": {
+    "_source": "cgi219",
+    "is_taux_reduit": 0.15,
+    "is_seuil_reduit": 42500,
+    "is_taux_normal": 0.25,
+    "pfu_ir": 0.128,
+    "prelevements_sociaux": 0.186,
+    "_source_ps": "spPs",
+    "seuil_dividendes_capital": 0.1,
+    "_source_dividendes": "cssL136"
+  },
+  "depense": {
+    "_source": "dreesCns",
+    "annee": 2024,
+    "part_depassements": 0.495,
+    "soins_cabinets_meur": 13205,
+    "structure": {
+      "protheses": 0.42,
+      "soins_conservateurs": 0.23,
+      "orthodontie": 0.21,
+      "radiologie_consultations": 0.05
+    },
+    "financement": {
+      "securite_sociale": 0.36,
+      "complementaires": 0.485,
+      "menages": 0.155
+    }
+  },
+  "specialites_rpps": {
+    "_source": "rpps",
+    "date": "2026-10-15",
+    "odf": 2906,
+    "chirurgie_orale": 298,
+    "medecine_bucco_dentaire": 151
+  },
+  "sources": {
+    "ameliHonoraires": {
+      "url": "https://data.ameli.fr/explore/dataset/honoraires/",
+      "label": {
+        "fr": "Assurance Maladie, data.ameli.fr : montants des honoraires des professionnels de santé libéraux par territoire (2010-2025)",
+        "en": "Assurance Maladie, data.ameli.fr: private health professionals’ fees by territory (2010-2025)"
+      }
+    },
+    "ameliEffectifs": {
+      "url": "https://data.ameli.fr/explore/dataset/demographie-effectifs-et-les-densites/",
+      "label": {
+        "fr": "Assurance Maladie, data.ameli.fr : effectifs et densités des professionnels de santé libéraux",
+        "en": "Assurance Maladie, data.ameli.fr: private health professionals’ headcount and density"
+      }
+    },
+    "ameliPatientele": {
+      "url": "https://data.ameli.fr/explore/dataset/patientele/",
+      "label": {
+        "fr": "Assurance Maladie, data.ameli.fr : patientèle des professionnels de santé libéraux",
+        "en": "Assurance Maladie, data.ameli.fr: private health professionals’ patient numbers"
+      }
+    },
+    "ameliExercice": {
+      "url": "https://data.ameli.fr/explore/dataset/demographie-exercices-liberaux/",
+      "label": {
+        "fr": "Assurance Maladie, data.ameli.fr : effectif par type d’exercice libéral",
+        "en": "Assurance Maladie, data.ameli.fr: headcount by type of private practice"
+      }
+    },
+    "ameliMethode": {
+      "url": "https://data.ameli.fr/pages/data-professionnels-sante-liberaux-methode/",
+      "label": {
+        "fr": "Assurance Maladie, data.ameli.fr : méthode (praticiens actifs à part entière, honoraires sans dépassement, dépassements)",
+        "en": "Assurance Maladie, data.ameli.fr: method (full-time active practitioners, fees at tariff, extra fees)"
+      }
+    },
+    "unasa": {
+      "url": "https://unasa.fr/statistiques/",
+      "label": {
+        "fr": "UNASA, statistiques professionnelles 2024 : chirurgiens-dentistes (1 969 cabinets) et orthodontistes (37 cabinets)",
+        "en": "UNASA, 2024 professional statistics: dentists (1,969 practices) and orthodontists (37 practices)"
+      }
+    },
+    "dreesRevenus": {
+      "url": "https://data.drees.solidarites-sante.gouv.fr/explore/dataset/ods_revenu-liberal-des-medecins-liberaux_prod2022/information/",
+      "label": {
+        "fr": "DREES, Les revenus des professionnels de santé libéraux (revenus 2021, mis à jour le 15 septembre 2026)",
+        "en": "DREES, Income of private health professionals (2021 income, updated 15 September 2026)"
+      }
+    },
+    "inseeNonSalaries": {
+      "url": "https://www.insee.fr/fr/statistiques/8376581?sommaire=8376600",
+      "label": {
+        "fr": "Insee, Emploi et revenus des indépendants, édition 2025 : santé et action sociale (revenus 2022)",
+        "en": "Insee, Employment and income of the self-employed, 2025 edition: health and social work (2022 income)"
+      }
+    },
+    "carcdsfChiffres": {
+      "url": "https://www.carcdsf.fr/qui-sommes-nous-/chiffres-cles",
+      "label": {
+        "fr": "CARCDSF, chiffres clés, statistiques 2025",
+        "en": "CARCDSF (dentists’ pension fund), key figures, 2025 statistics"
+      }
+    },
+    "carcdsfBareme": {
+      "url": "https://www.carcdsf.fr/cotisations-du-praticien/montant-des-cotisations",
+      "label": {
+        "fr": "CARCDSF, montant des cotisations 2026",
+        "en": "CARCDSF, 2026 contribution rates"
+      }
+    },
+    "urssafPam": {
+      "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-pam.html",
+      "label": {
+        "fr": "Urssaf, taux de cotisations 2026 des praticiens et auxiliaires médicaux",
+        "en": "Urssaf, 2026 contribution rates for medical practitioners"
+      }
+    },
+    "dreesCns": {
+      "url": "https://drees.solidarites-sante.gouv.fr/sites/default/files/2025-12/CNS%20-%20Fiche%2009%20-%20Les%20soins%20dentaires.pdf",
+      "label": {
+        "fr": "DREES, Les dépenses de santé en 2024, fiche 09 « Les soins dentaires »",
+        "en": "DREES, Health spending in 2024, sheet 09 “Dental care”"
+      }
+    },
+    "ccn1619Salaires": {
+      "url": "https://www.legifrance.gouv.fr/conv_coll/id/KALITEXT000054880705",
+      "label": {
+        "fr": "Convention collective des cabinets dentaires (IDCC 1619), accord du 12 février 2026 sur les salaires",
+        "en": "Dental practices collective agreement (IDCC 1619), 12 February 2026 pay agreement"
+      }
+    },
+    "spSmic": {
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2300",
+      "label": {
+        "fr": "Service-public.gouv.fr, Smic au 1er juin 2026 (fiche F2300)",
+        "en": "Service-public.gouv.fr, minimum wage from 1 June 2026 (F2300)"
+      }
+    },
+    "urssafTaux": {
+      "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html",
+      "label": {
+        "fr": "Urssaf, taux de cotisations 2026 du secteur privé",
+        "en": "Urssaf, 2026 private-sector contribution rates"
+      }
+    },
+    "urssafRgdu": {
+      "url": "https://www.urssaf.fr/accueil/employeur/beneficier-exonerations/reduction-generale-cotisation.html",
+      "label": {
+        "fr": "Urssaf, réduction générale dégressive unique 2026",
+        "en": "Urssaf, 2026 general sliding-scale contribution relief (RGDU)"
+      }
+    },
+    "cgi219": {
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046868562",
+      "label": {
+        "fr": "Code général des impôts, article 219 (taux de l’impôt sur les sociétés)",
+        "en": "General Tax Code, article 219 (corporation tax rates)"
+      }
+    },
+    "impotsMobiliers": {
+      "url": "https://www.impots.gouv.fr/particulier/les-revenus-mobiliers",
+      "label": {
+        "fr": "impots.gouv.fr, les revenus mobiliers (prélèvement forfaitaire unique)",
+        "en": "impots.gouv.fr, investment income (flat-rate levy)"
+      }
+    },
+    "spPs": {
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2329",
+      "label": {
+        "fr": "Service-public.gouv.fr, prélèvements sociaux sur les revenus du patrimoine (fiche F2329)",
+        "en": "Service-public.gouv.fr, social levies on investment income (F2329)"
+      }
+    },
+    "cssL136": {
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037948717",
+      "label": {
+        "fr": "Code de la sécurité sociale, article L136-3 (dividendes au-delà de 10 % du capital)",
+        "en": "Social Security Code, article L136-3 (dividends above 10% of capital)"
+      }
+    },
+    "rpps": {
+      "url": "https://www.data.gouv.fr/datasets/annuaire-sante-extractions-des-donnees-en-libre-acces-des-professionnels-intervenant-dans-le-systeme-de-sante-rpps",
+      "label": {
+        "fr": "Agence du numérique en santé, Annuaire Santé (RPPS), extraction en libre accès",
+        "en": "French digital health agency, Annuaire Santé (RPPS) open extract"
+      }
+    }
+  }
+}

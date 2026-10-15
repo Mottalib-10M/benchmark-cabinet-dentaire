@@ -1,0 +1,22 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { breadcrumbSchema } from '../../lib/seo';
+const lang = 'fr';
+const code = `<iframe src="${SITE_URL}/embed/comparateur-cabinet/" title="Comparateur de cabinet dentaire : honoraires face à la moyenne du département" width="100%" height="1250" style="border:0;max-width:1100px" loading="lazy"></iframe>`;
+---
+<PageLayout title="Intégrer le comparateur de cabinet dentaire sur votre site" description="Intégrez gratuitement le comparateur de cabinet dentaire en iframe : honoraires face aux moyennes de l’Assurance Maladie, sans inscription, sans cookie, calcul dans le navigateur." lang={lang} noindex={true} jsonLd={[breadcrumbSchema([{ name: 'Accueil', path: route('home', lang) }, { name: 'Widget', path: route('widget', lang) }])]} breadcrumbs={[{ label: 'Widget' }]} showAuthor={false}>
+  <header class="mb-6">
+    <h1 class="text-3xl font-bold text-navy-900 md:text-4xl">Intégrer le comparateur de cabinet</h1>
+    <p class="mt-3 text-lg text-navy-700">Un code à coller, gratuit et sans inscription. Le simulateur complet se charge depuis ce site et suit chaque mise à jour des données de l’Assurance Maladie.</p>
+  </header>
+  <div class="prose prose-slate max-w-none">
+    <pre class="overflow-x-auto rounded-lg bg-navy-900 p-4 text-sm text-white"><code>{code}</code></pre>
+    <p>Conditions : le lien affiché sous le simulateur reste visible, le contenu n’est pas modifié, et l’outil est fourni sans garantie. Pour la version anglaise, remplacez l’adresse par <code>{`${SITE_URL}/embed/practice-benchmark/`}</code>.</p>
+    <p>Les honoraires et les charges qu’un praticien saisit dans le cadre intégré restent sur son poste : aucun serveur ne les reçoit, aucun cookie n’est déposé. Pour une revue ou une association de gestion qui souhaite une version adaptée, écrivez-nous par la page <a href={route('contact', lang)}>contact</a>.</p>
+  </div>
+  <div class="mt-8 overflow-hidden rounded-xl border border-navy-200">
+    <iframe src="/embed/comparateur-cabinet/" title="Comparateur de cabinet dentaire" width="100%" height="1250" style="border:0" loading="lazy"></iframe>
+  </div>
+</PageLayout>

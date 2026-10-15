@@ -1,0 +1,20 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { CONTACT_EMAIL, SITE_NAMES, LAST_UPDATED } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'en';
+---
+<PageLayout title={`Cookies – ${SITE_NAMES[lang]}`} description="Dentimetre sets no cookies: the fees, costs and staff numbers you enter stay in your browser. Only page stability may be measured, anonymously and without any cookie." lang={lang} noindex={true} breadcrumbs={[{ label: 'Cookies' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Cookies</h1>
+    <p>Dentimetre <strong>sets no cookies</strong>, so there is nothing to accept and no banner. Full details are in the <a href={route('privacy', lang)}>privacy policy</a>.</p>
+    <h2>Your figures stay with you</h2>
+    <p>Fees, the share of non-reimbursable work, chairs, staff, costs, patient numbers: the benchmark processes them in your browser. They are sent nowhere, written to no cookie or browser storage, and vanish when you close the page, unless you copy the share link yourself.</p>
+    <h2>Stability measurement, cookie-free</h2>
+    <p>To spot a page that crashes or a slow calculator, the site may use Microsoft Clarity in <strong>cookie-free</strong> mode: errors, load times, dead clicks, scrolling. No Clarity or Microsoft cookie is set, visits are not linked together, and page text and amounts typed are masked before anything is sent. Tool provider: Microsoft Ireland Operations Limited, Dublin; legal basis: legitimate interest (GDPR art. 6(1)(f)); retention: 30 days for recordings, 13 months for aggregates.</p>
+    <p>No advertising, no social buttons, no other analytics. The embedded iframe version used on other sites does not load Clarity.</p>
+    <h2>Opting out</h2>
+    <p>Block the clarity.ms domain in your browser; the site works exactly the same. Questions: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, or the CNIL, France’s data protection authority. Updated: <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>

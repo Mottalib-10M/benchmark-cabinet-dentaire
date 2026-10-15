@@ -1,0 +1,30 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { CONTACT_EMAIL, LEGAL, SITE_NAMES, SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'fr';
+const updated = '2026-10-15';
+---
+<PageLayout title={`Politique de confidentialité – ${SITE_NAMES[lang]}`} description="Quelles données ce site traite, sur quelle base juridique, pendant combien de temps, qui y accède et ce qui n’est jamais conservé (aucun cookie, aucune donnée enregistrée par l’éditeur) et comment exercer vos droits RGPD ou saisir la CNIL." lang={lang} noindex={true} breadcrumbs={[{ label: 'Confidentialité' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Politique de confidentialité</h1>
+    <p>Cette page décrit les traitements de données personnelles liés à {SITE_URL}, conformément aux articles 12 à 14 du règlement (UE) 2016/679 (RGPD) et à la loi n° 78-17 du 6 janvier 1978.</p>
+    <h2>1. Responsable du traitement</h2>
+    <LegalIdentity lang={lang} />
+    <p>Contact : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Aucun délégué à la protection des données n’a été désigné, les conditions de l’article 37 du RGPD n’étant pas réunies.</p>
+    <h2>2. Ce que le calculateur ne fait pas</h2>
+    <p>Le calcul est exécuté par votre navigateur. Honoraires, actes non remboursables, fauteuils, salariés, charges et patientèle <strong>ne sont transmis à aucun serveur</strong>, ne sont enregistrés nulle part et ne sont liés à aucun identifiant ; la mesure de stabilité décrite plus bas masque les champs saisis. Le lien de partage encode vos saisies dans l’adresse : ne le transmettez qu’aux personnes de votre choix, il n’est conservé nulle part par l’éditeur.</p>
+    <h2>3. Traitements réalisés</h2>
+    <h3>Journaux de connexion</h3><p>L’hébergeur enregistre l’adresse IP, la date, la page demandée, le navigateur et le référent. Finalité : sécurité et diagnostic. Base juridique : intérêt légitime (art. 6-1 f du RGPD). Conservation : selon la politique de l’hébergeur, GitHub.</p>
+    <h3>Aucun cookie, aucune donnée enregistrée</h3><p>Le site ne dépose aucun cookie et l’éditeur n’enregistre aucune donnée personnelle. Le comparateur de cabinet ne garde rien sur votre appareil : ni vos honoraires, ni vos charges, ni vos effectifs.</p>
+    <h3>Mesure technique de la stabilité : Microsoft Clarity sans cookie</h3><p>Pour savoir si une page ou le comparateur de cabinet tombe en panne, nous relevons de façon anonyme les erreurs, les temps de chargement, les clics inopérants et le défilement avec Microsoft Clarity, configuré sans cookie : aucun <code>_clck</code>, <code>_clsk</code>, <code>MUID</code> ni <code>CLID</code> n’est posé, chaque page vue a son propre identifiant et les visites ne sont pas reliées entre elles ; le contenu des pages et les montants saisis sont masqués dans votre navigateur. Responsable de l’outil : Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irlande. Base juridique : intérêt légitime de l’éditeur à garder ses outils en état de marche (art. 6-1 f du RGPD). Conservation : 30 jours pour les enregistrements, 13 mois pour les agrégats.</p>
+    <h3>Vous opposer à cette mesure</h3><p>Bloquez le domaine clarity.ms dans votre navigateur ou écrivez à l’adresse de contact ; guides et simulateurs restent utilisables. Aucun autre outil de mesure ni traceur n’est chargé.</p>
+    <h2>4. Destinataires</h2><p>Aucune donnée n’est vendue ni cédée. Y accèdent, comme sous-traitants au sens de l’article 28 du RGPD : l’hébergeur, GitHub ; Microsoft (Microsoft Ireland Operations Limited et Microsoft Corporation) pour la mesure anonyme de la stabilité.</p>
+    <h2>5. Transferts hors Union européenne</h2><p>L’hébergeur, GitHub, Inc., est établi aux États-Unis ; les journaux de connexion peuvent y être traités dans le cadre du EU–U.S. Data Privacy Framework et des clauses contractuelles types de la Commission européenne. Les données techniques de Clarity peuvent être transférées à Microsoft Corporation, aux États-Unis, certifiée au titre du même Data Privacy Framework (voir la <a href="https://privacy.microsoft.com/privacystatement" rel="nofollow noopener" target="_blank">déclaration de confidentialité de Microsoft</a>). Bloquer clarity.ms évite ce transfert.</p>
+    <h2>6. Vos droits</h2><p>Droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité (articles 15 à 22 du RGPD) : écrivez à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, réponse sous un mois. Réclamation possible auprès de la {LEGAL.supervisoryAuthority} : <a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">{LEGAL.supervisoryAuthorityUrl}</a>.</p>
+    <h2>7. Pas de décision automatisée</h2><p>Le résultat du calculateur est une estimation calculée à votre demande, sans effet juridique : ce n’est pas une décision automatisée au sens de l’article 22 du RGPD.</p>
+    <p>Voir aussi la page <a href={route('cookies', lang)}>cookies</a>. Dernière mise à jour : <time datetime={updated}>{displayDate(updated, 'fr-FR')}</time>.</p>
+  </div>
+</PageLayout>

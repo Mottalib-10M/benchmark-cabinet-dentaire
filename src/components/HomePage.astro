@@ -1,0 +1,36 @@
+---
+/**
+ * Accueil d'une langue : le simulateur d'abord (RECETTE §5), puis la page pilier. Texte dans
+ * src/content/accueil.ts. Trame propre au sujet (§6.6) : simulateur, carte des écarts par
+ * département (tableau trié), spécialités, guides de gestion, méthode.
+ */
+import PageLayout from '../layouts/PageLayout.astro';
+import Benchmark from './calc/Benchmark';
+import Clamp from './Clamp.astro';
+import MiniSim from './calc/MiniSim';
+import { HOME } from '../content/accueil';
+import { route, type Locale } from '../i18n/routes';
+import { helpers } from '../lib/helpers';
+import { P } from '../lib/engine/params';
+import type { SourceKey } from '../lib/engine/params';
+import { faqSchema, organizationSchema, websiteSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const x = HOME[lang];
+const path = route('home', lang);
+const parts = x.body(helpers(lang)).split(/<!--mini:([A-Za-z0-9_]+)-->/);
+const sources = (Object.keys(P.sources) as SourceKey[]).map((k) => ({ name: P.sources[k].label[lang], url: P.sources[k].url }));
+const jsonLd = [websiteSchema(lang), organizationSchema(lang), webPageSchema({ name: x.h1, description: x.description, path, lang }), webApplicationSchema({ name: x.h1, description: x.description, path, lang }), faqSchema(x.faqs, lang)];
+const methodHref = route('method', lang);
+---
+<PageLayout title={x.title} description={x.description} lang={lang} jsonLd={jsonLd} faqs={x.faqs} sources={sources}>
+  <header class="mb-3 sm:mb-4">
+    <h1 class="text-[1.75rem] font-bold leading-tight text-navy-900 sm:text-3xl md:text-4xl">{x.h1}</h1>
+    <p class="mt-2 text-base text-navy-700 sm:text-lg">{x.intro}</p>
+  </header>
+  <Clamp text={x.resume} lang={lang} id="clamp-home" sentences={1} class="mb-3" />
+  <div class="mb-10 mt-3"><Benchmark client:load lang={lang} methodHref={methodHref} /></div>
+  <div class="prose prose-slate max-w-none">
+    {parts.map((p, i) => i % 2 === 0 ? <Fragment set:html={p} /> : <div data-chrome><MiniSim client:load kind={p} lang={lang} secondaire /></div>)}
+  </div>
+</PageLayout>

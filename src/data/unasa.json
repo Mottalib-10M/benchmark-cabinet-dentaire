@@ -1,0 +1,1035 @@
+{
+ "851EAA_2023": {
+  "echantillon": 3246,
+  "colonnes": [
+   "ensemble",
+   "q1",
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "lignes": {
+   "Recettes encaissées": [
+    295336.0,
+    129481.0,
+    231058.0,
+    323750.0,
+    497164.0
+   ],
+   "Débours": [
+    145.0,
+    6.0,
+    60.0,
+    505.0,
+    6.0
+   ],
+   "Honoraires rétrocédés": [
+    6290.0,
+    10422.0,
+    6676.0,
+    5135.0,
+    2936.0
+   ],
+   "Montant net des recettes": [
+    288901.0,
+    119053.0,
+    224322.0,
+    318110.0,
+    494222.0
+   ],
+   "Achats": [
+    18.9,
+    15.7,
+    18.4,
+    19.3,
+    19.7
+   ],
+   "Salaires nets": [
+    6.3,
+    3.0,
+    5.7,
+    6.5,
+    7.1
+   ],
+   "Charges sociales": [
+    3.8,
+    1.7,
+    3.4,
+    4.1,
+    4.3
+   ],
+   "Charges de personnel": [
+    10.1,
+    4.7,
+    9.1,
+    10.6,
+    11.5
+   ],
+   "CSG déductible": [
+    2.9,
+    3.2,
+    2.8,
+    2.8,
+    2.9
+   ],
+   "Autres impôts": [
+    1.4,
+    1.3,
+    1.3,
+    1.4,
+    1.4
+   ],
+   "Impôts et taxes": [
+    4.3,
+    4.5,
+    4.1,
+    4.2,
+    4.3
+   ],
+   "Loyers et charges locatives": [
+    4.4,
+    5.1,
+    5.1,
+    4.5,
+    3.8
+   ],
+   "Locations": [
+    5.0,
+    7.1,
+    6.6,
+    5.1,
+    3.8
+   ],
+   "Honoraires": [
+    1.3,
+    2.1,
+    1.4,
+    1.4,
+    1.1
+   ],
+   "Primes d'assurance": [
+    0.6,
+    1.0,
+    0.7,
+    0.6,
+    0.5
+   ],
+   "Autres TSFE": [
+    3.1,
+    3.5,
+    3.5,
+    3.3,
+    2.7
+   ],
+   "Frais de déplacement": [
+    1.6,
+    2.7,
+    1.9,
+    1.5,
+    1.2
+   ],
+   "Charges sociales personnelles": [
+    11.7,
+    14.2,
+    12.0,
+    11.5,
+    11.1
+   ],
+   "Frais de réception": [
+    0.7,
+    0.9,
+    0.7,
+    0.7,
+    0.6
+   ],
+   "Fournitures de bureau": [
+    0.8,
+    1.2,
+    0.9,
+    0.8,
+    0.7
+   ],
+   "Autres frais divers de gestion": [
+    1.2,
+    1.9,
+    1.5,
+    1.1,
+    0.9
+   ],
+   "Charges externes": [
+    30.5,
+    39.8,
+    34.4,
+    30.6,
+    26.5
+   ],
+   "Produits financiers": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Frais financiers": [
+    0.2,
+    0.3,
+    0.2,
+    0.2,
+    0.2
+   ],
+   "Résultat financier": [
+    -0.2,
+    -0.3,
+    -0.2,
+    -0.2,
+    -0.2
+   ],
+   "Gains divers": [
+    1.5,
+    2.9,
+    1.7,
+    1.4,
+    1.1
+   ],
+   "Pertes diverses": [
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "Dotations aux amortissements": [
+    1.7,
+    1.6,
+    1.7,
+    1.9,
+    1.7
+   ],
+   "Bénéfice (%)": [
+    35.6,
+    36.2,
+    33.7,
+    34.4,
+    37.2
+   ],
+   "Bénéfice comptable": [
+    102962.0,
+    43117.0,
+    75539.0,
+    109508.0,
+    183773.0
+   ],
+   "Montant net des recettes (évolution, %)": [
+    3.4,
+    4.2,
+    3.7,
+    3.7,
+    2.8
+   ],
+   "Charges de personnel (évolution, %)": [
+    9.7,
+    26.7,
+    11.8,
+    7.9,
+    8.4
+   ],
+   "Impôts et taxes (évolution, %)": [
+    -7.9,
+    -9.9,
+    -9.2,
+    -7.3,
+    -7.3
+   ],
+   "Charges externes (évolution, %)": [
+    2.5,
+    3.3,
+    0.9,
+    1.9,
+    3.7
+   ],
+   "Bénéfice": [
+    4.9,
+    4.9,
+    4.5,
+    6.7,
+    3.9
+   ]
+  }
+ },
+ "851EAA_2024": {
+  "echantillon": 1969,
+  "colonnes": [
+   "ensemble",
+   "q1",
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "lignes": {
+   "Recettes encaissées": [
+    314788.0,
+    129586.0,
+    242473.0,
+    342269.0,
+    544510.0
+   ],
+   "Débours": [
+    90.0,
+    2.0,
+    62.0,
+    126.0,
+    170.0
+   ],
+   "Honoraires rétrocédés": [
+    4984.0,
+    7758.0,
+    5931.0,
+    4476.0,
+    1778.0
+   ],
+   "Montant net des recettes": [
+    309713.0,
+    121826.0,
+    236480.0,
+    337668.0,
+    542562.0
+   ],
+   "Achats": [
+    18.8,
+    15.7,
+    18.1,
+    19.6,
+    19.4
+   ],
+   "Salaires nets": [
+    6.8,
+    3.1,
+    6.1,
+    7.4,
+    7.5
+   ],
+   "Charges sociales": [
+    4.1,
+    1.8,
+    3.6,
+    4.6,
+    4.4
+   ],
+   "Charges de personnel": [
+    10.8,
+    4.9,
+    9.7,
+    12.0,
+    11.9
+   ],
+   "CSG déductible": [
+    3.0,
+    3.3,
+    3.0,
+    2.9,
+    3.1
+   ],
+   "Autres impôts": [
+    1.5,
+    1.6,
+    1.4,
+    1.5,
+    1.5
+   ],
+   "Impôts et taxes": [
+    4.5,
+    4.8,
+    4.4,
+    4.4,
+    4.5
+   ],
+   "Loyers et charges locatives": [
+    4.6,
+    6.1,
+    4.9,
+    4.6,
+    4.1
+   ],
+   "Locations": [
+    4.0,
+    5.2,
+    5.6,
+    3.8,
+    3.2
+   ],
+   "Honoraires": [
+    1.3,
+    2.1,
+    1.6,
+    1.3,
+    1.0
+   ],
+   "Primes d'assurance": [
+    0.7,
+    1.2,
+    0.8,
+    0.7,
+    0.5
+   ],
+   "Autres TSFE": [
+    3.2,
+    3.9,
+    3.5,
+    3.3,
+    2.7
+   ],
+   "Frais de déplacement": [
+    1.5,
+    2.5,
+    1.8,
+    1.4,
+    1.2
+   ],
+   "Charges sociales personnelles": [
+    12.6,
+    16.0,
+    13.3,
+    12.4,
+    11.7
+   ],
+   "Frais de réception": [
+    0.7,
+    0.8,
+    0.7,
+    0.6,
+    0.6
+   ],
+   "Fournitures de bureau": [
+    0.8,
+    1.3,
+    0.9,
+    0.8,
+    0.7
+   ],
+   "Autres frais divers de gestion": [
+    1.2,
+    2.1,
+    1.6,
+    1.1,
+    0.9
+   ],
+   "Charges externes": [
+    30.6,
+    41.1,
+    34.7,
+    30.0,
+    26.8
+   ],
+   "Produits financiers": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Frais financiers": [
+    0.3,
+    0.3,
+    0.3,
+    0.3,
+    0.2
+   ],
+   "Résultat financier": [
+    -0.3,
+    -0.3,
+    -0.3,
+    -0.3,
+    -0.2
+   ],
+   "Gains divers": [
+    1.4,
+    2.7,
+    1.7,
+    1.3,
+    1.1
+   ],
+   "Pertes diverses": [
+    0.1,
+    0.1,
+    0.0,
+    0.1,
+    0.1
+   ],
+   "Dotations aux amortissements": [
+    1.7,
+    1.7,
+    1.6,
+    1.8,
+    1.6
+   ],
+   "Bénéfice (%)": [
+    34.7,
+    34.2,
+    32.9,
+    33.1,
+    36.6
+   ],
+   "Bénéfice comptable": [
+    107474.0,
+    41608.0,
+    77889.0,
+    111642.0,
+    198678.0
+   ],
+   "Montant net des recettes (évolution, %)": [
+    2.9,
+    -4.8,
+    3.1,
+    4.6,
+    3.5
+   ],
+   "Charges de personnel (évolution, %)": [
+    8.1,
+    -11.2,
+    6.3,
+    16.7,
+    5.7
+   ],
+   "Impôts et taxes (évolution, %)": [
+    8.9,
+    0.8,
+    12.0,
+    10.9,
+    8.3
+   ],
+   "Charges externes (évolution, %)": [
+    5.2,
+    -0.8,
+    5.9,
+    3.8,
+    7.7
+   ],
+   "Bénéfice": [
+    -0.5,
+    -8.1,
+    2.3,
+    -0.6,
+    0.2
+   ]
+  }
+ },
+ "851EAB_2023": {
+  "echantillon": 103,
+  "colonnes": [
+   "ensemble",
+   "q1",
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "lignes": {
+   "Recettes encaissées": [
+    538121.0,
+    197118.0,
+    411057.0,
+    595656.0,
+    950864.0
+   ],
+   "Débours": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Honoraires rétrocédés": [
+    1412.0,
+    1668.0,
+    200.0,
+    2247.0,
+    1565.0
+   ],
+   "Montant net des recettes": [
+    536709.0,
+    195451.0,
+    410858.0,
+    593410.0,
+    949299.0
+   ],
+   "Achats": [
+    13.0,
+    9.1,
+    13.5,
+    12.2,
+    13.9
+   ],
+   "Salaires nets": [
+    9.3,
+    6.7,
+    10.1,
+    11.0,
+    8.6
+   ],
+   "Charges sociales": [
+    5.7,
+    4.9,
+    6.3,
+    5.2,
+    6.0
+   ],
+   "Charges de personnel": [
+    15.1,
+    11.6,
+    16.3,
+    16.2,
+    14.5
+   ],
+   "CSG déductible": [
+    3.2,
+    2.4,
+    2.9,
+    3.2,
+    3.4
+   ],
+   "Autres impôts": [
+    1.7,
+    2.3,
+    1.8,
+    1.5,
+    1.6
+   ],
+   "Impôts et taxes": [
+    4.8,
+    4.7,
+    4.7,
+    4.7,
+    5.0
+   ],
+   "Loyers et charges locatives": [
+    4.7,
+    8.2,
+    5.0,
+    5.1,
+    3.7
+   ],
+   "Locations": [
+    1.5,
+    1.9,
+    2.4,
+    1.8,
+    0.9
+   ],
+   "Honoraires": [
+    1.0,
+    1.7,
+    1.2,
+    1.1,
+    0.7
+   ],
+   "Primes d'assurance": [
+    0.4,
+    0.7,
+    0.6,
+    0.5,
+    0.3
+   ],
+   "Autres TSFE": [
+    3.3,
+    5.1,
+    3.2,
+    3.7,
+    2.7
+   ],
+   "Frais de déplacement": [
+    1.1,
+    1.5,
+    1.3,
+    0.9,
+    1.0
+   ],
+   "Charges sociales personnelles": [
+    11.6,
+    14.7,
+    12.3,
+    12.9,
+    9.8
+   ],
+   "Frais de réception": [
+    0.7,
+    1.2,
+    0.5,
+    0.7,
+    0.6
+   ],
+   "Fournitures de bureau": [
+    1.0,
+    1.2,
+    1.6,
+    0.8,
+    0.9
+   ],
+   "Autres frais divers de gestion": [
+    0.9,
+    1.4,
+    1.0,
+    0.7,
+    0.9
+   ],
+   "Charges externes": [
+    26.3,
+    37.6,
+    29.0,
+    28.2,
+    21.5
+   ],
+   "Produits financiers": [
+    0.0,
+    0.0,
+    0.0,
+    0.1,
+    0.0
+   ],
+   "Frais financiers": [
+    0.2,
+    0.3,
+    0.2,
+    0.2,
+    0.2
+   ],
+   "Résultat financier": [
+    -0.1,
+    -0.2,
+    -0.2,
+    0.0,
+    -0.1
+   ],
+   "Gains divers": [
+    0.6,
+    1.7,
+    0.7,
+    0.3,
+    0.4
+   ],
+   "Pertes diverses": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Dotations aux amortissements": [
+    1.9,
+    2.3,
+    1.5,
+    2.3,
+    1.7
+   ],
+   "Bénéfice (%)": [
+    39.4,
+    36.0,
+    35.3,
+    36.6,
+    43.5
+   ],
+   "Bénéfice comptable": [
+    211512.0,
+    70443.0,
+    145232.0,
+    217428.0,
+    413167.0
+   ],
+   "Montant net des recettes (évolution, %)": [
+    1.4,
+    -9.3,
+    -1.8,
+    0.7,
+    5.6
+   ],
+   "Charges de personnel (évolution, %)": [
+    7.8,
+    -22.8,
+    1.3,
+    12.8,
+    13.0
+   ],
+   "Impôts et taxes (évolution, %)": [
+    -9.6,
+    -21.7,
+    0.4,
+    -11.9,
+    -8.7
+   ],
+   "Charges externes (évolution, %)": [
+    3.4,
+    -13.3,
+    4.6,
+    3.3,
+    8.9
+   ],
+   "Bénéfice": [
+    1.7,
+    19.0,
+    -7.2,
+    -1.1,
+    4.6
+   ]
+  }
+ },
+ "851EAB_2024": {
+  "echantillon": 37,
+  "colonnes": [
+   "ensemble",
+   "q1",
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "lignes": {
+   "Recettes encaissées": [
+    570271.0,
+    146762.0,
+    408324.0,
+    643441.0,
+    1074427.0
+   ],
+   "Débours": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Honoraires rétrocédés": [
+    5677.0,
+    28.0,
+    2311.0,
+    4052.0,
+    16499.0
+   ],
+   "Montant net des recettes": [
+    564594.0,
+    146734.0,
+    406013.0,
+    639389.0,
+    1057928.0
+   ],
+   "Achats": [
+    11.1,
+    11.4,
+    11.1,
+    10.5,
+    11.5
+   ],
+   "Salaires nets": [
+    10.0,
+    8.1,
+    9.4,
+    9.9,
+    10.6
+   ],
+   "Charges sociales": [
+    5.9,
+    4.6,
+    7.0,
+    6.9,
+    5.1
+   ],
+   "Charges de personnel": [
+    15.9,
+    12.7,
+    16.4,
+    16.7,
+    15.6
+   ],
+   "CSG déductible": [
+    3.6,
+    3.2,
+    3.7,
+    2.7,
+    4.1
+   ],
+   "Autres impôts": [
+    1.7,
+    2.3,
+    1.9,
+    2.2,
+    1.3
+   ],
+   "Impôts et taxes": [
+    5.3,
+    5.5,
+    5.6,
+    4.9,
+    5.4
+   ],
+   "Loyers et charges locatives": [
+    5.4,
+    12.2,
+    5.2,
+    7.6,
+    3.1
+   ],
+   "Locations": [
+    1.8,
+    2.9,
+    2.6,
+    1.1,
+    1.7
+   ],
+   "Honoraires": [
+    1.0,
+    2.1,
+    1.3,
+    1.0,
+    0.7
+   ],
+   "Primes d'assurance": [
+    0.4,
+    1.2,
+    0.5,
+    0.5,
+    0.3
+   ],
+   "Autres TSFE": [
+    3.6,
+    7.9,
+    4.1,
+    3.4,
+    3.0
+   ],
+   "Frais de déplacement": [
+    1.0,
+    2.4,
+    1.3,
+    0.7,
+    0.9
+   ],
+   "Charges sociales personnelles": [
+    13.3,
+    17.8,
+    15.4,
+    14.0,
+    11.3
+   ],
+   "Frais de réception": [
+    0.8,
+    2.0,
+    0.8,
+    0.3,
+    1.0
+   ],
+   "Fournitures de bureau": [
+    1.0,
+    1.8,
+    1.1,
+    0.9,
+    1.0
+   ],
+   "Autres frais divers de gestion": [
+    1.2,
+    2.4,
+    1.3,
+    1.1,
+    1.0
+   ],
+   "Charges externes": [
+    29.5,
+    52.6,
+    33.7,
+    30.5,
+    24.0
+   ],
+   "Produits financiers": [
+    0.1,
+    0.1,
+    0.0,
+    0.3,
+    0.0
+   ],
+   "Frais financiers": [
+    0.2,
+    0.3,
+    0.1,
+    0.2,
+    0.2
+   ],
+   "Résultat financier": [
+    -0.1,
+    -0.2,
+    -0.1,
+    0.1,
+    -0.2
+   ],
+   "Gains divers": [
+    0.3,
+    0.2,
+    0.4,
+    0.1,
+    0.4
+   ],
+   "Pertes diverses": [
+    0.3,
+    0.0,
+    0.1,
+    0.0,
+    0.5
+   ],
+   "Dotations aux amortissements": [
+    2.6,
+    5.6,
+    1.5,
+    2.3,
+    2.9
+   ],
+   "Bénéfice (%)": [
+    35.5,
+    12.3,
+    32.0,
+    35.3,
+    40.2
+   ],
+   "Bénéfice comptable": [
+    200382.0,
+    18089.0,
+    129829.0,
+    225505.0,
+    425308.0
+   ],
+   "Montant net des recettes (évolution, %)": [
+    0.8,
+    -32.2,
+    4.6,
+    9.9,
+    -0.6
+   ],
+   "Charges de personnel (évolution, %)": [
+    6.3,
+    -11.6,
+    7.5,
+    10.3,
+    5.2
+   ],
+   "Impôts et taxes (évolution, %)": [
+    11.5,
+    -21.2,
+    28.7,
+    13.1,
+    9.3
+   ],
+   "Charges externes (évolution, %)": [
+    15.5,
+    0.1,
+    16.8,
+    16.3,
+    18.8
+   ],
+   "Bénéfice": [
+    -11.3,
+    -80.9,
+    -8.8,
+    11.8,
+    -13.4
+   ]
+  }
+ },
+ "_source": {
+  "url": "https://unasa.fr/statistiques/",
+  "retrieved_at": "2026-10-15",
+  "note": "Postes en % du montant net des recettes ; quartiles de recettes ; adhérents en BNC d'un organisme de gestion agréé, hors sociétés à l'IS."
+ }
+}

@@ -1,0 +1,30 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { CONTACT_EMAIL, LEGAL, SITE_NAMES, SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { displayDate } from '../../lib/format';
+const lang = 'en';
+const updated = '2026-10-15';
+---
+<PageLayout title={`Privacy policy – ${SITE_NAMES[lang]}`} description="What data this site processes, on what legal basis, for how long, who can access it,, what is never kept (no cookies, no data recorded by the publisher) and how to use your GDPR rights or complain to the French regulator CNIL." lang={lang} noindex={true} breadcrumbs={[{ label: 'Privacy' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Privacy policy</h1>
+    <p>This page describes the personal data processing linked to {SITE_URL}, under Articles 12 to 14 of Regulation (EU) 2016/679 (GDPR) and French law no. 78-17 of 6 January 1978.</p>
+    <h2>1. Controller</h2>
+    <LegalIdentity lang={lang} />
+    <p>Contact: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. No data protection officer has been appointed, as the conditions of Article 37 GDPR are not met.</p>
+    <h2>2. What the calculator does not do</h2>
+    <p>The calculation runs in your browser. Fees, non-reimbursable work, chairs, staff, costs and patient numbers <strong>are not sent to any server</strong>, are not stored and are not linked to any identifier; the stability measurement described below masks typed fields. The share link encodes your inputs in the address: only send it to people you choose, it is not stored anywhere by the publisher.</p>
+    <h2>3. Processing carried out</h2>
+    <h3>Server logs</h3><p>The host records IP address, date, page requested, browser and referrer. Purpose: security and diagnostics. Legal basis: legitimate interest (Art. 6(1)(f) GDPR). Retention: according to the host’s (GitHub’s) policy.</p>
+    <h3>No cookies, no recorded data</h3><p>The site sets no cookies and the publisher records no personal data. The practice benchmark keeps nothing on your device: not your fees, your costs or your staff numbers.</p>
+    <h3>Technical stability measurement: Microsoft Clarity without cookies</h3><p>To find out whether a guide page or an income calculator breaks, we anonymously record errors, loading times, dead clicks and scrolling with Microsoft Clarity, set up without cookies: no <code>_clck</code>, <code>_clsk</code>, <code>MUID</code> or <code>CLID</code> is set, each page view has its own identifier and visits are not linked to each other; page content and the amounts entered are masked in your browser. Tool provider: Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Ireland. Legal basis: the publisher’s legitimate interest in keeping its tools working (Art. 6(1)(f) GDPR). Retention: 30 days for recordings, 13 months for aggregates.</p>
+    <h3>Objecting to this measurement</h3><p>Block the clarity.ms domain in your browser or write to the contact address; every page remains usable. No other measurement tool or tracker is loaded.</p>
+    <h2>4. Recipients</h2><p>No data is sold or shared. The following have access as processors under Article 28 GDPR: the host, GitHub; Microsoft (Microsoft Ireland Operations Limited and Microsoft Corporation) for the anonymous stability measurement.</p>
+    <h2>5. Transfers outside the EU</h2><p>The host, GitHub, Inc., is based in the United States; server logs may be processed there under the EU–U.S. Data Privacy Framework and the European Commission’s standard contractual clauses. Clarity’s technical data may be transferred to Microsoft Corporation in the United States, certified under the same Data Privacy Framework (see <a href="https://privacy.microsoft.com/privacystatement" rel="nofollow noopener" target="_blank">Microsoft’s privacy statement</a>). Blocking clarity.ms avoids this transfer.</p>
+    <h2>6. Your rights</h2><p>Rights of access, rectification, erasure, restriction, objection and portability (Articles 15 to 22 GDPR): write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, reply within one month. You may complain to the {LEGAL.supervisoryAuthority}: <a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">{LEGAL.supervisoryAuthorityUrl}</a>.</p>
+    <h2>7. No automated decision</h2><p>The calculator’s result is an estimate computed at your request, with no legal effect: it is not an automated decision under Article 22 GDPR.</p>
+    <p>See also the <a href={route('cookies', lang)}>cookies</a> page. Last updated: <time datetime={updated}>{displayDate(updated, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>

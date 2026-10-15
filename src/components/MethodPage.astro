@@ -1,0 +1,115 @@
+---
+/** Méthode et sources (page de confiance, RECETTE §8.2) : données, formules, tests, limites. */
+import PageLayout from '../layouts/PageLayout.astro';
+import { route, type Locale } from '../i18n/routes';
+import { P } from '../lib/engine/params';
+import { AMELI, DATA_YEAR, FR, DEP_CODES, DEPS } from '../lib/engine/data';
+import { reference, UNASA_YEAR } from '../lib/engine/references';
+import { tauxPatronal } from '../lib/engine/employeur';
+import { DEP_PAGES, SEUIL } from '../lib/departements';
+import { formatMoney, formatPercent, formatNumber, displayDate } from '../lib/format';
+import { breadcrumbSchema, webPageSchema } from '../lib/seo';
+import { LAST_UPDATED, CONTACT_EMAIL, REVIEW_CYCLE_MONTHS } from '../data/site-config';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const tag = fr ? 'fr-FR' : 'en-GB';
+const $ = (n: number) => formatMoney(n, 0, lang);
+const pc = (x: number, d = 1) => formatPercent(x, d, lang);
+const nb = (x: number) => formatNumber(x, 0, lang);
+const U = reference('omni'), UO = reference('odf');
+const secretOdf = DEP_CODES.filter((c) => !DEPS[c].p.odf?.tot).length;
+const secretSto = DEP_CODES.filter((c) => !DEPS[c].p.stomato?.tot).length;
+const Q = P.revenus.drees.quantiles;
+const title = fr ? 'Méthode Dentimètre : données Ameli, formules et limites' : 'Dentimetre method: Ameli data, formulas, calculator limits';
+const description = fr ? `Méthode Dentimètre : d’où viennent les moyennes ${DATA_YEAR} de l’Assurance Maladie et les références UNASA, comment un cabinet est comparé, quels tests le vérifient.` : `Dentimetre method: where the ${DATA_YEAR} Assurance Maladie averages and UNASA benchmarks come from, how a practice is compared, and which tests check it all.`;
+const h1 = fr ? 'Méthode et sources' : 'Method and sources';
+const path = route('method', lang);
+const sources = Object.values(P.sources);
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: h1, description, path, lang }), breadcrumbSchema([{ name: fr ? 'Accueil' : 'Home', path: route('home', lang) }, { name: h1, path }])]} breadcrumbs={[{ label: h1 }]}>
+  <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">{h1}</h1></header>
+  {fr ? (
+  <div class="prose prose-slate max-w-none">
+    <p>Trois fichiers portent tous les chiffres du site. Le premier, construit par un script public à partir de l’open data de l’Assurance Maladie, contient pour chaque département, chaque région et la France les honoraires, effectifs et caractéristiques des praticiens de 2015 à {DATA_YEAR} ; relevé le <time datetime={AMELI.meta.retrieved_at}>{displayDate(AMELI.meta.retrieved_at, tag)}</time>. Le deuxième reprend les comptes {UNASA_YEAR} publiés par l’UNASA. Le troisième, daté du <time datetime={P.retrieved_at}>{displayDate(P.retrieved_at, tag)}</time>, regroupe revenus, cotisations, salaires et fiscalité. Les pages lisent ces fichiers : aucun montant n’est tapé dans un texte.</p>
+    <h2>Les moyennes de l’Assurance Maladie</h2>
+    <p>Source : jeux de données « Professionnels de santé libéraux » de data.ameli.fr (système national des données de santé, licence ODbL). Trois populations : chirurgiens-dentistes hors spécialistes d’orthopédie dento-faciale (nos « omnipraticiens », qui incluent les spécialistes en chirurgie orale et en médecine bucco-dentaire, non distingués), spécialistes ODF, et médecins stomatologues. Les honoraires moyens sont calculés par l’Assurance Maladie sur les praticiens <strong>actifs à part entière</strong> : moins de 65 ans, une année complète d’exercice libéral conventionné ; les installés de l’année et les praticiens hospitaliers à activité libérale en sont exclus. Honoraires totaux = honoraires sans dépassement (tarif de convention, forfaits compris) + dépassements (liberté tarifaire sur la prothèse et l’ODF). Aucun montant n’est publié quand moins de cinq praticiens sont concernés : c’est le cas pour l’ODF dans {nb(secretOdf)} départements et pour la stomatologie dans {nb(secretSto)}.</p>
+    <h2>La comparaison</h2>
+    <ol>
+      <li><strong>Honoraires comparables</strong> = honoraires saisis × (1 − part des actes non remboursables). Les actes hors nomenclature (implants, parodontie non prise en charge, orthodontie commencée après 16 ans) ne sont ni inscrits à la CCAM ni remboursés, et ne figurent donc pas dans les moyennes (DREES, comptes de la santé, fiche « Les soins dentaires »).</li>
+      <li><strong>Écart</strong> = honoraires comparables ÷ moyenne − 1, pour le département, la région et la France. Si la moyenne du département est couverte par le secret, le titre du résultat passe à la région.</li>
+      <li><strong>Départements dépassés</strong> : nombre de départements dont la moyenne de la spécialité est inférieure à vos honoraires comparables. C’est une comparaison entre moyennes, pas un percentile de praticiens : la distribution des honoraires n’est pas publiée.</li>
+    </ol>
+    <h2>Le bénéfice et le taux de charges</h2>
+    <p>Si vous saisissez vos charges, bénéfice = honoraires − charges − cotisations personnelles saisies. Sinon, il est estimé : honoraires × (1 − taux de référence). La référence vient des statistiques {UNASA_YEAR} de l’UNASA, publiques, sur les adhérents en BNC des organismes de gestion agréés : {nb(U.echantillon)} chirurgiens-dentistes (taux de charges {pc(U.taux)}, cotisations sociales personnelles et CSG déductible comprises) et {nb(UO.echantillon)} orthodontistes ({pc(UO.taux)}, petit échantillon). Pour un omnipraticien, la référence est celle du quart de recettes dont la moyenne est la plus proche des vôtres. Quand vous saisissez vos charges sans vos cotisations personnelles, le taux est comparé à la référence hors cotisations. Aucune statistique publique n’existe pour les cabinets de stomatologues : la référence des chirurgiens-dentistes est appliquée et signalée. En SELARL, le résultat affiché est celui du cabinet avant votre rémunération et vos cotisations.</p>
+    <h2>La position du revenu</h2>
+    <p>La DREES publie la distribution des revenus d’activité {P.revenus.drees.annee} des chirurgiens-dentistes libéraux conventionnés de 70 ans ou moins : premier décile {$(Q.d1)}, premier quartile {$(Q.q1)}, médiane {$(Q.mediane)}, troisième quartile {$(Q.q3)}, neuvième décile {$(Q.d9)}. Le simulateur interpole linéairement entre ces points pour situer un bénéfice après cotisations ; sous le premier décile ou au-delà du neuvième, il ne donne pas de centile. Les revenus de 2021 sont en euros de 2021 : un bénéfice de {DATA_YEAR} comparé à eux paraît un peu plus haut qu’il ne le serait à euros constants.</p>
+    <h2>Salaires, cotisations, fiscalité</h2>
+    <p>Coût d’un salarié : salaire minimum de la convention collective des cabinets dentaires (IDCC 1619, accord du 12 février 2026), jamais sous le Smic horaire ({formatNumber(P.salaires_2026.smic_horaire, 2, lang)} € depuis le 1er juin 2026), plus {pc(tauxPatronal, 2)} de cotisations patronales (taux Urssaf 2026 d’un cabinet de moins de 11 salariés, maladie et allocations familiales aux taux pleins sur lesquels porte la réduction, accidents du travail limités à la part mutualisée), moins la réduction générale dégressive unique selon la formule de l’Urssaf ; hors taux accident du travail propre au cabinet et prévoyance de branche. Cotisations CARCDSF : barème 2026 de la caisse. SELARL : impôt sur les sociétés à {pc(P.fiscal_2026.is_taux_reduit, 0)} jusqu’à {$(P.fiscal_2026.is_seuil_reduit)} puis {pc(P.fiscal_2026.is_taux_normal, 0)} (article 219 du CGI), dividendes au prélèvement forfaitaire ({pc(P.fiscal_2026.pfu_ir)} d’impôt et {pc(P.fiscal_2026.prelevements_sociaux)} de prélèvements sociaux), la part au-delà de 10 % du capital entrant dans l’assiette des cotisations des indépendants (article L136-3 du code de la sécurité sociale), non calculées.</p>
+    <h2>Les pages département</h2>
+    <p>Une page n’est publiée que pour les départements qui comptent au moins {nb(SEUIL)} chirurgiens-dentistes libéraux : {nb(DEP_PAGES.length)} départements. Sous ce seuil, la moyenne repose sur peu de cabinets et l’orthodontie y est souvent couverte par le secret statistique ; ces départements restent dans le simulateur et le classement.</p>
+    <h2>Les tests qui bloquent la publication</h2>
+    <ul>
+      <li>Moyennes recalculées à la main depuis les CSV officiels : Rhône, Paris, Auvergne-Rhône-Alpes, France, et un département sous secret statistique.</li>
+      <li>Classement et nombre de départements dépassés pour un montant donné, vérifiés indépendamment du script de construction.</li>
+      <li>Taux de charges UNASA de l’ensemble et d’un quart de recettes, positions dans la distribution DREES aux quantiles publiés.</li>
+      <li>Exemple publié par l’Urssaf pour la réduction générale (2 000 € brut en juin 2026, coefficient 0,3178), salaire minimum d’une assistante dentaire, Smic plancher.</li>
+      <li>Barème CARCDSF à 0 €, 100 000 € et au-delà de cinq plafonds ; impôt sur les sociétés de part et d’autre du seuil de 42 500 €.</li>
+      <li>Chaque page : titre, description, longueur, questions uniques, liens internes valides, aucune valeur manquante.</li>
+    </ul>
+    <h2>Ce que le site ne fait pas</h2>
+    <ul>
+      <li>Il ne donne aucun percentile d’honoraires, aucune moyenne par fauteuil, aucune donnée sur l’implantologie ou la parodontie : ces chiffres n’existent dans aucune source publique.</li>
+      <li>Il ne distingue pas la chirurgie orale ni la médecine bucco-dentaire, comptées par l’Assurance Maladie avec les omnipraticiens ({nb(P.specialites_rpps.chirurgie_orale)} et {nb(P.specialites_rpps.medecine_bucco_dentaire)} chirurgiens-dentistes inscrits avec ces spécialités au répertoire RPPS le {displayDate(P.specialites_rpps.date, tag)}).</li>
+      <li>Il ne calcule ni l’impôt sur le revenu du praticien, ni ses cotisations Urssaf, ni les cotisations sociales d’un gérant de SELARL.</li>
+      <li>Il ne remplace ni un expert-comptable ni une association de gestion agréée : c’est une estimation indicative.</li>
+    </ul>
+    <h2>Mises à jour</h2>
+    <p>Nouvelle année de l’Assurance Maladie chaque octobre (l’année {DATA_YEAR} a été mise en ligne le 12 octobre 2026), statistiques UNASA à leur publication, barèmes au 1er janvier, revue complète au moins tous les {REVIEW_CYCLE_MONTHS} mois. Une erreur signalée à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> est vérifiée sur la source, corrigée et transformée en test (<a href={route('editorial', lang)}>charte éditoriale</a>).</p>
+    <h2>Toutes les sources</h2>
+    <ul>{sources.map((s) => <li><a href={s.url} rel="nofollow noopener" target="_blank">{s.label.fr}</a></li>)}</ul>
+    <p class="text-sm text-navy-600">Dernière vérification : <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, tag)}</time>. Moyenne nationale de référence des omnipraticiens : {$(FR.p.omni!.tot!)}.</p>
+  </div>
+  ) : (
+  <div class="prose prose-slate max-w-none">
+    <p>Three files hold every figure on the site. The first, built by a public script from Assurance Maladie open data, holds fees, headcount and practitioner characteristics for each département, region and France from 2015 to {DATA_YEAR}; retrieved on <time datetime={AMELI.meta.retrieved_at}>{displayDate(AMELI.meta.retrieved_at, tag)}</time>. The second takes UNASA’s published {UNASA_YEAR} accounts. The third, dated <time datetime={P.retrieved_at}>{displayDate(P.retrieved_at, tag)}</time>, gathers income, contributions, pay and tax. Pages read these files: no amount is typed into a text.</p>
+    <h2>Assurance Maladie averages</h2>
+    <p>Source: the “private health professionals” datasets on data.ameli.fr (national health data system, ODbL licence). Three populations: dentists other than orthodontic specialists (our “general dentists”, which include oral surgery and oral medicine specialists, not separated), orthodontic (ODF) specialists, and stomatologists, who are doctors. Average fees are computed by Assurance Maladie over <strong>full-time active</strong> practitioners: under 65, with a full year of private practice under the national agreement; those who set up during the year and hospital doctors with private patients are excluded. Total fees = fees without extra charges (agreed tariff, flat payments included) + extra fees (dépassements, allowed on prosthetics and orthodontics). Nothing is published below five practitioners: that hides orthodontics in {nb(secretOdf)} départements and stomatology in {nb(secretSto)}.</p>
+    <h2>The comparison</h2>
+    <ol>
+      <li><strong>Comparable fees</strong> = fees entered × (1 − share of non-reimbursable work). Off-schedule procedures (implants, unreimbursed periodontics, orthodontics started after 16) are neither listed in the national classification nor reimbursed, so they are missing from the averages (DREES, health accounts, dental care sheet).</li>
+      <li><strong>Gap</strong> = comparable fees ÷ average − 1, for the département, the region and France. If the département average is confidential, the headline switches to the region.</li>
+      <li><strong>Départements beaten</strong>: how many départements have a specialty average below your comparable fees. This compares averages, not practitioners: the fee distribution is not published.</li>
+    </ol>
+    <h2>Profit and cost ratio</h2>
+    <p>With costs entered, profit = fees − costs − personal contributions entered. Without, it is estimated as fees × (1 − benchmark ratio). The benchmark comes from UNASA’s public {UNASA_YEAR} statistics on members of approved management associations taxed as sole practices (BNC): {nb(U.echantillon)} dentists (cost ratio {pc(U.taux)}, personal social contributions and deductible CSG included) and {nb(UO.echantillon)} orthodontists ({pc(UO.taux)}, small sample). For a general dentist, the benchmark is the receipts quarter whose average is closest to yours. If you enter costs without personal contributions, your ratio is compared with the benchmark excluding them. No public statistics exist for stomatology practices: the dentists’ benchmark is applied and flagged. For a SELARL, the result shown is the practice’s before your pay and contributions.</p>
+    <h2>Placing your income</h2>
+    <p>DREES publishes the distribution of {P.revenus.drees.annee} earnings of private dentists under the national agreement, aged 70 or under: bottom decile {$(Q.d1)}, lower quartile {$(Q.q1)}, median {$(Q.mediane)}, upper quartile {$(Q.q3)}, top decile {$(Q.d9)}. The calculator interpolates linearly between those points to place a profit after contributions; below the bottom decile or above the top one it gives no percentile. 2021 income is in 2021 euros, so a {DATA_YEAR} profit compared with it looks slightly higher than it would in constant euros.</p>
+    <h2>Pay, contributions, tax</h2>
+    <p>Staff cost: the dental practices’ collective agreement minimum (IDCC 1619, 12 February 2026 agreement), never below the hourly minimum wage (€{formatNumber(P.salaires_2026.smic_horaire, 2, lang)} since 1 June 2026), plus {pc(tauxPatronal, 2)} employer contributions (2026 Urssaf rates for a practice under 11 staff, health and family at the full rates the relief applies to, workplace accidents limited to the pooled share), minus the general sliding-scale relief using Urssaf’s formula; the practice’s own workplace-accident rate and sector insurance are left out. CARCDSF: the fund’s 2026 scale. SELARL: corporation tax at {pc(P.fiscal_2026.is_taux_reduit, 0)} up to {$(P.fiscal_2026.is_seuil_reduit)}, then {pc(P.fiscal_2026.is_taux_normal, 0)} (General Tax Code art. 219), dividends at the flat-rate levy ({pc(P.fiscal_2026.pfu_ir)} income tax and {pc(P.fiscal_2026.prelevements_sociaux)} social levies), the part above 10% of capital falling into self-employed contributions (Social Security Code art. L136-3), not calculated.</p>
+    <h2>Département pages</h2>
+    <p>A page is published only for départements with at least {nb(SEUIL)} dentists in private practice: {nb(DEP_PAGES.length)} of them. Below that, the average rests on few practices and orthodontics is often confidential; those départements stay in the calculator and the ranking.</p>
+    <h2>Tests that block publication</h2>
+    <ul>
+      <li>Averages recomputed by hand from the official CSV files: Rhône, Paris, Auvergne-Rhône-Alpes, France, and one confidential département.</li>
+      <li>Rankings and the count of départements beaten for a given amount, checked independently of the build script.</li>
+      <li>UNASA cost ratios for the whole sample and one receipts quarter; DREES positions at the published quantiles.</li>
+      <li>Urssaf’s published relief example (€2,000 gross in June 2026, coefficient 0.3178), the minimum pay of a dental nurse, the minimum-wage floor.</li>
+      <li>The CARCDSF scale at €0, €100,000 and above five ceilings; corporation tax on either side of the €42,500 threshold.</li>
+      <li>Every page: title, description, length, unique questions, valid internal links, no missing value.</li>
+    </ul>
+    <h2>What the site does not do</h2>
+    <ul>
+      <li>No fee percentile, no per-chair average, no data on implants or periodontics: none of these exists in any public source.</li>
+      <li>No separate figures for oral surgery or oral medicine, counted with general dentists by Assurance Maladie ({nb(P.specialites_rpps.chirurgie_orale)} and {nb(P.specialites_rpps.medecine_bucco_dentaire)} dentists registered with those specialties in the RPPS directory on {displayDate(P.specialites_rpps.date, tag)}).</li>
+      <li>No income tax, Urssaf contributions or SELARL manager contributions.</li>
+      <li>It replaces neither an accountant nor an approved management association: results are indicative estimates.</li>
+    </ul>
+    <h2>Updates</h2>
+    <p>A new Assurance Maladie year every October ({DATA_YEAR} went online on 12 October 2026), UNASA statistics on release, scales each 1 January, a full review at least every {REVIEW_CYCLE_MONTHS} months. An error reported to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> is checked against the source, fixed and turned into a test (<a href={route('editorial', lang)}>editorial policy</a>).</p>
+    <h2>All sources</h2>
+    <ul>{sources.map((s) => <li><a href={s.url} rel="nofollow noopener" target="_blank">{s.label.en}</a></li>)}</ul>
+    <p class="text-sm text-navy-600">Last checked: <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, tag)}</time>. National general dentist average used as reference: {$(FR.p.omni!.tot!)}.</p>
+  </div>
+  )}
+</PageLayout>

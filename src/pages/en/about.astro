@@ -1,0 +1,26 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { YEAR, LAST_UPDATED, AUTHOR_NAME, CONTACT_EMAIL, AUTHOR_ROLE } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { personSchema, organizationSchema, breadcrumbSchema, profilePageSchema } from '../../lib/seo';
+import { displayDate } from '../../lib/format';
+import { DATA_YEAR } from '../../lib/engine/data';
+const lang = 'en';
+---
+<PageLayout title="Dentimetre: who benchmarks French dental practices, and how" description={`Who publishes Dentimetre, why a French dental practice benchmark built on ${DATA_YEAR} national health insurance data, how it is funded and how to report a mistake.`} lang={lang} jsonLd={[personSchema(lang), organizationSchema(lang), profilePageSchema({ path: route('about', lang), lang }), breadcrumbSchema([{ name: 'Home', path: route('home', lang) }, { name: 'About', path: route('about', lang) }])]} breadcrumbs={[{ label: 'About' }]}>
+  <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">About Dentimetre</h1></header>
+  <div class="prose prose-slate max-w-none">
+    <div class="not-prose mb-6"><p class="text-lg font-semibold text-navy-900">{AUTHOR_NAME}</p><p class="text-navy-700">{AUTHOR_ROLE[lang]}</p></div>
+    <p>Dentimetre is published by the company Radif Partners. It is written for dentists, orthodontists and stomatologists in private practice in France who want to know where their practice stands, whether long established, newly opened, or preparing a takeover, a partnership or a new hire.</p>
+    <h2>Why this site exists</h2>
+    <p>Search for “average dentist fees in France” or “dental practice cost ratio” and you mostly find undated national ranges, studies released by accounting firms to sell their services, and statistical PDFs that do not help you place yourself. Yet the useful data exists: every year the national health insurer, Assurance Maladie, publishes practitioners’ average fees for each département and specialty. <strong>Dentimetre does better than those pages because it sets your own fees against the official average for your specialty in your département</strong>, not against a national figure that blends Paris with rural Haute-Saône.</p>
+    <h2>How we work</h2>
+    <p>Averages come from Assurance Maladie open data, downloaded by a script anyone can rerun; costs from accounts published by UNASA, the federation of approved management associations; income from DREES and Insee; contributions from CARCDSF, the dentists’ pension fund, and Urssaf; pay from the dental practices’ collective agreement. Each value is written once in a dated file, and automated tests recompute by hand cases taken from the official files before every release. The details, limits included, are on the <a href={route('method', lang)}>method and sources</a> page.</p>
+    <h2>What we are not</h2>
+    <p>Radif Partners is not an accountant, an approved management association, a practice-setup consultant or a broker. We ask for no email or phone number to show a result, sell no contacts and promote no provider. The calculator gives figures to compare against; for decisions, your accountant and management association remain the right people to ask.</p>
+    <h2>Funding</h2><p>Dentimetre charges practitioners nothing and sells nothing to suppliers. Any future advertising would sit below the benchmark, never in front of it, and your fees and costs never leave your browser.</p>
+    <h2>A French version</h2><p>Every page also exists in French, the language of the data and of most of our readers.</p>
+    <h2>Contact</h2><p>A figure looks wrong, a source has been updated, a case is missing? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. See also the <a href={route('editorial', lang)}>editorial policy</a> and the <a href={route('terms', lang)}>legal notice</a>.</p>
+    <p class="text-sm text-navy-600">{DATA_YEAR} data, {YEAR} parameters, checked on <time datetime={LAST_UPDATED}>{displayDate(LAST_UPDATED, 'en-GB')}</time>.</p>
+  </div>
+</PageLayout>
