@@ -68,8 +68,7 @@ const methodHref = route('method', lang);
     <p class="mb-8 text-sm text-navy-600" data-chrome>{ui.reviewedBy} <a href={route('about', lang)} class="underline hover:text-navy-900">{AUTHOR_NAME}</a> · <a href={route('editorial', lang)} class="underline hover:text-navy-900">{ui.editorialPolicy}</a> · <a href={methodHref} class="underline hover:text-navy-900">{label('method', lang)}</a></p>
     <div class="prose prose-slate max-w-none">
       <h2>{fr ? `Les chiffres clés ${DATA_YEAR}` : `Key figures, ${DATA_YEAR}`}</h2>
-      <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
-        <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `${dep.name} face à sa région et à la France. Honoraires : moyenne par praticien actif à part entière.` : `${dep.name} against its region and France. Fees: average per full-time active practitioner.`}</caption>
+      <figure class="not-prose my-6"><figcaption class="mb-2 text-left text-sm text-navy-600">{fr ? `${dep.name} face à sa région et à la France. Honoraires : moyenne par praticien actif à part entière.` : `${dep.name} against its region and France. Fees: average per full-time active practitioner.`}</figcaption><div class="overflow-x-auto"><table class="journal w-full text-sm">
         <thead><tr><th scope="col" class="px-3 py-2 text-left"></th><th scope="col" class="px-3 py-2 text-right">{dep.name}</th><th scope="col" class="px-3 py-2 text-right">{regLabel(reg?.name ?? '')}</th><th scope="col" class="px-3 py-2 text-right">France</th></tr></thead>
         <tbody>
           {specs.map(([s, lab]) => z.p[s]?.eff ? (<>
@@ -81,21 +80,19 @@ const methodHref = route('method', lang);
             <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? 'Patients différents par praticien' : 'Different patients per practitioner'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(z.p[s], 'patients'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(reg?.p[s], 'patients'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(cell(FR.p[s], 'patients'))}</td></tr>
             <tr><td class="border-b border-navy-100 px-3 py-2">{fr ? '60 ans et plus' : 'Aged 60 and over'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(z.p[s], 'p60'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(reg?.p[s], 'p60'))}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{pc(cell(FR.p[s], 'p60'))}</td></tr>
           </>) : null)}
-        </tbody></table></div>
+        </tbody></table></div></figure>
       <Fragment set:html={body} />
       <h2>{fr ? 'Dix ans d’honoraires moyens' : 'Ten years of average fees'}</h2>
-      <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
-        <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `Honoraires totaux moyens par praticien actif à part entière, ${dep.name} (euros courants).` : `Average total fees per full-time active practitioner, ${dep.name} (current euros).`}</caption>
+      <figure class="not-prose my-6"><figcaption class="mb-2 text-left text-sm text-navy-600">{fr ? `Honoraires totaux moyens par praticien actif à part entière, ${dep.name} (euros courants).` : `Average total fees per full-time active practitioner, ${dep.name} (current euros).`}</figcaption><div class="overflow-x-auto"><table class="journal w-full text-sm">
         <thead><tr><th scope="col" class="px-3 py-2 text-left">{fr ? 'Année' : 'Year'}</th>{specs.filter(([s]) => z.p[s]?.tot).map(([, lab]) => <th scope="col" class="px-3 py-2 text-right">{lab}</th>)}</tr></thead>
         <tbody>{years.map((y) => <tr><td class="border-b border-navy-100 px-3 py-2">{y}</td>{specs.filter(([s]) => z.p[s]?.tot).map(([s]) => <td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(z.p[s]?.hist[y])}</td>)}</tr>)}</tbody>
-      </table></div>
+      </table></div></figure>
       {voisins.length > 0 && (<>
         <h2>{fr ? `Les autres départements ${regLabel(reg?.name ?? '') ? 'de la région' : ''}` : 'Other départements in the region'}</h2>
-        <div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm">
-          <caption class="mb-2 text-left text-sm text-navy-600">{fr ? `Omnipraticiens, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.` : `General dentists, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.`}</caption>
+        <figure class="not-prose my-6"><figcaption class="mb-2 text-left text-sm text-navy-600">{fr ? `Omnipraticiens, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.` : `General dentists, ${regLabel(reg?.name ?? '')}, ${DATA_YEAR}.`}</figcaption><div class="overflow-x-auto"><table class="journal w-full text-sm">
           <thead><tr><th scope="col" class="px-3 py-2 text-left">{fr ? 'Département' : 'Département'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Praticiens' : 'Practitioners'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Pour 100 000 hab.' : 'Per 100,000'}</th><th scope="col" class="px-3 py-2 text-right">{fr ? 'Honoraires moyens' : 'Average fees'}</th></tr></thead>
           <tbody>{voisins.map((c) => { const p = depPageByCode(c); const o = DEPS[c].p.omni; return <tr><td class="border-b border-navy-100 px-3 py-2">{p ? <a href={route(p.id, lang)} class="text-accent-700 underline">{DEPS[c].name}</a> : DEPS[c].name}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(o?.eff)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{n(o?.dens)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">{$(o?.tot)}</td></tr>; })}</tbody>
-        </table></div>
+        </table></div></figure>
       </>)}
       <p class="text-sm text-navy-600" data-chrome>{fr ? `Source : ${AMELI.meta.source}. Données ${DATA_YEAR} publiées le 12 octobre 2026, relevées le ${displayDate(AMELI.meta.retrieved_at, 'fr-FR')}. Un montant absent est couvert par le secret statistique.` : `Source: Assurance Maladie (Cnam), data.ameli.fr, private health professionals open data (SNDS), ODbL licence. ${DATA_YEAR} data published on 12 October 2026, retrieved on ${displayDate(AMELI.meta.retrieved_at, 'en-GB')}. A missing amount is covered by statistical confidentiality.`}</p>
     </div>
