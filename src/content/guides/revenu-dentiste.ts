@@ -60,7 +60,7 @@ export default defineGuide({
     slug: 'revenu-dentiste',
     nav: 'Revenu des dentistes',
     card: 'Médiane, déciles, écart selon l’ancienneté : ce que gagnent vraiment les chirurgiens-dentistes libéraux.',
-    title: 'Revenu dentiste libéral : médiane et déciles, repères 2026',
+    title: 'Salaire dentiste 2026 : revenu libéral, médiane et déciles',
     description: `Revenu d’un chirurgien-dentiste libéral : médiane DREES de ${e(Q.mediane, 'fr')}, moyenne ${e(D.moyen, 'fr')}, repères Insee, CARCDSF 2025 et UNASA. Les sources, sans honoraires.`,
     h1: 'Ce que gagne un chirurgien-dentiste libéral, source par source',
     intro: 'Les revenus publiés par la DREES, l’Insee, la CARCDSF et l’UNASA, et ce que chacun mesure.',
