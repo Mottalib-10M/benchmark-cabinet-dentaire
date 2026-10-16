@@ -1,9 +1,21 @@
 ---
+/**
+ * 404 utile, et redirections des pages département retirées le 2026-10-16 (RECETTE §3 : 100 pages au
+ * plus). GitHub Pages ne sert pas de redirection côté serveur, et une page « meta refresh » par adresse
+ * compterait dans le plafond : la 404, seule page exclue du compte, renvoie donc chaque ancienne
+ * adresse vers la ligne de son département dans le classement des 101 départements.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { route, DEFAULT_LOCALE } from '../i18n/routes';
 import { t } from '../i18n/ui';
+import { ANCIENNES_PAGES, ancreDep } from '../lib/departements';
 const ui = t(DEFAULT_LOCALE);
+const redirections: Record<string, string> = {};
+for (const p of ANCIENNES_PAGES) for (const l of ['fr', 'en'] as const) redirections[`/${l}/${p.slug[l]}/`] = `${route('classement-departements', l)}#${ancreDep(p.code)}`;
 ---
 <BaseLayout title="404" description="404" lang={DEFAULT_LOCALE} noindex={true}>
+  <script is:inline define:vars={{ redirections }}>
+    (function () { var p = location.pathname; if (p.slice(-1) !== '/') p += '/'; var c = redirections[p]; if (c) location.replace(c); })();
+  </script>
   <div class="mx-auto max-w-3xl px-4 py-16 text-center"><h1 class="text-3xl font-bold text-navy-900">404</h1><p class="mt-4 text-navy-600">{ui.notFound}</p><p class="mt-6"><a href={route('home', DEFAULT_LOCALE)} class="rounded-lg bg-accent-600 px-5 py-2.5 font-semibold text-white hover:bg-accent-700">{ui.breadcrumbHome}</a></p></div>
 </BaseLayout>

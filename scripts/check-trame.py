@@ -520,6 +520,25 @@ if _cle:
 if flags:
     pages.append({'path': '(indexnow)', 'kind': 'config', 'noindex': True, 'flags': flags})
 
+# ---- §3 : 100 pages au plus, toutes langues comprises (règle absolue du 2026-10-16) ----
+# Sur les 22 sites en ligne avant juin, le nombre de pages joue contre les clics (−0,40) et
+# l'indexation est le facteur le plus fort (0,75) : les gagnants ont 18 à 42 pages.
+# On compte chaque page HTML servie, légales, widget et /embed/ comprises ; seule la 404 est exclue.
+PLAFOND_PAGES = 100
+_servies = []
+for _racine, _, _fichiers in os.walk(f'{site}/{sortie}'):
+    _rel = os.path.relpath(_racine, f'{site}/{sortie}').replace(os.sep, '/') + '/'
+    if any(a in '/' + _rel for a in ARCHIVES):
+        continue
+    _servies += [_rel + f for f in _fichiers if f.endswith('.html') and f != '404.html']
+if len(_servies) > PLAFOND_PAGES:
+    _par_langue = collections.Counter(p.split('/')[0] if re.fullmatch(r'[a-z]{2}', p.split('/')[0]) else '(racine)'
+                                      for p in _servies)
+    pages.append({'path': '(périmètre)', 'kind': 'config', 'noindex': True, 'flags': [
+        f'{len(_servies)} pages HTML servies pour {PLAFOND_PAGES} au plus, toutes langues comprises '
+        f'(RECETTE §3, règle absolue) — {", ".join(f"{k} : {v}" for k, v in sorted(_par_langue.items()))}. '
+        'Fusionner ou supprimer les pages les plus faibles.']})
+
 # ---- §7 : une question ne paraît que sur une seule page ------------------
 doublons = {q: p for q, p in questions_seen.items() if len(set(p)) > 1}
 for q, paths in doublons.items():

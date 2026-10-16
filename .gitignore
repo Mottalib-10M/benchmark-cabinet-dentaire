@@ -2,3 +2,4 @@ node_modules
 dist
 .astro
 scripts/data/raw/
+__pycache__/

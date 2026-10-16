@@ -8,7 +8,7 @@ Notice pour les agents qui prolongent le site. À lire avec `~/Documents/GitHub/
 |---|---|---|
 | Accueil (simulateur + page pilier) | `src/content/accueil.ts` | `components/HomePage.astro` |
 | Spécialité (omnipraticien, ODF, stomatologue) et guides de gestion | `src/content/guides/<id>.ts` | `components/ContentPage.astro` |
-| Département (60 pages) | texte rédigé : `src/content/departements/<code>.ts` ; le reste est calculé (`lib/dep-gen.ts`) | `components/DepartementPage.astro` |
+| Département (27 × 2 pages) | texte rédigé : `src/content/departements/<code>.ts` ; le reste est calculé (`lib/dep-gen.ts`) | `components/DepartementPage.astro` |
 | Méthode, à propos, légal | `src/pages/<langue>/*.astro`, `components/MethodPage.astro` | — |
 
 Le cœur (routes `src/i18n/routes.ts`, menus `src/i18n/nav.ts`, sitemap, hreflang, schémas, FAQ) lit ces fichiers seul : **on ne touche pas au cœur pour ajouter une page**.
@@ -45,7 +45,7 @@ Contrôle d'une fiche : `PAGE_FILES=<id> npx vitest run tests/pages.test.ts`.
 
 ## Une page département
 
-Le texte rédigé (2-3 sections, 400 mots par langue au moins) vit dans `src/content/departements/<code>.ts` ; les nombres passent par `h` (`src/lib/dep-types.ts`). Une page n'existe que si le département compte au moins `SEUIL` (190) chirurgiens-dentistes libéraux (`src/lib/departements.ts`) : sous ce seuil, la moyenne repose sur peu de cabinets et l'orthodontie est souvent sous secret statistique (moins de 5 praticiens). Le titre, la description, le bloc citable et la FAQ sont générés (`lib/dep-gen.ts`) et marqués `data-chrome` (RECETTE §6.4) : seul le texte rédigé fait l'unicité.
+Le texte rédigé (2-3 sections, 400 mots par langue au moins) vit dans `src/content/departements/<code>.ts` ; les nombres passent par `h` (`src/lib/dep-types.ts`). Une page n'existe que si le département compte au moins `SEUIL` (510) chirurgiens-dentistes libéraux (`src/lib/departements.ts`), seuil fixé par la limite de 100 pages du site (RECETTE §3) ; les autres départements restent dans le classement des 101 et dans le simulateur, et les 33 pages retirées le 2026-10-16 redirigent depuis `404.astro`. Ne pas ajouter de page département sans en retirer une autre : `check-trame.py` bloque au-delà de 100 pages. Le titre, la description, le bloc citable et la FAQ sont générés (`lib/dep-gen.ts`) et marqués `data-chrome` (RECETTE §6.4) : seul le texte rédigé fait l'unicité.
 
 ## Contrôles (tous à 0)
 

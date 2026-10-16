@@ -1,9 +1,9 @@
 import { defineGuide } from '../../lib/guide-types';
 import { classement, densiteHonoraires, METRO } from '../../lib/engine/benchmark';
 import { DEPS, FR, DATA_YEAR, depName, DEP_CODES } from '../../lib/engine/data';
-import { DEP_PAGES, depPageByCode, SEUIL } from '../../lib/departements';
+import { DEP_PAGES, depPageByCode, SEUIL, ancreDep } from '../../lib/departements';
 import { dansDep } from '../../lib/dep-fr';
-import { formatMoney, formatNumber, formatDecimal } from '../../lib/format';
+import { formatMoney, formatNumber, formatDecimal, formatPercent } from '../../lib/format';
 
 const Y = DATA_YEAR;
 const co = classement('omni'); const cd = classement('odf');
@@ -21,7 +21,23 @@ const r2 = (x: number, l: 'fr' | 'en') => formatDecimal(x, 2, l);
 const table = (l: 'fr' | 'en') => {
   const rows = DEP_CODES.map((c) => { const o = DEPS[c].p.omni; const d = DEPS[c].p.odf; return { c, o: o?.tot ?? 0, eff: o?.eff ?? 0, dens: o?.dens ?? 0, d: d?.tot ?? 0 }; }).sort((a, b) => b.o - a.o);
   const th = l === 'fr' ? ['Rang', 'Département', 'Omnipraticiens', 'Pour 100 000 hab.', 'Honoraires moyens', 'Orthodontistes : honoraires moyens'] : ['Rank', 'Département', 'General dentists', 'Per 100,000', 'Average fees', 'Orthodontists: average fees'];
-  return `<div class="not-prose my-6 overflow-x-auto" data-sommaire><table class="journal w-full text-sm"><caption class="mb-2 text-left text-sm text-navy-600">${l === 'fr' ? `Honoraires totaux moyens ${Y} par praticien actif à part entière, classés par moyenne des omnipraticiens. « – » : secret statistique (moins de 5 praticiens).` : `${Y} average total fees per full-time active practitioner, ranked by general dentists’ average. “–”: statistical confidentiality (fewer than 5 practitioners).`}</caption><thead><tr>${th.map((x, i) => `<th scope="col" class="px-3 py-2 ${i > 1 ? 'text-right' : 'text-left'}">${x}</th>`).join('')}</tr></thead><tbody>${rows.map((r, i) => `<tr><td class="tabular-nums border-b border-navy-100 px-3 py-2">${i + 1}</td><td class="border-b border-navy-100 px-3 py-2">${lien(r.c, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${n(r.eff, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${n(r.dens, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${r.o ? e(r.o, l) : '–'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${r.d ? e(r.d, l) : '–'}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="not-prose my-6 overflow-x-auto" data-sommaire><table class="journal w-full text-sm"><caption class="mb-2 text-left text-sm text-navy-600">${l === 'fr' ? `Honoraires totaux moyens ${Y} par praticien actif à part entière, classés par moyenne des omnipraticiens. « – » : secret statistique (moins de 5 praticiens).` : `${Y} average total fees per full-time active practitioner, ranked by general dentists’ average. “–”: statistical confidentiality (fewer than 5 practitioners).`}</caption><thead><tr>${th.map((x, i) => `<th scope="col" class="px-3 py-2 ${i > 1 ? 'text-right' : 'text-left'}">${x}</th>`).join('')}</tr></thead><tbody>${rows.map((r, i) => `<tr id="${ancreDep(r.c)}"><td class="tabular-nums border-b border-navy-100 px-3 py-2">${i + 1}</td><td class="border-b border-navy-100 px-3 py-2">${lien(r.c, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${n(r.eff, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${n(r.dens, l)}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${r.o ? e(r.o, l) : '–'}</td><td class="tabular-nums border-b border-navy-100 px-3 py-2 text-right">${r.d ? e(r.d, l) : '–'}</td></tr>`).join('')}</tbody></table></div>`;
+};
+
+/**
+ * Second tableau : le profil des omnipraticiens de chaque département (effectif sur cinq ans, part des
+ * dépassements, patientèle, âge). Il reprend, pour les 101 départements, les chiffres que portaient les
+ * pages département retirées le 2026-10-16 (RECETTE §3) : aucun chiffre n'est perdu pour le visiteur.
+ */
+const profil = (l: 'fr' | 'en') => {
+  const p = (x: number | null | undefined) => (x == null ? '–' : formatPercent(x, 0, l));
+  const v = (x: number | null | undefined) => (x == null ? '–' : n(x, l));
+  const rows = [...DEP_CODES].sort((a, b) => depName(a).localeCompare(depName(b), 'fr')).map((c) => {
+    const o = DEPS[c].p.omni; const sh = o?.tot && o.dep != null ? o.dep / o.tot : null;
+    return [lien(c, l), v(o?.eff5), v(o?.eff), p(sh), v(o?.patients), p(o?.p60), p(o?.m35), o?.hist?.['2015'] ? e(o.hist['2015'], l) : '–'];
+  });
+  const th = l === 'fr' ? ['Département', `Omnipraticiens ${Y - 5}`, `Omnipraticiens ${Y}`, 'Part des dépassements', 'Patients par an', '60 ans et plus', 'Moins de 35 ans', 'Honoraires moyens 2015'] : ['Département', `General dentists ${Y - 5}`, `General dentists ${Y}`, 'Share of extra fees', 'Patients a year', 'Aged 60+', 'Under 35', 'Average fees 2015'];
+  return `<div class="not-prose my-6 overflow-x-auto"><table class="journal w-full text-sm"><caption class="mb-2 text-left text-sm text-navy-600">${l === 'fr' ? `Omnipraticiens libéraux par département, ordre alphabétique : effectif fin ${Y - 5} et fin ${Y}, part des dépassements dans les honoraires ${Y}, patients différents par praticien, âge. « – » : non publié.` : `General dentists in private practice by département, alphabetical: headcount at the end of ${Y - 5} and ${Y}, share of extra fees in ${Y} fees, distinct patients per practitioner, age. “–”: not published.`}</caption><thead><tr>${th.map((x, i) => `<th scope="col" class="px-3 py-2 ${i > 0 ? 'text-right' : 'text-left'}">${x}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((x, i) => `<td class="${i > 0 ? 'tabular-nums text-right ' : ''}border-b border-navy-100 px-3 py-2">${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 };
 
 export default defineGuide({
@@ -56,7 +72,10 @@ export default defineGuide({
 <p>Les ${n(outremer.length, 'fr')} départements d'outre-mer se classent loin des départements ruraux de métropole malgré des densités parfois faibles : ${outremer.map((c) => `${depName(c)} ${e(DEPS[c].p.omni!.tot!, 'fr')} pour ${n(DEPS[c].p.omni!.dens!, 'fr')} praticiens pour 100 000 habitants`).join(', ')}. Ce sont des marchés insulaires ou isolés, qui ne se comparent pas directement aux départements de métropole. C'est pourquoi la corrélation entre densité et honoraires est calculée sur la seule métropole (${n(METRO.length, 'fr')} départements).</p>
 <h2>Le tableau complet</h2>
 ${table('fr')}
-<p>Chaque nom souligné mène à la page du département, avec la répartition des honoraires, l'âge des praticiens, l'historique depuis 2015 et le simulateur déjà réglé sur le territoire. Pour situer votre propre cabinet, partez du ${'<a href="/fr/">simulateur</a>'} : il retire d'abord les actes non remboursables, que ces moyennes ne comptent pas.</p>`,
+<p>Chaque nom souligné mène à la page du département, avec la répartition des honoraires, l'âge des praticiens, l'historique depuis 2015 et le simulateur déjà réglé sur le territoire. Pour situer votre propre cabinet, partez du ${'<a href="/fr/">simulateur</a>'} : il retire d'abord les actes non remboursables, que ces moyennes ne comptent pas.</p>
+<h2>Le profil des omnipraticiens, département par département</h2>
+<p>Le second tableau suit les mêmes 101 départements sous un autre angle : combien d'omnipraticiens y exercent, comment l'effectif a bougé en cinq ans, quelle part des honoraires vient des dépassements, combien de patients chaque praticien suit dans l'année et quel est l'âge de la profession. Une part élevée de praticiens de 60 ans et plus annonce des cessions de cabinets ; un effectif qui baisse, une demande qui se reporte sur ceux qui restent. Dans le simulateur, le choix du département règle toutes les références sur le territoire, y compris pour les départements qui n'ont pas de page propre.</p>
+${profil('fr')}`,
   },
   en: {
     slug: 'dentist-fees-by-departement',
@@ -83,6 +102,9 @@ ${table('fr')}
 <p>The ${n(outremer.length, 'en')} overseas départements rank far from rural mainland ones despite sometimes low density: ${outremer.map((c) => `${depName(c)} ${e(DEPS[c].p.omni!.tot!, 'en')} with ${n(DEPS[c].p.omni!.dens!, 'en')} dentists per 100,000`).join(', ')}. These are island or isolated markets that do not compare directly with mainland départements, so the density correlation above uses mainland France only (${n(METRO.length, 'en')} départements).</p>
 <h2>The full table</h2>
 ${table('en')}
-<p>Each underlined name opens the département page, with the split of fees, practitioners’ ages, history since 2015 and the calculator already set to that area. To place your own practice, start from the ${'<a href="/en/">calculator</a>'}: it first removes non-reimbursable work, which these averages leave out.</p>`,
+<p>Each underlined name opens the département page, with the split of fees, practitioners’ ages, history since 2015 and the calculator already set to that area. To place your own practice, start from the ${'<a href="/en/">calculator</a>'}: it first removes non-reimbursable work, which these averages leave out.</p>
+<h2>General dentists’ profile, département by département</h2>
+<p>The second table looks at the same 101 départements from another angle: how many general dentists practise there, how headcount moved over five years, what share of fees comes from extra fees, how many patients each dentist sees in a year and how old the profession is. A high share of practitioners aged 60 or over points to practice sales ahead; a falling headcount means demand shifting onto those who remain. In the calculator, choosing a département sets every benchmark to that area, including départements without a page of their own.</p>
+${profil('en')}`,
   },
 });

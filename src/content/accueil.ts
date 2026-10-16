@@ -6,7 +6,7 @@ import type { PageText } from '../lib/guide-types';
 import { FR, DEPS, REGS, DATA_YEAR, depName, DEP_CODES } from '../lib/engine/data';
 import { classement, densiteHonoraires, depShare } from '../lib/engine/benchmark';
 import { reference, UNASA_YEAR } from '../lib/engine/references';
-import { DEP_PAGES } from '../lib/departements';
+import { DEP_PAGES, SEUIL } from '../lib/departements';
 import { regLabel } from '../lib/dep-fr';
 import { P } from '../lib/engine/params';
 import { formatMoney, formatPercent, formatNumber, formatDecimal } from '../lib/format';
@@ -68,7 +68,7 @@ export const HOME: Record<L, Home> = {
 <h2>Pourquoi le département change tout</h2>
 <p>Deux omnipraticiens qui facturent exactement la même chose ne sont pas au même endroit selon leur département. Avec ${e(paris.tot!, 'fr')} d'honoraires moyens, Paris a la moyenne la plus basse de France ; ${depName(haut.code)} a la plus haute, ${e(haut.tot, 'fr')}, ${r2(haut.tot / paris.tot!, 'fr')} fois plus. Un cabinet à ${e(o.tot!, 'fr')} est donc ${p(o.tot! / paris.tot! - 1, 'fr')} au-dessus de la moyenne parisienne et ${p(1 - o.tot! / haut.tot, 'fr')} en dessous de celle de ${depName(haut.code)}.</p>
 <p>La raison principale n'est pas la richesse des patients mais le nombre de praticiens. Nous avons calculé, sur les ${n(corr.n, 'fr')} départements de métropole, le coefficient de corrélation entre la densité d'omnipraticiens pour 100 000 habitants et leurs honoraires moyens : ${r2(corr.r, 'fr')}. Plus un département est dense, plus la demande se partage, plus la moyenne par praticien baisse. Paris compte ${n(paris.dens!, 'fr')} omnipraticiens pour 100 000 habitants, la France ${n(o.dens!, 'fr')}. C'est aussi pour cela qu'une comparaison avec une moyenne nationale, la seule que donnent la plupart des articles sur le sujet, renseigne si peu : elle mélange des marchés qui n'ont rien à voir.</p>
-<p>Les ${n(DEP_PAGES.length, 'fr')} départements qui comptent au moins 190 chirurgiens-dentistes libéraux ont leur propre page, avec la répartition des honoraires, l'âge des praticiens, l'historique depuis 2015 et le simulateur réglé sur le territoire. Les autres restent dans le simulateur et dans le ${h.a('classement-departements', 'classement des 101 départements')}.</p>
+<p>Les ${n(DEP_PAGES.length, 'fr')} départements qui comptent au moins ${n(SEUIL, 'fr')} chirurgiens-dentistes libéraux ont leur propre page, avec la répartition des honoraires, l'âge des praticiens, l'historique depuis 2015 et le simulateur réglé sur le territoire. Les autres restent dans le simulateur et dans le ${h.a('classement-departements', 'classement des 101 départements')}.</p>
 
 <h2>Trois spécialités, trois échelles</h2>
 ${h.table(tableSpecs('fr').th, tableSpecs('fr').rows, `France entière, ${Y}. Honoraires moyens par praticien actif à part entière. Source : Assurance Maladie, data.ameli.fr.`, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
@@ -115,7 +115,7 @@ ${depLinks('fr')}`,
 <h2>Why the département matters so much</h2>
 <p>Two general dentists billing exactly the same amount sit in very different places depending on where they work. At ${e(paris.tot!, 'en')}, Paris has the lowest average in France; ${depName(haut.code)} has the highest, ${e(haut.tot, 'en')}, ${r2(haut.tot / paris.tot!, 'en')} times as much. A practice at ${e(o.tot!, 'en')} is ${p(o.tot! / paris.tot! - 1, 'en')} above the Paris average and ${p(1 - o.tot! / haut.tot, 'en')} below the ${depName(haut.code)} one.</p>
 <p>The driver is less patients’ wealth than the number of dentists. Across the ${n(corr.n, 'en')} départements of mainland France, we computed the correlation between general dentists per 100,000 residents and their average fees: ${r2(corr.r, 'en')}. The denser the département, the more demand is shared and the lower the average per dentist. Paris has ${n(paris.dens!, 'en')} general dentists per 100,000 people, France ${n(o.dens!, 'en')}. It is also why the national average quoted in most articles on the subject tells you so little: it blends markets that have nothing in common.</p>
-<p>The ${n(DEP_PAGES.length, 'en')} départements with at least 190 dentists in private practice have their own page, with the split of fees, practitioners’ ages, history since 2015 and the calculator set to that area. The rest stay in the calculator and in the ${h.a('classement-departements', 'ranking of all 101 départements')}.</p>
+<p>The ${n(DEP_PAGES.length, 'en')} départements with at least ${n(SEUIL, 'en')} dentists in private practice have their own page, with the split of fees, practitioners’ ages, history since 2015 and the calculator set to that area. The rest stay in the calculator and in the ${h.a('classement-departements', 'ranking of all 101 départements')}.</p>
 
 <h2>Three specialties, three scales</h2>
 ${h.table(tableSpecs('en').th, tableSpecs('en').rows, `France, ${Y}. Average fees per full-time active practitioner. Source: Assurance Maladie, data.ameli.fr.`, ['l', 'r', 'r', 'r', 'r', 'r', 'r'])}
