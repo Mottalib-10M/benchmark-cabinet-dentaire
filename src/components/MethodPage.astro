@@ -26,6 +26,17 @@ const description = fr ? `Méthode Dentimètre : d’où viennent les moyennes $
 const h1 = fr ? 'Méthode et sources' : 'Method and sources';
 const path = route('method', lang);
 const sources = Object.values(P.sources);
+// Diagnostic de l'accueil : hypothèses et formules publiées telles qu'elles sont dans le code.
+const HD = P.diagnostic, TT = P.temps_travail, DL = P.delais_rdv;
+const refH = FR.p.omni!.tot! / TT.heures_an;
+const pc0 = (x: number) => formatPercent(x, 0, lang);
+const lapinsTxt = fr
+  ? `presque jamais = ${formatNumber(HD.lapins_par_jour.jamais, 1, lang)}, 1 par jour = ${HD.lapins_par_jour.un}, 2 par jour = ${HD.lapins_par_jour.deux}, 3 ou plus = ${HD.lapins_par_jour.trois}`
+  : `hardly ever = ${formatNumber(HD.lapins_par_jour.jamais, 1, lang)}, 1 a day = ${HD.lapins_par_jour.un}, 2 a day = ${HD.lapins_par_jour.deux}, 3 or more = ${HD.lapins_par_jour.trois}`;
+const delaiTxt = fr
+  ? `cette semaine = ${HD.delai_jours.semaine} jours, sous 2 semaines = ${HD.delai_jours.deux}, sous un mois = ${HD.delai_jours.mois}, plus d’un mois = ${HD.delai_jours.plus}`
+  : `this week = ${HD.delai_jours.semaine} days, within 2 weeks = ${HD.delai_jours.deux}, within a month = ${HD.delai_jours.mois}, over a month = ${HD.delai_jours.plus}`;
+const penTxt = `${HD.penalite_delai.semaine}, ${HD.penalite_delai.deux}, ${HD.penalite_delai.mois}, ${HD.penalite_delai.plus}`;
 ---
 <PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: h1, description, path, lang }), breadcrumbSchema([{ name: fr ? 'Accueil' : 'Home', path: route('home', lang) }, { name: h1, path }])]} breadcrumbs={[{ label: h1 }]}>
   <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">{h1}</h1></header>
@@ -46,6 +57,45 @@ const sources = Object.values(P.sources);
     <p>La DREES publie la distribution des revenus d’activité {P.revenus.drees.annee} des chirurgiens-dentistes libéraux conventionnés de 70 ans ou moins : premier décile {$(Q.d1)}, premier quartile {$(Q.q1)}, médiane {$(Q.mediane)}, troisième quartile {$(Q.q3)}, neuvième décile {$(Q.d9)}. Le simulateur interpole linéairement entre ces points pour situer un bénéfice après cotisations ; sous le premier décile ou au-delà du neuvième, il ne donne pas de centile. Les revenus de 2021 sont en euros de 2021 : un bénéfice de {DATA_YEAR} comparé à eux paraît un peu plus haut qu’il ne le serait à euros constants.</p>
     <h2>Salaires, cotisations, fiscalité</h2>
     <p>Coût d’un salarié : salaire minimum de la convention collective des cabinets dentaires (IDCC 1619, accord du 12 février 2026), jamais sous le Smic horaire ({formatNumber(P.salaires_2026.smic_horaire, 2, lang)} € depuis le 1er juin 2026), plus {pc(tauxPatronal, 2)} de cotisations patronales (taux Urssaf 2026 d’un cabinet de moins de 11 salariés, maladie et allocations familiales aux taux pleins sur lesquels porte la réduction, accidents du travail limités à la part mutualisée), moins la réduction générale dégressive unique selon la formule de l’Urssaf ; hors taux accident du travail propre au cabinet et prévoyance de branche. Cotisations CARCDSF : barème 2026 de la caisse. SELARL : impôt sur les sociétés à {pc(P.fiscal_2026.is_taux_reduit, 0)} jusqu’à {$(P.fiscal_2026.is_seuil_reduit)} puis {pc(P.fiscal_2026.is_taux_normal, 0)} (article 219 du CGI), dividendes au prélèvement forfaitaire ({pc(P.fiscal_2026.pfu_ir)} d’impôt et {pc(P.fiscal_2026.prelevements_sociaux)} de prélèvements sociaux), la part au-delà de 10 % du capital entrant dans l’assiette des cotisations des indépendants (article L136-3 du code de la sécurité sociale), non calculées.</p>
+    <h2 id="diagnostic">Le diagnostic de l’accueil</h2>
+    <p>Le diagnostic en quatre étapes mélange deux sortes de nombres, qui ne se confondent jamais. Les <strong>repères</strong> viennent de sources publiques datées, citées à côté de chaque chiffre. Les <strong>hypothèses</strong> de calcul sont des choix de Dentimètre : elles servent aux notes et aux gains possibles, et sont publiées ici telles qu’elles sont dans le code (fichier <code>params-2026.json</code>, bloc <code>diagnostic</code>). Un indicateur sans repère public reste affiché sans comparaison.</p>
+    <h3>Les repères</h3>
+    <ul>
+      <li><strong>Chiffre d’affaires</strong> : honoraires moyens {DATA_YEAR} de l’Assurance Maladie de votre spécialité dans votre département, sinon dans votre région, sinon en France (secret statistique). L’omnipraticien orienté implantologie ou parodontie est comparé aux omnipraticiens ; les actes hors nomenclature n’entrent pas dans la moyenne, et l’écran le signale.</li>
+      <li><strong>Chiffre d’affaires horaire</strong> : ce même repère divisé par {nb(TT.heures_an)} heures de travail par an, soit {$(refH)} par heure pour la moyenne nationale. Ces heures viennent de la seule enquête publique trouvée, le panel des omnipraticiens des Pays de la Loire ({TT.annee_enquete} : {formatNumber(TT.heures_semaine, 1, lang)} heures par semaine, {formatNumber(TT.semaines_conges, 1, lang)} semaines de congés). C’est un temps de travail total, administratif compris, alors que vous saisissez vos heures au fauteuil : votre chiffre horaire sort donc plus haut que le repère sans que le cabinet soit forcément plus productif. Aucune donnée nationale n’existe.</li>
+      <li><strong>Chiffre d’affaires par fauteuil</strong> : aucun repère publié. Le diagnostic affiche votre valeur seule.</li>
+      <li><strong>Poids du loyer, personnel, bénéfice</strong> : comptes UNASA {UNASA_YEAR}, dans le quart de recettes le plus proche du vôtre. Le bénéfice estimé reprend le bénéfice de ce quart, en remplaçant le loyer et le personnel de la référence par les vôtres ; le personnel est estimé à votre nombre de temps plein × le coût employeur d’un assistant dentaire au minimum de la convention collective (IDCC 1619).</li>
+      <li><strong>Rendez-vous manqués</strong> : aucune statistique publique pour les chirurgiens-dentistes. Les mots « rare », « à surveiller » et « coûteux » sont des seuils de lecture de Dentimètre : moins de 3 % des créneaux de la journée, moins de 8 %, au-delà.</li>
+      <li><strong>Délai du premier rendez-vous</strong> : médiane de {DL.dentiste_median_jours} jours mesurée par la DREES ({DL.annee_enquete}). C’est la mesure officielle la plus récente.</li>
+    </ul>
+    <h3>Les hypothèses de Dentimètre</h3>
+    <ul>
+      <li>Durée d’un rendez-vous : {HD.duree_rdv_min} minutes (l’enquête ORS de 2012 montre que la majorité des omnipraticiens de la région découpent leur agenda ainsi).</li>
+      <li>Rendez-vous manqués par jour selon la réponse : {lapinsTxt}.</li>
+      <li>Délai en jours selon la réponse : {delaiTxt}.</li>
+      <li>Les cinq activités cochées à l’étape 4 sont celles que l’article R4393-8 du Code de la santé publique confie à l’assistant dentaire, regroupées. Les radiographies et la prophylaxie n’y figurent pas : leur décret n’est pas paru.</li>
+    </ul>
+    <h3>Les notes</h3>
+    <p>Chaque axe est noté de 5 à 95, jamais 0 ni 100, l’outil ne voyant pas tout ; 50 correspond au repère.</p>
+    <ul>
+      <li>Production = 50 + (chiffre d’affaires ÷ repère − 1) × 100.</li>
+      <li>Rendement = 50 + (chiffre horaire ÷ repère horaire − 1) × 100, un écart favorable ne comptant que pour {pc0(HD.part_ecart_horaire_favorable)} puisque le repère inclut l’administratif. Dans le tableau, le chiffre horaire n’est dit « au-dessus » qu’à plus de 15 % du repère.</li>
+      <li>Maîtrise des charges = 50 + (part du loyer du repère − votre part) × 100 × {HD.points_par_point_loyer}.</li>
+      <li>Équipe = 50 − écart entre votre poids de personnel et celui du repère (logarithme du rapport × {HD.penalite_equipe_max}, plafonné à {HD.penalite_equipe_max} points) + {HD.points_par_acte} points par activité déléguée au-delà de deux.</li>
+      <li>Organisation = 90 − part des créneaux manqués × 100 × {HD.points_par_point_lapins} − pénalité de délai ({penTxt} points selon la réponse).</li>
+      <li>Note globale = moyenne des axes débloqués. Elle est provisoire tant que les quatre étapes ne sont pas remplies.</li>
+    </ul>
+    <h3>Les gains possibles</h3>
+    <p>Chaque gain applique une part prudente à un écart calculé sur vos réponses, puis s’arrondit à la centaine d’euros. Ce sont des ordres de grandeur, pas des promesses.</p>
+    <ul>
+      <li>Rendez-vous manqués (à partir d’un par jour) : rendez-vous perdus × {HD.duree_rdv_min} minutes × chiffre horaire × {pc0(HD.part_recuperable_lapins)} récupérables.</li>
+      <li>Production (chiffre d’affaires inférieur de plus de {pc0(HD.seuil_production)} au repère, à partir de {HD.jours_temps_plein} jours par semaine) : {pc0(HD.part_recuperable_production)} de l’écart.</li>
+      <li>Délégation (au moins un mi-temps d’assistante et deux activités non confiées) : {formatNumber(HD.heures_par_tache_semaine, 1, lang)} heure par activité et par semaine × semaines × chiffre horaire × {pc0(HD.part_convertie_temps)}.</li>
+      <li>Loyer (plus de {pc0(HD.seuil_loyer)} au-dessus du repère) : {pc0(HD.part_recuperable_loyer)} de l’écart.</li>
+      <li>Équipe absente, fauteuil en trop, délai de plus d’un mois : pistes signalées sans gain chiffré.</li>
+      <li>Le total ne dépasse jamais {pc0(HD.plafond_gain_ca)} du chiffre d’affaires ; au-delà, chaque gain est réduit dans la même proportion.</li>
+    </ul>
+    <p>Le diagnostic tourne dans votre navigateur. Seule la demande d’échange, si vous la remplissez, envoie vos coordonnées et votre rapport (<a href={route('privacy', lang)}>confidentialité</a>).</p>
     <h2>Les pages département</h2>
     <p>Une page n’est publiée que pour les départements qui comptent au moins {nb(SEUIL)} chirurgiens-dentistes libéraux : {nb(DEP_PAGES.length)} départements. Sous ce seuil, la moyenne repose sur peu de cabinets et l’orthodontie y est souvent couverte par le secret statistique ; ces départements restent dans le simulateur et le classement.</p>
     <h2>Les tests qui bloquent la publication</h2>
@@ -87,6 +137,45 @@ const sources = Object.values(P.sources);
     <p>DREES publishes the distribution of {P.revenus.drees.annee} earnings of private dentists under the national agreement, aged 70 or under: bottom decile {$(Q.d1)}, lower quartile {$(Q.q1)}, median {$(Q.mediane)}, upper quartile {$(Q.q3)}, top decile {$(Q.d9)}. The calculator interpolates linearly between those points to place a profit after contributions; below the bottom decile or above the top one it gives no percentile. 2021 income is in 2021 euros, so a {DATA_YEAR} profit compared with it looks slightly higher than it would in constant euros.</p>
     <h2>Pay, contributions, tax</h2>
     <p>Staff cost: the dental practices’ collective agreement minimum (IDCC 1619, 12 February 2026 agreement), never below the hourly minimum wage (€{formatNumber(P.salaires_2026.smic_horaire, 2, lang)} since 1 June 2026), plus {pc(tauxPatronal, 2)} employer contributions (2026 Urssaf rates for a practice under 11 staff, health and family at the full rates the relief applies to, workplace accidents limited to the pooled share), minus the general sliding-scale relief using Urssaf’s formula; the practice’s own workplace-accident rate and sector insurance are left out. CARCDSF: the fund’s 2026 scale. SELARL: corporation tax at {pc(P.fiscal_2026.is_taux_reduit, 0)} up to {$(P.fiscal_2026.is_seuil_reduit)}, then {pc(P.fiscal_2026.is_taux_normal, 0)} (General Tax Code art. 219), dividends at the flat-rate levy ({pc(P.fiscal_2026.pfu_ir)} income tax and {pc(P.fiscal_2026.prelevements_sociaux)} social levies), the part above 10% of capital falling into self-employed contributions (Social Security Code art. L136-3), not calculated.</p>
+    <h2 id="diagnostic">The home-page check-up</h2>
+    <p>The four-step check-up uses two kinds of figures that are never mixed. <strong>Benchmarks</strong> come from dated public sources, cited beside each figure. Calculation <strong>assumptions</strong> are Dentimètre’s own choices: they drive the scores and possible gains, and are published here exactly as they are in the code (file <code>params-2026.json</code>, block <code>diagnostic</code>). An indicator with no public benchmark is shown without comparison.</p>
+    <h3>Benchmarks</h3>
+    <ul>
+      <li><strong>Turnover</strong>: Assurance Maladie {DATA_YEAR} average fees for your specialty in your département, otherwise your region, otherwise France (statistical confidentiality). A general dentist focused on implants or periodontics is compared with general dentists; work outside the fee schedule is missing from the average, and the screen says so.</li>
+      <li><strong>Turnover per hour</strong>: that benchmark divided by {nb(TT.heures_an)} working hours a year, giving {$(refH)} per hour for the national average. The hours come from the only public survey found, the panel of general dentists in Pays de la Loire ({TT.annee_enquete}: {formatNumber(TT.heures_semaine, 1, lang)} hours a week, {formatNumber(TT.semaines_conges, 1, lang)} weeks of leave). It is total working time, admin included, while you enter chairside hours, so your hourly figure comes out higher than the benchmark without the practice necessarily being more productive. No national data exist.</li>
+      <li><strong>Turnover per chair</strong>: no published benchmark. The check-up shows your value alone.</li>
+      <li><strong>Rent, staff, profit</strong>: UNASA {UNASA_YEAR} accounts, in the receipts quarter closest to yours. Estimated profit takes that quarter’s profit and swaps the benchmark’s rent and staff for yours; staff is estimated as your full-time equivalents × the employer cost of a dental assistant at the collective-agreement minimum (IDCC 1619).</li>
+      <li><strong>Missed appointments</strong>: no public statistic for dentists. “Rare”, “worth watching” and “costly” are Dentimètre reading thresholds: under 3% of the day’s slots, under 8%, above.</li>
+      <li><strong>Wait for a first appointment</strong>: median of {DL.dentiste_median_jours} days measured by DREES ({DL.annee_enquete}), the latest official measure.</li>
+    </ul>
+    <h3>Dentimètre assumptions</h3>
+    <ul>
+      <li>Appointment length: {HD.duree_rdv_min} minutes (the 2012 ORS survey shows most general dentists in the region slot their diary this way).</li>
+      <li>Missed appointments per day by answer: {lapinsTxt}.</li>
+      <li>Wait in days by answer: {delaiTxt}.</li>
+      <li>The five duties ticked in step 4 are those article R4393-8 of the Public Health Code gives a dental assistant, grouped. X-rays and preventive care are not among them: their decree has not been published.</li>
+    </ul>
+    <h3>Scores</h3>
+    <p>Each area is scored from 5 to 95, never 0 or 100, since the tool does not see everything; 50 is the benchmark.</p>
+    <ul>
+      <li>Production = 50 + (turnover ÷ benchmark − 1) × 100.</li>
+      <li>Output = 50 + (hourly turnover ÷ hourly benchmark − 1) × 100, with a favourable gap counted at only {pc0(HD.part_ecart_horaire_favorable)} since the benchmark includes admin time. In the table, hourly turnover is called “above” only beyond 15% over the benchmark.</li>
+      <li>Cost control = 50 + (benchmark rent share − your share) × 100 × {HD.points_par_point_loyer}.</li>
+      <li>Team = 50 − gap between your staff share and the benchmark’s (log of the ratio × {HD.penalite_equipe_max}, capped at {HD.penalite_equipe_max} points) + {HD.points_par_acte} points per delegated duty beyond two.</li>
+      <li>Organisation = 90 − share of slots missed × 100 × {HD.points_par_point_lapins} − wait penalty ({penTxt} points by answer).</li>
+      <li>Overall score = mean of the unlocked areas, provisional until all four steps are done.</li>
+    </ul>
+    <h3>Possible gains</h3>
+    <p>Each gain applies a cautious share to a gap worked out from your answers, then is rounded to the nearest hundred euros. They are orders of magnitude, not promises.</p>
+    <ul>
+      <li>Missed appointments (from one a day): appointments lost × {HD.duree_rdv_min} minutes × hourly turnover × {pc0(HD.part_recuperable_lapins)} recoverable.</li>
+      <li>Production (turnover more than {pc0(HD.seuil_production)} under the benchmark, from {HD.jours_temps_plein} days a week): {pc0(HD.part_recuperable_production)} of the gap.</li>
+      <li>Delegation (at least a half-time assistant and two duties not handed over): {formatNumber(HD.heures_par_tache_semaine, 1, lang)} hour per duty per week × weeks × hourly turnover × {pc0(HD.part_convertie_temps)}.</li>
+      <li>Rent (more than {pc0(HD.seuil_loyer)} above the benchmark): {pc0(HD.part_recuperable_loyer)} of the gap.</li>
+      <li>No assistant, a spare chair, a wait over a month: flagged with no priced gain.</li>
+      <li>The total never exceeds {pc0(HD.plafond_gain_ca)} of turnover; beyond that each gain is scaled down in proportion.</li>
+    </ul>
+    <p>The check-up runs in your browser. Only the call request, if you fill it in, sends your contact details and your report (<a href={route('privacy', lang)}>privacy</a>).</p>
     <h2>Département pages</h2>
     <p>A page is published only for départements with at least {nb(SEUIL)} dentists in private practice: {nb(DEP_PAGES.length)} of them. Below that, the average rests on few practices and orthodontics is often confidential; those départements stay in the calculator and the ranking.</p>
     <h2>Tests that block publication</h2>

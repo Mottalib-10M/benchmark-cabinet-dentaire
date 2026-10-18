@@ -1,0 +1,223 @@
+/* Diagnostic de l'accueil (maquette validée par l'éditeur, 2026-10) : quatre étapes à gauche, rapport
+   qui se débloque à droite, puis plan d'action. Palette du site (bleu #0B4F8A), pas de mode sombre.
+   Aucune règle pour input[type=range] : il n'y a aucun curseur. */
+@layer components {
+  .dg {
+    --dg-bg: var(--color-navy-50); --dg-surface: #fff; --dg-ink: var(--color-navy-900); --dg-muted: var(--color-navy-600); --dg-ligne: var(--color-navy-200);
+    --dg-accent: var(--color-accent-500); --dg-accent-soft: var(--color-accent-50);
+    --dg-bon: #15803d; --dg-moyen: #b45309; --dg-faible: #c2410c;
+    --dg-bon-soft: #e8f5ec; --dg-moyen-soft: #fcf3e3; --dg-faible-soft: #fdece4;
+    color: var(--dg-ink); font-size: 16px; line-height: 1.55;
+  }
+  .dg *, .dg *::before, .dg *::after { box-sizing: border-box; }
+  .dg button { font: inherit; }
+  .dg-grille { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .dg-grille { grid-template-columns: minmax(0, 1fr); } }
+  .dg-panneau { background: var(--dg-surface); border: 1px solid var(--dg-ligne); border-radius: 14px; min-width: 0; }
+  .dg h2, .dg h3, .dg h4 { font-family: var(--font-serif); margin: 0; border: 0; padding: 0; }
+
+  /* Onglets d'étapes */
+  .dg-etapes { display: flex; border-bottom: 1px solid var(--dg-ligne); }
+  .dg-etapes button { flex: 1 1 0; min-width: 0; border: 0; background: none; padding: 12px 8px 10px; font-weight: 600; font-size: 13px; line-height: 1.25; color: var(--dg-muted); cursor: pointer; border-bottom: 3px solid transparent; text-align: left; }
+  .dg-etapes button span { display: block; font-weight: 500; font-size: 11px; letter-spacing: .05em; font-variant-numeric: tabular-nums; }
+  .dg-etapes button[aria-selected="true"] { color: var(--dg-ink); border-color: var(--dg-accent); }
+  .dg-etapes button.dg-fait { color: var(--dg-accent); }
+  .dg-etapes button[disabled] { opacity: .45; cursor: default; }
+  @media (max-width: 480px) { .dg-etapes button { font-size: 12px; padding-inline: 5px; } }
+
+  /* Formulaire d'étape : tuiles sur deux colonnes */
+  .dg-form { padding: 22px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 14px; }
+  .dg-form > * { grid-column: 1 / -1; }
+  .dg-form > .dg-tuile { grid-column: auto; }
+  .dg-form > .dg-tuile.dg-large { grid-column: 1 / -1; }
+  @media (max-width: 520px) { .dg-form { padding: 18px 16px; } .dg-form > .dg-tuile { grid-column: 1 / -1; } }
+  .dg-form h2 { font-size: 21px; font-weight: 700; line-height: 1.25; }
+  .dg-sous { color: var(--dg-muted); font-size: 14px; margin: -12px 0 0; }
+  .dg-champ { display: grid; gap: 8px; border: 0; margin: 0; padding: 0; min-width: 0; }
+  .dg-champ-label { font-weight: 600; font-size: 15px; margin: 0; }
+  .dg-legend { display: flex; justify-content: space-between; gap: 8px; width: 100%; padding: 0; margin-bottom: 8px; }
+  .dg-legend output { font-variant-numeric: tabular-nums; color: var(--dg-accent); font-size: 14px; }
+  .dg-aide { color: var(--dg-muted); font-size: 13px; line-height: 1.45; margin: 0; }
+  .dg-alerte { color: var(--dg-faible); font-weight: 600; }
+  .dg-select { position: relative; }
+  .dg-select select { appearance: none; -webkit-appearance: none; width: 100%; font: inherit; font-size: 16px; padding: 10px 38px 10px 12px; border: 1px solid var(--dg-ligne); border-radius: 10px; background: var(--dg-bg); color: var(--dg-ink); min-height: 46px; }
+  .dg-chevron { position: absolute; right: 12px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); pointer-events: none; color: var(--dg-muted); }
+
+  /* Tuile à compteur − / + */
+  .dg-tuile { border: 1px solid var(--dg-ligne); border-radius: 14px; padding: 14px 14px 12px; background: var(--dg-bg); display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .dg-tuile-label { font-size: 14px; color: var(--dg-muted); font-weight: 600; line-height: 1.3; }
+  .dg-compteur { display: flex; align-items: center; gap: 10px; }
+  .dg-rond { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid var(--dg-ligne); background: var(--dg-surface); color: var(--dg-ink); font-size: 22px !important; line-height: 1; cursor: pointer; display: grid; place-items: center; touch-action: manipulation; user-select: none; -webkit-user-select: none; transition: background .15s, border-color .15s, color .15s; }
+  .dg-rond:hover:not([disabled]) { border-color: var(--dg-accent); color: var(--dg-accent); background: var(--dg-accent-soft); }
+  .dg-rond:active:not([disabled]) { transform: scale(.92); }
+  .dg-rond[disabled] { opacity: .35; cursor: default; }
+  .dg-val { flex: 1; min-width: 0; display: flex; align-items: baseline; justify-content: center; gap: 5px; font-size: 21px; font-weight: 700; overflow: hidden; }
+  .dg-form > .dg-tuile:not(.dg-large) .dg-val { font-size: 19px; }
+  .dg-val input { border: 0; border-bottom: 1px dashed transparent; background: none; color: var(--dg-ink); font: inherit; text-align: right; min-width: 2ch; max-width: 100%; padding: 0; font-variant-numeric: tabular-nums; border-radius: 0; }
+  .dg-val input:hover, .dg-val input:focus { border-bottom-color: var(--dg-muted); outline: none; box-shadow: none; }
+  .dg-val span { white-space: nowrap; }
+  .dg-raccourcis { display: flex; gap: 2px; background: var(--dg-surface); border: 1px solid var(--dg-ligne); border-radius: 10px; padding: 3px; }
+  .dg-raccourcis button { flex: 1 1 0; min-width: 0; border: 0; background: none; color: var(--dg-muted); border-radius: 7px; padding: 6px 0; font-weight: 600; font-size: 13px; cursor: pointer; font-variant-numeric: tabular-nums; }
+  .dg-raccourcis button:hover { color: var(--dg-ink); }
+  .dg-raccourcis button.dg-actif { background: var(--dg-accent); color: #fff; }
+
+  /* Cartes et puces */
+  .dg-choix { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 620px) { .dg-choix { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .dg-choix button { border: 1px solid var(--dg-ligne); background: var(--dg-bg); color: var(--dg-ink); border-radius: 12px; padding: 10px 8px; cursor: pointer; text-align: center; display: grid; gap: 2px; align-content: center; min-height: 62px; transition: border-color .15s, background .15s; }
+  .dg-choix button:hover { border-color: var(--dg-accent); }
+  .dg-choix button b { font-weight: 600; font-size: 15px; line-height: 1.25; }
+  .dg-choix button small { font-size: 12.5px; color: var(--dg-muted); }
+  .dg-choix button[aria-checked="true"] { background: var(--dg-accent-soft); border-color: var(--dg-accent); box-shadow: inset 0 0 0 1px var(--dg-accent); }
+  .dg-choix button[aria-checked="true"] b { color: var(--dg-accent); }
+  .dg-puces { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dg-puces button { border: 1px solid var(--dg-ligne); background: var(--dg-surface); color: var(--dg-ink); border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; gap: 7px; align-items: center; text-align: left; }
+  .dg-puces button::before { content: ""; width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--dg-ligne); flex: none; }
+  .dg-puces button[aria-pressed="true"] { background: var(--dg-accent-soft); border-color: var(--dg-accent); color: var(--dg-accent); }
+  .dg-puces button[aria-pressed="true"]::before { background: var(--dg-accent); border-color: var(--dg-accent); box-shadow: inset 0 0 0 2px var(--dg-accent-soft); }
+
+  /* Boutons */
+  .dg-nav { display: flex; justify-content: space-between; gap: 10px; }
+  .dg-btn { font-weight: 700; font-size: 15px; border-radius: 10px; padding: 11px 18px; border: 1px solid var(--dg-ligne); background: var(--dg-surface); color: var(--dg-ink); cursor: pointer; line-height: 1.3; }
+  .dg-primaire { background: var(--dg-accent); border-color: var(--dg-accent); color: #fff; }
+  .dg-primaire:hover:not([disabled]) { background: var(--color-accent-600); }
+  .dg-btn[disabled] { opacity: .4; cursor: default; }
+  .dg-lien { background: none; border: 0; color: var(--dg-accent); font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .dg-manque { text-align: right; }
+
+  /* Rapport */
+  .dg-rapport { padding: 22px; display: grid; gap: 20px; }
+  @media (max-width: 520px) { .dg-rapport { padding: 18px 16px; } }
+  .dg-tete { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .dg-tete > div:last-child { flex: 1 1 220px; min-width: 0; }
+  .dg-jauge { width: 116px; height: 116px; flex: none; position: relative; }
+  .dg-jauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .dg-jauge svg circle { transition: stroke-dashoffset .5s ease; }
+  .dg-jauge-val { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+  .dg-jauge-val b { font-family: var(--font-serif); font-weight: 800; font-size: 34px; line-height: 1; display: block; font-variant-numeric: tabular-nums; }
+  .dg-jauge-val small { font-size: 11px; color: var(--dg-muted); }
+  .dg-tete h3 { font-size: 22px; font-weight: 700; margin-bottom: 4px; text-wrap: balance; }
+  .dg-tete p { margin: 0; color: var(--dg-muted); font-size: 15px; }
+  .dg-tete p.dg-note { margin-top: 6px; font-size: 13px; }
+  .dg-debloc { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .dg-debloc li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 14px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--dg-ligne); margin: 0; }
+  .dg-rondn { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 12px; border: 2px solid var(--dg-ligne); color: var(--dg-muted); }
+  .dg-debloc b { display: block; font-size: 14px; }
+  .dg-debloc small { color: var(--dg-muted); font-size: 12.5px; line-height: 1.35; display: block; }
+  .dg-debloc li.dg-fait { border-color: transparent; background: var(--dg-bon-soft); }
+  .dg-debloc li.dg-fait .dg-rondn { background: var(--dg-bon); border-color: var(--dg-bon); color: #fff; }
+  .dg-debloc li.dg-encours { border-color: var(--dg-accent); background: var(--dg-accent-soft); }
+  .dg-debloc li.dg-encours .dg-rondn { border-color: var(--dg-accent); color: var(--dg-accent); }
+  .dg-axes { display: grid; gap: 10px; }
+  .dg-axe { display: grid; grid-template-columns: 160px minmax(0, 1fr) 60px; gap: 10px; align-items: center; font-size: 14px; }
+  @media (max-width: 480px) { .dg-axe { grid-template-columns: 112px minmax(0, 1fr) 52px; font-size: 13px; } }
+  .dg-barre { height: 10px; border-radius: 5px; background: var(--dg-ligne); overflow: hidden; position: relative; }
+  .dg-barre i { position: absolute; inset: 0 auto 0 0; border-radius: 5px; transition: width .4s ease; }
+  .dg-barre::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; border-left: 2px dashed var(--dg-muted); opacity: .6; }
+  .dg-hachure { background: repeating-linear-gradient(135deg, var(--dg-ligne) 0 6px, transparent 6px 11px); }
+  .dg-hachure::after { display: none; }
+  .dg-axe-note { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .dg-axe-note.dg-petit { font-size: 11px; font-weight: 500; white-space: normal; line-height: 1.2; }
+  .dg-verrou { color: var(--dg-muted); }
+  .dg-legende { font-size: 12px; color: var(--dg-muted); margin: 8px 0 0; }
+  .dg-bloc { display: grid; gap: 10px; }
+  .dg-bloc h4 { font-size: 17px; font-weight: 700; }
+  .dg-indics { display: grid; border: 1px solid var(--dg-ligne); border-radius: 12px; overflow: hidden; }
+  .dg-indic { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 11px 14px; border-top: 1px solid var(--dg-ligne); }
+  .dg-indic:first-child { border-top: 0; }
+  .dg-entete { background: var(--dg-bg); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--dg-muted); padding-block: 8px; }
+  .dg-nom b { display: block; font-size: 15px; }
+  .dg-nom small { display: block; color: var(--dg-muted); font-size: 12.5px; line-height: 1.35; }
+  .dg-vous { font-family: var(--font-serif); font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .dg-verrou .dg-vous { font-weight: 500; font-size: 15px; }
+  .dg-rep { font-variant-numeric: tabular-nums; color: var(--dg-muted); font-size: 14px; line-height: 1.3; }
+  .dg-pastille { font-weight: 600; font-size: 12px; border-radius: 999px; padding: 3px 10px; white-space: nowrap; justify-self: end; }
+  .dg-bon { background: var(--dg-bon-soft); color: var(--dg-bon); } .dg-moyen { background: var(--dg-moyen-soft); color: var(--dg-moyen); } .dg-faible { background: var(--dg-faible-soft); color: var(--dg-faible); }
+  .dg-neutre { background: var(--dg-bg); color: var(--dg-muted); } .dg-attente { background: var(--dg-bg); color: var(--dg-muted); border: 1px dashed var(--dg-ligne); }
+  @media (max-width: 560px) {
+    .dg-indic { grid-template-columns: minmax(0, 1fr) auto; row-gap: 2px; }
+    .dg-entete { display: none; }
+    .dg-nom { grid-column: 1 / -1; }
+    .dg-vous { grid-column: 1; }
+    .dg-rep { grid-column: 1; }
+    .dg-pastille { grid-row: 2; grid-column: 2; }
+    .dg-rep::before { content: attr(data-l) " "; }
+  }
+  .dg-cadenas { display: inline-block; width: 11px; height: 9px; border-radius: 2px; background: currentColor; position: relative; margin: 0 5px 0 1px; vertical-align: -1px; }
+  .dg-cadenas::before { content: ""; position: absolute; left: 2px; top: -5px; width: 7px; height: 6px; border: 2px solid currentColor; border-bottom: 0; border-radius: 4px 4px 0 0; }
+  .dg-recos { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .dg-reco { border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; border-left: 4px solid; margin: 0; }
+  .dg-reco.dg-p1 { background: var(--dg-faible-soft); border-color: var(--dg-faible); } .dg-reco.dg-p2 { background: var(--dg-moyen-soft); border-color: var(--dg-moyen); } .dg-reco.dg-p3 { background: var(--dg-bon-soft); border-color: var(--dg-bon); }
+  .dg-reco-haut { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .dg-reco b { font-size: 15px; }
+  .dg-gain { font-size: 13px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .dg-reco p { margin: 0; font-size: 14px; }
+  .dg-reco a { font-size: 13.5px; color: var(--dg-accent); font-weight: 600; }
+  .dg-teaser { position: relative; border-radius: 12px; overflow: hidden; }
+  .dg-flou { filter: blur(5px); opacity: .55; pointer-events: none; user-select: none; }
+  .dg-voile { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 16px; background: linear-gradient(180deg, rgba(255,255,255,0), var(--dg-surface) 65%); }
+  .dg-voile > div { display: grid; gap: 8px; justify-items: center; max-width: 38ch; }
+  .dg-montant { font-family: var(--font-serif); font-weight: 800; font-size: 26px; color: var(--dg-accent); line-height: 1.1; }
+  .dg-voile p { margin: 0; font-size: 14px; color: var(--dg-muted); }
+  .dg-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dg-imprime { display: none; }
+
+  /* Plan d'action */
+  .dg-plan { padding: 22px; display: grid; gap: 22px; }
+  @media (max-width: 520px) { .dg-plan { padding: 18px 16px; } }
+  .dg-plan-haut { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .dg-plan h2 { font-size: 22px; font-weight: 700; }
+  .dg-plan > .dg-sous { margin-top: -14px; font-size: 15px; }
+  .dg-frise { list-style: none; margin: 0; padding: 0; display: grid; position: relative; }
+  .dg-frise li { display: grid; grid-template-columns: 92px 18px minmax(0, 1fr); gap: 12px; padding-bottom: 16px; position: relative; margin: 0; }
+  .dg-frise li::after { content: ""; position: absolute; left: calc(92px + 12px + 8px); top: 22px; bottom: 0; border-left: 2px solid var(--dg-ligne); }
+  .dg-frise li:last-child::after { display: none; }
+  .dg-quand { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--dg-muted); padding-top: 3px; text-align: right; }
+  .dg-point { width: 18px; height: 18px; border-radius: 50%; background: var(--dg-surface); border: 4px solid var(--dg-accent); margin-top: 3px; z-index: 1; }
+  .dg-point.dg-p1 { border-color: var(--dg-faible); } .dg-point.dg-p2 { border-color: var(--dg-moyen); } .dg-point.dg-p3 { border-color: var(--dg-bon); }
+  .dg-frise b { font-size: 15px; display: block; }
+  .dg-frise small { color: var(--dg-muted); font-size: 13.5px; display: block; }
+  @media (max-width: 480px) { .dg-frise li { grid-template-columns: 18px minmax(0, 1fr); column-gap: 12px; } .dg-quand { grid-column: 2; text-align: left; padding: 0; } .dg-point { grid-row: 1 / 3; grid-column: 1; } .dg-frise li > div { grid-column: 2; } .dg-frise li::after { left: 8px; } }
+  .dg-ensuite { font-family: var(--font-serif); font-weight: 700; font-size: 17px; margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
+  .dg-ensuite::after { content: ""; flex: 1; border-top: 1px solid var(--dg-ligne); }
+  .dg-rdv { background: var(--dg-accent-soft); border-radius: 14px; padding: 18px; display: grid; gap: 12px; }
+  .dg-rdv h3 { font-size: 19px; font-weight: 700; }
+  .dg-rdv > p { margin: 0; font-size: 15px; }
+  .dg-rdv ul { margin: 0; padding-left: 18px; font-size: 14px; display: grid; gap: 2px; }
+  .dg-rdv-form { display: grid; gap: 10px; }
+  .dg-ligne { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  @media (max-width: 480px) { .dg-ligne { grid-template-columns: minmax(0, 1fr); } }
+  .dg-rdv input, .dg-rdv select { font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--dg-ligne); border-radius: 10px; background: var(--dg-surface); color: var(--dg-ink); width: 100%; min-height: 46px; }
+  .dg-rdv .dg-select select { padding-right: 38px; }
+  .dg-rdv input[aria-invalid="true"] { border-color: var(--dg-faible); }
+  .dg-ok { background: var(--dg-surface); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+  @media (prefers-reduced-motion: reduce) { .dg-barre i, .dg-jauge svg circle { transition: none; } }
+
+  /* Accueil : bandeau d'ouverture centré */
+  .dg-hero { text-align: center; display: grid; justify-items: center; }
+  .dg-hero h1 { max-width: 22ch; text-wrap: balance; }
+  @media (min-width: 1024px) { .dg-hero h1 { max-width: none; } }
+  .dg-hero .dg-chapo { max-width: 72ch; color: var(--color-navy-600); text-wrap: balance; }
+  .dg-preuves { display: flex; gap: 6px 22px; flex-wrap: wrap; justify-content: center; font-size: 14px; color: var(--color-navy-600); margin: 0; padding: 0; list-style: none; }
+  .dg-preuves li { margin: 0; }
+  .dg-preuves b { color: var(--color-navy-900); font-family: var(--font-serif); font-size: 17px; margin-right: 4px; }
+}
+
+/* Impression du rapport (bouton « Télécharger le rapport (PDF) ») : seule la zone du diagnostic sort. */
+@media print {
+  body.dg-print > :not(main), body.dg-print main > *:not(:has(#diagnostic)) { display: none !important; }
+  body.dg-print main { padding: 0 !important; }
+  body.dg-print main * { visibility: hidden; }
+  body.dg-print #diagnostic, body.dg-print #diagnostic * { visibility: visible; }
+  body.dg-print #diagnostic { position: absolute; left: 0; top: 0; width: 100%; margin: 0; }
+  body.dg-print .dg-grille { display: flex; flex-direction: column; }
+  body.dg-print .dg-rapport { order: -1; }
+  body.dg-print .dg-panneau { border: 0; break-inside: auto; }
+  body.dg-print .dg-noprint, body.dg-print .dg-debloc, body.dg-print .dg-teaser { display: none !important; }
+  body.dg-print .dg-rapport { padding: 0 0 12px; }
+  body.dg-print .dg-parcours { margin-top: 16px; }
+  body.dg-print .dg-imprime { display: block; font-size: 11px; color: #555; margin: 0; }
+  body.dg-print .dg-reco, body.dg-print .dg-indic, body.dg-print .dg-frise li { break-inside: avoid; }
+  body.dg-print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 14mm; }
+}

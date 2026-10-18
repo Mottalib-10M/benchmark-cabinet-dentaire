@@ -10,7 +10,7 @@ export const CURRENCY = 'EUR';
 export const YEAR = 2026;
 /** Année de création du site — signal d'ancienneté (RECETTE §8.0). */
 export const SITE_FOUNDED = '2026';
-export const LAST_UPDATED = '2026-10-15';
+export const LAST_UPDATED = '2026-10-18';
 export const AUTHOR_NAME = 'Radif Partners';
 export const AUTHOR_ROLE: Record<string, string> = {"fr": "Éditeur d'outils de comparaison pour les cabinets dentaires libéraux · honoraires, charges, ratios", "en": "Publisher of benchmarking tools for French dental practices · fees, costs, ratios"};
 export const AUTHOR_DESC: Record<string, string> = {"fr": "Radif Partners rapproche les honoraires saisis par un chirurgien-dentiste des montants que l'Assurance Maladie publie chaque année par département et par spécialité (open data du SNDS), et des statistiques publiques sur les revenus et les charges de la profession. Chaque chiffre affiché renvoie à son jeu de données et à son année.", "en": "Radif Partners compares the fees a French dentist enters with the amounts the national health insurer (Assurance Maladie) publishes every year by département and specialty from the SNDS open data, and with public statistics on the profession's income and costs. Every figure shown links to its dataset and year."};

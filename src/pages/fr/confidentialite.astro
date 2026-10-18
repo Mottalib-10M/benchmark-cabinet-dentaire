@@ -18,7 +18,7 @@ const description = GA4_ID ? 'Mesure d’audience Google Analytics avec cookies,
     <LegalIdentity lang={lang} />
     <p>Pour toute question relative à vos données : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Aucun délégué à la protection des données n’a été désigné, les conditions de l’article 37 du RGPD n’étant pas réunies.</p>
     <h2>2. Vos saisies restent dans votre navigateur</h2>
-    <p>Les calculs du site sont exécutés par votre navigateur. Les montants, dates et situations que vous saisissez <strong>ne sont transmis à aucun serveur</strong>, ne sont enregistrés nulle part et ne sont rattachés à aucun identifiant. Le site ne demande ni compte, ni nom, ni adresse électronique. Un lien de partage reprend vos saisies dans l’adresse de la page : ne le transmettez qu’aux personnes de votre choix.</p>
+    <p>Les calculs du site sont exécutés par votre navigateur. Les montants, dates et situations que vous saisissez <strong>ne sont transmis à aucun serveur</strong>, ne sont enregistrés nulle part et ne sont rattachés à aucun identifiant. Le site ne demande ni compte, ni nom, ni adresse électronique pour calculer. Un lien de partage reprend vos saisies dans l’adresse de la page : ne le transmettez qu’aux personnes de votre choix. Seule exception, à votre initiative : la demande d’échange décrite plus bas.</p>
     <h2>3. Traitements réalisés</h2>
     <h3>Journaux de connexion de l’hébergeur</h3>
     <p>L’hébergeur enregistre, à chaque requête, l’adresse IP, la date et l’heure, la page demandée, le navigateur et la page de provenance. Finalité : sécurité du service et diagnostic des pannes. Base juridique : l’intérêt légitime de l’éditeur (art. 6-1 f du RGPD). Durée : celle de la politique de l’hébergeur.</p>
@@ -38,16 +38,28 @@ const description = GA4_ID ? 'Mesure d’audience Google Analytics avec cookies,
     <h3>Messages que vous nous envoyez</h3>
     <p>Si vous écrivez à l’adresse de contact, votre adresse électronique et votre message sont gardés le temps de vous répondre et, le cas échéant, de corriger une erreur, puis supprimés au plus tard trois ans après le dernier échange. Base juridique : l’intérêt légitime de l’éditeur (art. 6-1 f du RGPD).</p>
     <h2>4. Destinataires</h2>
-    <p>Aucune donnée n’est vendue, louée ni cédée. Y accèdent l’hébergeur{GA4_ID && ', Google Ireland Limited pour Google Analytics'}{CLARITY_ID && ', Microsoft Ireland Operations Limited pour Clarity'}, comme sous-traitants au sens de l’article 28 du RGPD. Aucune régie publicitaire n’intervient sur le site.</p>
+    <p>Aucune donnée n’est vendue, louée ni cédée. Y accèdent l’hébergeur{GA4_ID && ', Google Ireland Limited pour Google Analytics'}{CLARITY_ID && ', Microsoft Ireland Operations Limited pour Clarity'}, Supabase Inc. pour les demandes d’échange, comme sous-traitants au sens de l’article 28 du RGPD. Aucune régie publicitaire n’intervient sur le site.</p>
     <h2>5. Transferts hors de l’Union européenne</h2>
     <p>Les journaux de l’hébergeur peuvent être traités aux États-Unis.{GA4_ID && ' Les données de Google Analytics peuvent être transférées à Google LLC, aux États-Unis.'}{CLARITY_ID && ' Celles de Clarity peuvent l’être à Microsoft Corporation, aux États-Unis.'} Ces transferts sont encadrés par le cadre de protection des données UE–États-Unis (EU–U.S. Data Privacy Framework) et par les clauses contractuelles types de la Commission européenne.</p>
+    {/* site:debut */}
+    <h2>Demande d’échange après le diagnostic</h2>
+    <p>À la fin du diagnostic de l’accueil, vous pouvez demander un échange de 30 minutes. Ce formulaire est le seul envoi de données du site, et il ne part que si vous cliquez sur le bouton d’envoi.</p>
+    <ul>
+      <li><strong>Données collectées</strong> : nom et prénom, adresse électronique, ville du cabinet et téléphone s’ils sont remplis, créneau préféré, langue de la page, et le rapport du diagnostic (vos réponses, la note, les indicateurs et les priorités affichés, avec le lien de partage).</li>
+      <li><strong>Finalité</strong> : vous recontacter par e-mail pour fixer et préparer l’échange demandé. Aucun envoi automatique n’est fait, aucune prospection commerciale ne suit, rien n’est vendu ni cédé.</li>
+      <li><strong>Base juridique</strong> : les mesures prises à votre demande avant un éventuel accord (art. 6-1 b du RGPD).</li>
+      <li><strong>Durée de conservation</strong> : trois ans après le dernier contact, puis suppression. Vous pouvez demander l’effacement à tout moment.</li>
+      <li><strong>Où sont les données</strong> : dans une base de données hébergée par Supabase Inc., sous-traitant au sens de l’article 28 du RGPD. La clé publique du site permet seulement d’ajouter une demande, pas de lire celles déjà enregistrées. Supabase étant une société américaine, un transfert vers les États-Unis peut avoir lieu, encadré par les clauses contractuelles types de la Commission européenne.</li>
+      <li><strong>Vos droits</strong> : accès, rectification, effacement, limitation et opposition, en écrivant à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> avec l’adresse utilisée dans la demande.</li>
+    </ul>
+    {/* site:fin */}
     <h2>6. Vos droits</h2>
-    <p>Vous disposez des droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité prévus aux articles 15 à 22 du RGPD. Écrivez à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ; nous répondons dans un délai d’un mois. Sans compte utilisateur, nous ne détenons le plus souvent aucune donnée permettant de vous identifier : nous vous le dirons alors.</p>
+    <p>Vous disposez des droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité prévus aux articles 15 à 22 du RGPD. Écrivez à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ; nous répondons dans un délai d’un mois. Sans compte utilisateur, nous ne détenons le plus souvent aucune donnée permettant de vous identifier, sauf si vous avez fait une demande d’échange : nous vous le dirons alors.</p>
     {GA4_ID && (<p>Pour vous opposer à la mesure d’audience sans nous écrire : bloquez ou supprimez les cookies dans les réglages de votre navigateur, ou installez le <a href="https://tools.google.com/dlpage/gaoptout" rel="nofollow noopener" target="_blank">module de désactivation de Google Analytics</a>. Le site fonctionne alors de la même façon.</p>)}
     {CLARITY_ID && (<p>Pour la mesure de stabilité : bloquez le domaine <code>clarity.ms</code> dans votre navigateur ou avec un bloqueur de contenu.</p>)}
     <p>Vous pouvez introduire une réclamation auprès de l’autorité de contrôle : {LEGAL.supervisoryAuthority} (<a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">{LEGAL.supervisoryAuthorityUrl}</a>).</p>
     <h2>7. Pas de décision automatisée</h2>
-    <p>Le résultat d’un calcul est une estimation faite à votre demande, sur vos saisies, dans votre navigateur. Il ne produit aucun effet juridique et n’est pas une décision automatisée au sens de l’article 22 du RGPD. Aucun profilage n’est pratiqué.</p>
+    <p>Le résultat d’un calcul, y compris la note et les priorités du diagnostic, est une estimation faite à votre demande, sur vos saisies, dans votre navigateur. Il ne produit aucun effet juridique et n’est pas une décision automatisée au sens de l’article 22 du RGPD. Aucun profilage n’est pratiqué.</p>
     <p>Voir aussi la page <a href={route('cookies', lang)}>cookies</a>. Dernière mise à jour : {LAST_UPDATED}.</p>
   </div>
 </PageLayout>

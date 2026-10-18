@@ -3,3 +3,4 @@ dist
 .astro
 scripts/data/raw/
 __pycache__/
+.env

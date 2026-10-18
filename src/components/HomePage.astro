@@ -1,35 +1,75 @@
 ---
 /**
- * Accueil d'une langue : le simulateur d'abord (RECETTE §5), puis la page pilier. Texte dans
- * src/content/accueil.ts. Trame propre au sujet (§6.6) : simulateur, carte des écarts par
- * département (tableau trié), spécialités, guides de gestion, méthode.
+ * Accueil d'une langue (RECETTE §5) : le diagnostic en quatre étapes d'abord (maquette validée par
+ * l'éditeur, 2026-10), puis la rubrique « Organisation et performance », puis la page pilier avec le
+ * comparateur détaillé des honoraires. Texte dans src/content/accueil.ts.
  */
 import PageLayout from '../layouts/PageLayout.astro';
 import Benchmark from './calc/Benchmark';
+import Diagnostic from './calc/diagnostic/Diagnostic';
 import Clamp from './Clamp.astro';
 import MiniSim from './calc/MiniSim';
 import { HOME } from '../content/accueil';
 import { route, type Locale } from '../i18n/routes';
+import { label } from '../i18n/nav';
 import { helpers } from '../lib/helpers';
+import { PAGES, pageById } from '../lib/guides';
+import { DEP_CODES } from '../lib/engine/data';
+import { PRIO_ARTICLE } from './calc/diagnostic/textes';
 import { P } from '../lib/engine/params';
 import type { SourceKey } from '../lib/engine/params';
+import { CONTACT_EMAIL } from '../data/site-config';
 import { faqSchema, organizationSchema, websiteSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
 interface Props { lang: Locale }
 const { lang } = Astro.props;
+const fr = lang === 'fr';
 const x = HOME[lang];
 const path = route('home', lang);
 const parts = x.body(helpers(lang)).split(/<!--mini:([A-Za-z0-9_]+)-->/);
 const sources = (Object.keys(P.sources) as SourceKey[]).map((k) => ({ name: P.sources[k].label[lang], url: P.sources[k].url }));
 const jsonLd = [websiteSchema(lang), organizationSchema(lang), webPageSchema({ name: x.h1, description: x.description, path, lang }), webApplicationSchema({ name: x.h1, description: x.description, path, lang }), faqSchema(x.faqs, lang)];
 const methodHref = route('method', lang);
+// Articles vers lesquels pointent les priorités du rapport : adresse et titre lisible.
+const links: Record<string, string> = {};
+for (const id of new Set(Object.values(PRIO_ARTICLE))) {
+  const pg = pageById(id);
+  if (!pg) continue;
+  links[id] = route(id, lang);
+  links[`${id}:label`] = pg[lang].h1;
+}
+const rubrique = PAGES.filter((p) => p.group === 'organisation' && p.id !== 'organisation-cabinet');
+const preuves = fr
+  ? [['3 min', 'pour tout remplir'], ['7', 'indicateurs'], [String(DEP_CODES.length), 'départements comparés'], ['0', 'inscription']]
+  : [['3 min', 'to fill in'], ['7', 'indicators'], [String(DEP_CODES.length), 'départements compared'], ['0', 'sign-up']];
 ---
 <PageLayout title={x.title} description={x.description} lang={lang} jsonLd={jsonLd} faqs={x.faqs} sources={sources}>
-  <header class="mb-3 sm:mb-4">
-    <h1 class="text-[1.75rem] font-bold leading-tight text-navy-900 sm:text-3xl md:text-4xl">{x.h1}</h1>
-    <p class="mt-2 text-base text-navy-700 sm:text-lg">{x.intro}</p>
+  <header class="dg-hero mb-4 sm:mb-5">
+    <h1 class="text-[1.65rem] font-bold leading-tight text-navy-900 sm:text-3xl lg:text-[2.1rem]">{x.h1}</h1>
+    <p class="dg-chapo mt-2 text-base sm:text-lg">{x.intro}</p>
+    <ul class="dg-preuves mt-2">{preuves.map(([b, t]) => <li><b>{b}</b>{t}</li>)}</ul>
   </header>
+  <Diagnostic client:load lang={lang} links={links} privacyHref={route('privacy', lang)} contactEmail={CONTACT_EMAIL} />
+
+  <section class="mb-12" data-chrome aria-labelledby="rubrique-titre">
+    <h2 id="rubrique-titre" class="text-2xl font-bold text-navy-900">{fr ? 'Organisation et performance du cabinet' : 'Practice organisation and performance'}</h2>
+    <p class="mt-2 max-w-3xl text-navy-600">{fr ? 'Des articles de fond, appuyés sur les textes et les statistiques publiques, chacun avec son calcul. Vos priorités renvoient vers eux.' : 'In-depth articles grounded in the rules and public statistics, each with its own calculator. Your priorities link to them.'} <a class="font-semibold text-accent-700 underline underline-offset-2" href={route('organisation-cabinet', lang)}>{fr ? 'Vue d’ensemble de la rubrique' : 'Section overview'}</a></p>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {rubrique.map((p) => (
+        <a href={route(p.id, lang)} class="flex flex-col gap-2 rounded-xl border border-navy-200 bg-white p-5 transition-colors hover:border-accent-300 hover:bg-accent-50">
+          <span class="text-xs font-semibold uppercase tracking-wide text-accent-700">{label(p.id, lang)}</span>
+          <span class="font-serif text-lg font-semibold leading-snug text-navy-900">{p[lang].h1}</span>
+          <span class="text-sm text-navy-600">{p[lang].card}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <Clamp text={x.resume} lang={lang} id="clamp-home" sentences={1} class="mb-3" />
-  <div class="mb-10 mt-3"><Benchmark client:load lang={lang} methodHref={methodHref} /></div>
+  <section class="mb-10 mt-8" aria-labelledby="comparateur-titre">
+    <h2 id="comparateur-titre" class="mb-2 text-2xl font-bold text-navy-900">{fr ? 'Le comparateur détaillé des honoraires' : 'The detailed fee benchmark'}</h2>
+    <p class="mb-4 text-navy-600">{fr ? 'Honoraires, implants retirés, bénéfice et taux de charges face à votre spécialité et à votre département.' : 'Fees with implants taken out, profit and cost ratio against your specialty and département.'}</p>
+    <Benchmark client:load lang={lang} methodHref={methodHref} barre={false} url={false} />
+  </section>
   <div class="prose prose-slate max-w-none">
     {parts.map((p, i) => i % 2 === 0 ? <Fragment set:html={p} /> : <div data-chrome><MiniSim client:load kind={p} lang={lang} secondaire /></div>)}
   </div>

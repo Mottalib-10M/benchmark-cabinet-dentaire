@@ -77,9 +77,9 @@ const TX = {
 };
 const SPEC_PLURAL = { fr: { omni: 'omnipraticiens', odf: 'orthodontistes', stomato: 'stomatologues' }, en: { omni: 'general dentists', odf: 'orthodontists', stomato: 'stomatologists' } };
 
-export interface BenchmarkProps { lang?: L; methodHref?: string; spec?: Spec; dep?: string }
+export interface BenchmarkProps { lang?: L; methodHref?: string; spec?: Spec; dep?: string; /** Barre de résultat collante (désactivée à l'accueil, où le diagnostic passe d'abord). */ barre?: boolean; /** Lire et écrire l'état dans l'adresse (désactivé à l'accueil : l'adresse appartient au diagnostic). */ url?: boolean }
 
-export default function Benchmark({ lang = 'fr', methodHref, spec: spec0 = 'omni', dep: dep0 = '69' }: BenchmarkProps) {
+export default function Benchmark({ lang = 'fr', methodHref, spec: spec0 = 'omni', dep: dep0 = '69', barre = true, url = true }: BenchmarkProps) {
   const t = TX[lang];
   const $ = (x: number) => formatMoney(x, 0, lang);
   const pc = (x: number, d = 1) => formatPercent(x, d, lang);
@@ -108,6 +108,7 @@ export default function Benchmark({ lang = 'fr', methodHref, spec: spec0 = 'omni
     setRecettes(d.recettes); setHn(d.horsNomenclature * 100); setFauteuils(d.fauteuils); setSalaries(d.salaries); setJours(d.joursSemaine); setSemaines(d.semaines);
   };
   useEffect(() => {
+    if (!url) return;
     const u = readParams(window.location.search);
     if (![...u.keys()].length) return;
     const s = (SPECS.includes(str(u, 'sp', spec0) as Spec) ? str(u, 'sp', spec0) : spec0) as Spec;
@@ -119,6 +120,7 @@ export default function Benchmark({ lang = 'fr', methodHref, spec: spec0 = 'omni
     setPatients(num(u, 'pa', 0)); setDepPart(num(u, 'dp', 0));
   }, []);
   useEffect(() => {
+    if (!url) return;
     updateURL({ sp: spec, d: dep, r: recettes, hn, f: fauteuils, sa: salaries, j: jours, w: semaines, st: statut, cp: personnel || undefined, cl: prothesiste || undefined, cf: fournitures || undefined, cy: loyer || undefined, ca: autres || undefined, co: cotis || undefined, pa: patients || undefined, dp: depPart || undefined });
   }, [spec, dep, recettes, hn, fauteuils, salaries, jours, semaines, statut, personnel, prothesiste, fournitures, loyer, autres, cotis, patients, depPart]);
 
@@ -256,7 +258,7 @@ export default function Benchmark({ lang = 'fr', methodHref, spec: spec0 = 'omni
           </div>
         </div>
       </div>
-      <ResultBar target={resRef} label={`${t.bar} · ${depName(dep)}`} value={ratioTxt} />
+      {barre && <ResultBar target={resRef} label={`${t.bar} · ${depName(dep)}`} value={ratioTxt} />}
     </div>
   );
 }
