@@ -8,13 +8,15 @@
 import { DEPS, DEP_CODES } from './engine/data';
 
 /**
- * Seuil de publication d'une page : 510 praticiens donne 27 départements (54 pages en fr + en), dans
- * la limite de 100 pages du site (RECETTE §3, règle absolue du 2026-10-16). Les 33 départements de 190
+ * Seuil de publication d'une page : 590 praticiens donne 22 départements (44 pages en fr + en), dans
+ * la limite de 100 pages du site (RECETTE §3, règle absolue du 2026-10-16). Relevé de 510 à 590 le
+ * 2026-10-18 pour faire place à la rubrique « Organisation et performance » (14 pages) : Seine-Saint-Denis,
+ * Seine-Maritime, Finistère, Essonne et Val-d'Oise perdent leur page et redirigent comme les autres. Les 33 départements de 190
  * à 509 praticiens qui avaient une page jusqu'au 2026-10-16 restent dans le classement des 101
  * départements (deux tableaux) et dans le simulateur ; leurs anciennes adresses redirigent vers leur
  * ligne du classement (404.astro, ANCIENNES_PAGES).
  */
-export const SEUIL = 510;
+export const SEUIL = 590;
 /** Seuil en vigueur jusqu'au 2026-10-16 (60 départements) : sert seulement aux redirections. */
 const SEUIL_AVANT_2026_10_16 = 190;
 
@@ -31,7 +33,7 @@ const eff = (c: string) => DEPS[c].p.ensemble?.eff ?? 0;
 
 export const DEP_PAGES: DepPage[] = DEP_CODES.filter((c) => eff(c) >= SEUIL).map(depPage);
 
-/** Pages retirées le 2026-10-16 : leur adresse redirige vers la ligne du département dans le classement. */
+/** Pages retirées le 2026-10-16 et le 2026-10-18 : leur adresse redirige vers la ligne du département dans le classement. */
 export const ANCIENNES_PAGES: DepPage[] = DEP_CODES.filter((c) => eff(c) >= SEUIL_AVANT_2026_10_16 && eff(c) < SEUIL).map(depPage);
 
 /** Ancre de la ligne d'un département dans le tableau du classement. */

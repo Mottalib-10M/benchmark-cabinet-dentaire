@@ -11,7 +11,8 @@
       "fauteuils": 2,
       "salaries": 2,
       "joursSemaine": 4.5,
-      "semaines": 45
+      "semaines": 45,
+      "heuresJour": 7
     },
     "odf": {
       "recettes": 740000,
@@ -19,7 +20,8 @@
       "fauteuils": 4,
       "salaries": 4,
       "joursSemaine": 4.5,
-      "semaines": 45
+      "semaines": 45,
+      "heuresJour": 7
     },
     "stomato": {
       "recettes": 530000,
@@ -27,7 +29,8 @@
       "fauteuils": 2,
       "salaries": 2,
       "joursSemaine": 4.5,
-      "semaines": 45
+      "semaines": 45,
+      "heuresJour": 7
     }
   },
   "revenus": {
@@ -178,6 +181,87 @@
     "chirurgie_orale": 298,
     "medecine_bucco_dentaire": 151
   },
+  "temps_travail": {
+    "_source": "orsPdlPanel",
+    "_note": "Seule enquête publique trouvée sur le temps de travail des chirurgiens-dentistes libéraux : régionale (Pays de la Loire), 2015, 250 omnipraticiens. Aucune donnée nationale DREES, Insee, ONCD ou CARCDSF. Heures par an = 43,3 h × (52 − 6,3) semaines, calcul de Dentimètre. Temps de travail total, pas seulement au fauteuil.",
+    "annee_enquete": 2015,
+    "champ": "omnipraticiens libéraux des Pays de la Loire, 250 praticiens interrogés",
+    "heures_semaine": 43.3,
+    "jours_semaine": 4,
+    "semaines_conges": 6.3,
+    "heures_journee_type": 9,
+    "heures_an": 1979
+  },
+  "delais_rdv": {
+    "_source": "dreesDelais",
+    "annee_enquete": "2016-2017",
+    "champ": "3 534 demandes de rendez-vous chez un chirurgien-dentiste, cohorte Constances, 20-71 ans, régime général, France métropolitaine",
+    "dentiste_median_jours": 17,
+    "dentiste_moyen_jours": 28,
+    "dentiste_q1_jours": 7,
+    "dentiste_q3_jours": 37,
+    "median_symptomes_jours": 8,
+    "median_autre_motif_jours": 24
+  },
+  "rdv_non_honores": {
+    "_source": "anmRdv",
+    "annee": 2023,
+    "_note": "Médecins, pas chirurgiens-dentistes : extrapolation de l'Académie nationale de médecine et du Cnom, sans méthode publiée. Aucun chiffre officiel pour les dentistes.",
+    "part_hebdo_min": 0.06,
+    "part_hebdo_max": 0.1,
+    "rdv_par_an_millions": 27
+  },
+  "cent_pour_cent_sante": {
+    "_source": "dreesCns2025",
+    "annee": 2025,
+    "protheses_100s_meur": 3803,
+    "protheses_total_meur": 7939,
+    "honoraires_dentaires_meur": 15819,
+    "part_complementaires": 0.646,
+    "cour_comptes_2021": {
+      "_source": "ccomptes100s",
+      "rac0_actes": 0.55,
+      "modere_actes": 0.21,
+      "libre_actes": 0.24,
+      "libre_actes_2019": 0.53
+    }
+  },
+  "diagnostic": {
+    "_note": "Hypothèses de calcul de Dentimètre pour le diagnostic : ce ne sont PAS des statistiques. Elles servent aux notes et aux gains possibles, et sont publiées telles quelles sur la page Méthode. Les repères, eux, viennent des sources datées (ameli.json, unasa.json, temps_travail, delais_rdv).",
+    "duree_rdv_min": 30,
+    "lapins_par_jour": {
+      "jamais": 0.2,
+      "un": 1,
+      "deux": 2,
+      "trois": 3
+    },
+    "delai_jours": {
+      "semaine": 4,
+      "deux": 10,
+      "mois": 22,
+      "plus": 45
+    },
+    "penalite_delai": {
+      "semaine": 0,
+      "deux": 5,
+      "mois": 15,
+      "plus": 30
+    },
+    "points_par_point_lapins": 4,
+    "points_par_point_loyer": 6,
+    "penalite_equipe_max": 30,
+    "points_par_acte": 6,
+    "part_recuperable_lapins": 0.33,
+    "heures_par_tache_semaine": 0.5,
+    "part_convertie_temps": 0.5,
+    "seuil_loyer": 0.3,
+    "part_recuperable_loyer": 0.25,
+    "seuil_production": 0.1,
+    "jours_temps_plein": 4,
+    "part_recuperable_production": 0.25,
+    "plafond_gain_ca": 0.12,
+    "part_ecart_horaire_favorable": 0.5
+  },
   "sources": {
     "ameliHonoraires": {
       "url": "https://data.ameli.fr/explore/dataset/honoraires/",
@@ -325,6 +409,188 @@
         "fr": "Agence du numérique en santé, Annuaire Santé (RPPS), extraction en libre accès",
         "en": "French digital health agency, Annuaire Santé (RPPS) open extract"
       }
+    },
+    "orsPdlPanel": {
+      "url": "https://www.orspaysdelaloire.com/sites/default/files/pages/pdf/2016_PDF/2016_panel_cd_enq2015_rapport.pdf",
+      "label": {
+        "fr": "ORS et URPS chirurgiens-dentistes des Pays de la Loire, panel des omnipraticiens libéraux, enquête 2015 (rapport d’avril 2016)",
+        "en": "ORS and URPS dentists of Pays de la Loire, panel of private general dentists, 2015 survey (April 2016 report)"
+      }
+    },
+    "dreesDelais": {
+      "url": "https://drees.solidarites-sante.gouv.fr/sites/default/files/2020-08/er1085-2.pdf",
+      "label": {
+        "fr": "DREES, Études et résultats n° 1085, délais d’attente pour un rendez-vous (enquête 2016-2017)",
+        "en": "DREES, Études et résultats no. 1085, waiting times for an appointment (2016-2017 survey)"
+      }
+    },
+    "anmRdv": {
+      "url": "https://www.academie-medecine.fr/wp-content/uploads/2023/01/23.1.27-Communique-RV-non-honores.pdf",
+      "label": {
+        "fr": "Académie nationale de médecine et Ordre des médecins, communiqué « Rendez-vous non honorés », 27 janvier 2023",
+        "en": "French Academy of Medicine and Ordre des médecins, “Missed appointments” statement, 27 January 2023"
+      }
+    },
+    "ccDecisionLfss2025": {
+      "url": "https://www.conseil-constitutionnel.fr/decision/2025/2025875DC.htm",
+      "label": {
+        "fr": "Conseil constitutionnel, décision n° 2025-875 DC du 28 février 2025 (LFSS 2025, pénalité pour rendez-vous non honoré censurée)",
+        "en": "Constitutional Council, decision 2025-875 DC of 28 February 2025 (2025 social security act, missed-appointment penalty struck down)"
+      }
+    },
+    "dreesCns2025": {
+      "url": "https://drees.solidarites-sante.gouv.fr/publications-communique-de-presse-infographie-documents-de-reference/261001-les-d%C3%A9penses-de-sant%C3%A9-en-2025-edition-2026-panorama-de-la-drees",
+      "label": {
+        "fr": "DREES, Les dépenses de santé en 2025, édition 2026, fiche 14 « Les soins et prothèses dentaires »",
+        "en": "DREES, Health spending in 2025, 2026 edition, sheet 14 “Dental care and prosthetics”"
+      }
+    },
+    "ccomptes100s": {
+      "url": "https://www.ccomptes.fr/sites/default/files/2023-10/20220728-100-pourcent-sante.pdf",
+      "label": {
+        "fr": "Cour des comptes, La réforme du 100 % santé, communication au Sénat, juillet 2022",
+        "en": "Cour des comptes, The 100% Santé reform, report to the Senate, July 2022"
+      }
+    },
+    "ameliCalendrier": {
+      "url": "https://www.ameli.fr/chirurgien-dentiste/textes-reference/convention/calendrier-mesures-conventionnelles",
+      "label": {
+        "fr": "Assurance Maladie, calendrier des mesures de la convention des chirurgiens-dentistes de 2023",
+        "en": "Assurance Maladie, timetable of the 2023 dentists’ agreement measures"
+      }
+    },
+    "cspL4393_8": {
+      "label": {
+        "fr": "Code de la santé publique, article L4393-8 (profession d’assistant dentaire, version du 21 mai 2023)",
+        "en": "French Public Health Code, article L4393-8 (dental assistant profession, version of 21 May 2023)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047568537"
+    },
+    "cspR4393_8": {
+      "label": {
+        "fr": "Code de la santé publique, article R4393-8 (activités de l’assistant dentaire, décret du 1er décembre 2016)",
+        "en": "French Public Health Code, article R4393-8 (dental assistant duties, decree of 1 December 2016)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033522436"
+    },
+    "arreteFormationAD": {
+      "label": {
+        "fr": "Arrêté du 8 juin 2018 relatif à la formation conduisant au titre d’assistant dentaire",
+        "en": "Order of 8 June 2018 on dental assistant training"
+      },
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000037057953"
+    },
+    "loiRist2023": {
+      "label": {
+        "fr": "Loi n° 2023-379 du 19 mai 2023 (accès direct et assistant dentaire, articles 5 et 6)",
+        "en": "Law no. 2023-379 of 19 May 2023 (dental assistant, articles 5 and 6)"
+      },
+      "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047561956"
+    },
+    "qeAn8893": {
+      "label": {
+        "fr": "Assemblée nationale, question écrite n° 8893 et réponse du ministère publiée le 7 juillet 2026 (décret sur l’assistant dentaire)",
+        "en": "National Assembly, written question no. 8893 and ministry answer of 7 July 2026 (dental assistant decree)"
+      },
+      "url": "https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE8893"
+    },
+    "pplAssistantSenat": {
+      "label": {
+        "fr": "Sénat, proposition de loi créant la profession d’assistant en santé bucco-dentaire, texte adopté le 6 novembre 2025",
+        "en": "Senate, bill creating the oral health assistant profession, adopted 6 November 2025"
+      },
+      "url": "https://www.senat.fr/leg/tas25-016.html"
+    },
+    "ccn1619Classification": {
+      "label": {
+        "fr": "Convention collective des cabinets dentaires (IDCC 1619), annexe I : classification des emplois",
+        "en": "Dental practices collective agreement (IDCC 1619), annex I: job classification"
+      },
+      "url": "https://www.legifrance.gouv.fr/conv_coll/id/KALITEXT000005649106"
+    },
+    "convention2023": {
+      "label": {
+        "fr": "Arrêté du 23 août 2023 portant approbation de la convention nationale des chirurgiens-dentistes (JO du 25 août 2023)",
+        "en": "Order of 23 August 2023 approving the national dentists’ agreement (Official Journal of 25 August 2023)"
+      },
+      "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047996103"
+    },
+    "conventionAnnexes": {
+      "label": {
+        "fr": "Assurance Maladie, annexes de la convention dentaire consolidée (avenant 2), dont le modèle de devis (annexe III)",
+        "en": "Assurance Maladie, annexes to the consolidated dental agreement (amendment 2), including the quote template (annex III)"
+      },
+      "url": "https://www.ameli.fr/sites/default/files/Documents/annexes-convention-dentaires-avenant2.pdf"
+    },
+    "ameli100s": {
+      "label": {
+        "fr": "Assurance Maladie, matériaux et actes prothétiques du 100 % Santé dentaire (espace chirurgien-dentiste)",
+        "en": "Assurance Maladie, materials and prosthetic procedures in 100% Santé dental (dentists’ section)"
+      },
+      "url": "https://www.ameli.fr/chirurgien-dentiste/exercice-liberal/prescription-prise-charge/materieux-actes-prothetiques-100-sante-dentaire"
+    },
+    "cspL1111_3_2": {
+      "label": {
+        "fr": "Code de la santé publique, article L1111-3-2 (devis et affichage des tarifs)",
+        "en": "French Public Health Code, article L1111-3-2 (quotes and fee display)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046812436"
+    },
+    "cspL1111_3_4": {
+      "label": {
+        "fr": "Code de la santé publique, article L1111-3-4 (frais facturables par un professionnel conventionné)",
+        "en": "French Public Health Code, article L1111-3-4 (charges a contracted practitioner may bill)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000048702719"
+    },
+    "arreteInfo2018": {
+      "label": {
+        "fr": "Arrêté du 30 mai 2018 relatif à l’information des personnes sur les tarifs (affichage, information écrite préalable)",
+        "en": "Order of 30 May 2018 on informing patients about fees (display, prior written information)"
+      },
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000037032490"
+    },
+    "loi2005_882": {
+      "label": {
+        "fr": "Loi n° 2005-882 du 2 août 2005, article 18 (collaborateur libéral)",
+        "en": "Law no. 2005-882 of 2 August 2005, article 18 (self-employed associate)"
+      },
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000452052"
+    },
+    "deontologieDentiste": {
+      "label": {
+        "fr": "Code de la santé publique, articles R4127-276 à R4127-279 (collaborateurs et contrats des chirurgiens-dentistes)",
+        "en": "French Public Health Code, articles R4127-276 to R4127-279 (dentists’ associates and contracts)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072665/LEGISCTA000006196417/"
+    },
+    "oncdCollaboration": {
+      "label": {
+        "fr": "Ordre national des chirurgiens-dentistes, contrat type de collaborateur libéral (version du 1er septembre 2023)",
+        "en": "French dental council (ONCD), model self-employed associate contract (1 September 2023 version)"
+      },
+      "url": "https://www.ordre-chirurgiens-dentistes.fr/download/53091"
+    },
+    "oncdNoteContrats": {
+      "label": {
+        "fr": "Ordre national des chirurgiens-dentistes, note d’information « Les contrats de collaboration » (30 septembre 2020)",
+        "en": "French dental council (ONCD), briefing note on associate contracts (30 September 2020)"
+      },
+      "url": "https://ordre-chirurgiens-dentistes.fr/download/52724"
+    },
+    "cspR4127_240": {
+      "label": {
+        "fr": "Code de la santé publique, article R4127-240 (honoraires des chirurgiens-dentistes, tact et mesure)",
+        "en": "French Public Health Code, article R4127-240 (dentists’ fees)"
+      },
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042795939"
+    },
+    "orsPdlPanel2012": {
+      "label": {
+        "fr": "ORS et URPS chirurgiens-dentistes des Pays de la Loire, panel des omnipraticiens, vague 2012 (organisation de l’agenda)",
+        "en": "ORS and dentists’ URPS of Pays de la Loire, general dentists panel, 2012 wave (diary organisation)"
+      },
+      "url": "https://www.orspaysdelaloire.com/sites/default/files/pages/pdf/2013_PDF/2013_panel_chirurgiensdentistes.pdf"
     }
   }
 }

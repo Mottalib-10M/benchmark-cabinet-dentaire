@@ -68,10 +68,10 @@ const tNiveaux = (l: 'fr' | 'en', h: H) => {
 
 export default defineGuide({
   id: 'salaire-assistante-dentaire',
-  group: 'gestion',
-  order: 40,
+  group: 'organisation',
+  order: 75,
   mini: 'coutAssistante',
-  related: ['taux-de-charges', 'ca-par-fauteuil', 'selarl-ou-bnc', 'omnipraticien', 'revenu-dentiste'],
+  related: ['deleguer-assistante', 'organisation-cabinet', 'taux-de-charges', 'ca-par-fauteuil', 'selarl-ou-bnc', 'revenu-dentiste'],
   sources: ['ccn1619Salaires', 'spSmic', 'urssafTaux', 'urssafRgdu', 'unasa'],
   fr: {
     slug: 'salaire-assistante-dentaire',

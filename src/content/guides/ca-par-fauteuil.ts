@@ -52,10 +52,10 @@ const tableauQuarts = (l: 'fr' | 'en', h: H) => {
 
 export default defineGuide({
   id: 'ca-par-fauteuil',
-  group: 'gestion',
-  order: 30,
+  group: 'organisation',
+  order: 35,
   mini: 'caFauteuil',
-  related: ['taux-de-charges', 'omnipraticien', 'orthodontiste', 'salaire-assistante-dentaire', 'classement-departements'],
+  related: ['organisation-cabinet', 'indicateurs-cabinet', 'taux-de-charges', 'collaboration-liberale', 'omnipraticien', 'classement-departements'],
   sources: ['ameliHonoraires', 'ameliPatientele', 'ameliMethode', 'dreesCns', 'unasa'],
   fr: {
     slug: 'chiffre-affaires-par-fauteuil',

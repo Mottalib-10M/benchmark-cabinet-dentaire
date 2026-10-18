@@ -12,5 +12,5 @@ export const PAGES: PageDef[] = Object.entries(mods)
   })
   .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
 
-export const GROUPS: Group[] = ['specialites', 'gestion', 'territoires'];
+export const GROUPS: Group[] = ['organisation', 'specialites', 'gestion', 'territoires'];
 export const pageById = (id: string) => PAGES.find((p) => p.id === id);

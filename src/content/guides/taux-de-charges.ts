@@ -49,10 +49,10 @@ const tableau = (l: 'fr' | 'en', h: { table: (a: string[], b: Array<Array<string
 
 export default defineGuide({
   id: 'taux-de-charges',
-  group: 'gestion',
-  order: 20,
+  group: 'organisation',
+  order: 40,
   mini: 'tauxCharges',
-  related: ['ca-par-fauteuil', 'salaire-assistante-dentaire', 'cotisations-carcdsf', 'revenu-dentiste', 'selarl-ou-bnc', 'omnipraticien'],
+  related: ['organisation-cabinet', 'ca-par-fauteuil', 'salaire-assistante-dentaire', 'collaboration-liberale', 'cotisations-carcdsf', 'revenu-dentiste'],
   sources: ['unasa', 'dreesRevenus', 'ameliHonoraires'],
   fr: {
     slug: 'taux-de-charges-cabinet-dentaire',
@@ -89,6 +89,10 @@ ${tableau('fr', h)}
 <li><strong>Charges externes</strong> au sens large : ${h.pct(externes)}, un agrégat qui comprend loyers, locations, honoraires, assurances et cotisations personnelles.</li>
 </ul>
 <p>Ces moyennes décrivent des cabinets adhérents d'un organisme de gestion agréé, donc des comptes tenus et contrôlés ; elles ne disent rien des cabinets en société à l'IS, ni des centres de santé. Les stomatologues, qui sont des médecins, n'ont aucune statistique de cabinet publiée : le site leur applique la référence des chirurgiens-dentistes et l'affiche comme telle. Pour les orthodontistes, ${n(O.echantillon, 'fr')} cabinets donnent ${h.pct(O.taux)} ; c'est un ordre de grandeur, pas une norme.</p>
+<h2>Le loyer, le poste qui se pilote le moins vite</h2>
+<p>Loyer et charges locatives prennent ${h.pct(G.loyer)} des recettes en moyenne, de ${h.pct(Q[0].loyer)} dans le premier quart de recettes à ${h.pct(Q[3].loyer)} dans le dernier (UNASA ${Y}). Le poids baisse avec la taille parce que le loyer ne suit pas l’activité : un cabinet qui produit davantage dans les mêmes murs dilue cette charge fixe. C’est aussi le poste le plus lent à corriger, puisqu’un bail commercial ou professionnel engage pour plusieurs années.</p>
+<p>Trois pistes existent quand le loyer pèse trop. Remplir les heures où les fauteuils restent vides fait baisser la part sans toucher au bail. Partager les locaux avec un ${h.a('collaboration-liberale', 'collaborateur libéral')}, qui verse une redevance au titulaire, fait payer une partie du loyer par un autre praticien. Renégocier ou déménager reste la solution lourde, à mesurer sur la durée du bail. Le praticien propriétaire de ses murs saisit un loyer nul, mais l’emprunt ou le loyer versé à sa société civile immobilière joue économiquement le même rôle. Le diagnostic de l’accueil signale le loyer quand il dépasse de ${h.pct(P.diagnostic.seuil_loyer, 0)} le repère de votre quart de recettes.</p>
+<!--mini:poidsLoyer-->
 <h2>Le dénominateur compte autant que les charges</h2>
 <p>Un taux se calcule sur des recettes, et toutes les recettes ne se valent pas. L'UNASA part des recettes encaissées (${h.eur(encaisse)} en moyenne), retire les débours et les honoraires rétrocédés (${h.eur(retro(0))}), et obtient le montant net de ${h.eur(G.recettes)}. Les rétrocessions pèsent plus lourd dans les petits cabinets, ${h.eur(retro(1))} dans le premier quart contre ${h.eur(retro(4))} dans le dernier : un praticien qui travaille en partie comme collaborateur reverse une fraction de ce qu'il facture.</p>
 <p>Ce montant net ne se confond pas avec les honoraires publiés par l'Assurance Maladie. La moyenne ${DATA_YEAR} d'un omnipraticien actif à part entière, ${h.eur(ameliOmni)}, ne compte que les actes enregistrés par l'assurance maladie et laisse de côté l'implantologie, la parodontie ou les autres actes hors nomenclature non remboursables. Les recettes UNASA, elles, comprennent tout ce qui entre au cabinet. Rapporter vos charges à vos honoraires Ameli plutôt qu'à vos recettes totales gonfle donc mécaniquement le taux.</p>
@@ -132,6 +136,10 @@ ${tableau('en', h)}
 <li><strong>External costs</strong> as UNASA groups them: ${h.pct(externes)}, a bundle of rent, leasing, fees, insurance and personal contributions.</li>
 </ul>
 <p>The figures describe members of approved accounting bodies, so the books are kept and checked. They say nothing about incorporated practices or health centres. Stomatologists are physicians in France and no practice accounts are published for them, so the site borrows the dentists’ benchmark and labels it as borrowed. For orthodontists, ${n(O.echantillon, 'en')} practices give ${h.pct(O.taux)}: a rough guide, nothing firmer.</p>
+<h2>Rent, the slowest line to move</h2>
+<p>Rent and service charges take ${h.pct(G.loyer)} of receipts on average, from ${h.pct(Q[0].loyer)} in the bottom receipts quarter to ${h.pct(Q[3].loyer)} in the top one (UNASA ${Y}). The share falls with size because rent does not follow activity: a practice that produces more within the same walls spreads a fixed cost thinner. It is also the slowest item to fix, since a commercial or professional lease runs for several years.</p>
+<p>When rent weighs too much there are three routes. Filling the hours when chairs stand empty lowers the share without touching the lease. Sharing the premises with a ${h.a('collaboration-liberale', 'self-employed associate')}, who pays the principal a fee, gets another dentist to carry part of the rent. Renegotiating or moving is the heavy option, to be weighed over the remaining lease. A dentist who owns the premises enters zero rent, but the loan or the rent paid to a property company plays the same economic part. The home-page check-up flags rent once it runs ${h.pct(P.diagnostic.seuil_loyer, 0)} above the benchmark for your receipts quarter.</p>
+<!--mini:poidsLoyer-->
 <h2>Get the denominator right</h2>
 <p>A ratio is only as good as the receipts underneath it. UNASA starts from cash collected (${h.eur(encaisse)} on average), takes off pass-through items and fees handed on to other dentists (${h.eur(retro(0))}), and lands on ${h.eur(G.recettes)} of net receipts. Those hand-ons matter most at the small end: ${h.eur(retro(1))} in the bottom quarter, ${h.eur(retro(4))} in the top one, which fits dentists who partly work as associates in someone else’s surgery and return a share of what they bill.</p>
 <p>Net receipts are also a wider measure than the fees Assurance Maladie, the national health insurer, publishes. Its ${DATA_YEAR} average for a full-time general dentist, ${h.eur(ameliOmni)}, covers only work recorded by the insurer, so implants, periodontal treatment and other non-reimbursable procedures are missing. Divide your costs by that narrower figure instead of your total takings and the ratio comes out higher than it really is.</p>

@@ -8,7 +8,7 @@ import type { SourceKey } from './engine/params';
 import type { Params } from './engine/params';
 
 export type Lang = 'fr' | 'en';
-export type Group = 'specialites' | 'gestion' | 'territoires';
+export type Group = 'organisation' | 'specialites' | 'gestion' | 'territoires';
 export interface FAQ { q: string; a: string }
 
 /** Outils fournis pour écrire le corps : liens internes, nombres au format de la langue. */
