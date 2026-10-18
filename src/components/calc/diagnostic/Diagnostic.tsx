@@ -114,7 +114,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
   const couleur = (s: number) => (s >= 60 ? 'var(--dg-bon)' : s >= 40 ? 'var(--dg-moyen)' : 'var(--dg-faible)');
   const C = 326.7;
   const arc = score == null ? C * (1 - valide / 4) : C * (1 - score / 100);
-  const jaugeSous = valide >= 4 ? t.sur100 : score == null ? t.etapeJauge(Math.min(valide + 1, 4)) : t.provisoire;
+  const jaugeSous = valide >= 4 ? t.sur100 : score == null ? t.etapesFaites : t.provisoire;
 
   const med = delaiMedianPublie();
   type Ligne = { k: string; vous: string; rep: string; v: Verdict; pas: Record<Verdict, string>; etape: number };
@@ -259,53 +259,62 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
         </div>
 
         <div className="dg-panneau dg-rapport" data-resultat>
+          {valide === 0 ? (
+            <div className="dg-vide" aria-live="polite">
+              <div className="dg-feuille" aria-hidden="true"><span>{t.feuille}</span><i /><i /><i /></div>
+              <div><h3>{titre}</h3><p>{resume}</p></div>
+              <ul className="dg-recoit">
+                {t.recoit.map(([a, b], i) => <li key={a}><span className="dg-rondn">{i + 1}</span><div><b>{a}</b><small>{b}</small></div></li>)}
+              </ul>
+            </div>
+          ) : (<>
           <div className="dg-tete" aria-live="polite">
             <div className="dg-jauge">
               <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--dg-ligne)" strokeWidth="12" /><circle cx="60" cy="60" r="52" fill="none" stroke={score == null ? 'var(--dg-accent)' : couleur(score)} strokeWidth="12" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={arc} /></svg>
-              <div className="dg-jauge-val"><div><b>{score == null ? '?' : score}</b><small>{jaugeSous}</small></div></div>
+              <div className="dg-jauge-val"><div><b>{score == null ? `${valide}/4` : score}</b><small>{jaugeSous}</small></div></div>
             </div>
             <div><h3>{titre}</h3><p>{resume}</p>{valide >= 2 && exercice === 'implanto' && <p className="dg-note">{t.implantoNote}</p>}</div>
           </div>
 
-          {valide < 4 && (
-            <ol className="dg-debloc">
-              {t.deb.map(([a, b], i) => (
-                <li key={a} className={i < valide ? 'dg-fait' : i === etape ? 'dg-encours' : ''}><span className="dg-rondn">{i < valide ? '✓' : i + 1}</span><div><b>{a}</b><small>{i < valide ? t.debloque : ''}{b}</small></div></li>
-              ))}
-            </ol>
+          {AXES.some((a) => valide >= AXE_ETAPE[a]) && (
+            <div>
+              <div className="dg-axes">
+                {AXES.filter((a) => valide >= AXE_ETAPE[a]).map((a) => {
+                  const s = R.notes[a];
+                  if (s != null) return <div key={a} className="dg-axe"><span>{t.axes[a]}</span><div className="dg-barre"><i style={{ width: `${s}%`, background: couleur(s) }} /></div><span className="dg-axe-note">{s}</span></div>;
+                  return <div key={a} className="dg-axe dg-verrou"><span>{t.axes[a]}</span><div className="dg-barre" /><span className="dg-axe-note dg-petit">{t.axeSansRepere}</span></div>;
+                })}
+              </div>
+              <p className="dg-legende">{t.legende}</p>
+            </div>
           )}
 
-          <div>
-            <div className="dg-axes">
-              {AXES.map((a) => {
-                const s = R.notes[a];
-                const ouvert = valide >= AXE_ETAPE[a];
-                if (ouvert && s != null) return <div key={a} className="dg-axe"><span>{t.axes[a]}</span><div className="dg-barre"><i style={{ width: `${s}%`, background: couleur(s) }} /></div><span className="dg-axe-note">{s}</span></div>;
-                if (ouvert) return <div key={a} className="dg-axe dg-verrou"><span>{t.axes[a]}</span><div className="dg-barre dg-hachure" /><span className="dg-axe-note dg-petit">{t.axeSansRepere}</span></div>;
-                return <div key={a} className="dg-axe dg-verrou"><span>{t.axes[a]}</span><div className="dg-barre dg-hachure" /><span className="dg-axe-note" title={t.etapeCad(AXE_ETAPE[a])}><Cadenas />{AXE_ETAPE[a]}</span></div>;
-              })}
-            </div>
-            <p className="dg-legende">{t.legende}</p>
-          </div>
-
-          <div className="dg-bloc">
+          {lignes.some((l) => valide >= l.etape) && <div className="dg-bloc">
             <h4>{t.indics}</h4>
             <div className="dg-indics" role="table" aria-label={t.indics}>
               <div className="dg-indic dg-entete" role="row">{t.th.map((h, i) => <span key={i} role="columnheader">{h}</span>)}</div>
-              {lignes.map((l) => {
-                const ouvert = valide >= l.etape;
+              {lignes.filter((l) => valide >= l.etape).map((l) => {
                 const [nom, aide] = t.i[l.k];
                 return (
-                  <div key={l.k} className={`dg-indic${ouvert ? '' : ' dg-verrou'}`} role="row">
+                  <div key={l.k} className="dg-indic" role="row">
                     <div className="dg-nom" role="cell"><b>{nom}</b><small>{aide}</small></div>
-                    <span className="dg-vous" role="cell">{ouvert ? l.vous : '?'}</span>
-                    <span className="dg-rep" role="cell">{valide >= 1 ? l.rep : '–'}</span>
-                    <span role="cell" className={`dg-pastille ${ouvert ? `dg-${l.v}` : 'dg-attente'}`}>{ouvert ? l.pas[l.v] : <><Cadenas />{t.etapeCad(l.etape)}</>}</span>
+                    <span className="dg-vous" role="cell">{l.vous}</span>
+                    <span className="dg-rep" role="cell">{l.rep}</span>
+                    <span role="cell" className={`dg-pastille dg-${l.v}`}>{l.pas[l.v]}</span>
                   </div>
                 );
               })}
             </div>
-          </div>
+          </div>}
+
+          {valide < 4 && (
+            <div className="dg-prochain">
+              <span className="dg-eyebrow">{t.apres(valide + 1)}</span>
+              <b>{t.deb[valide][0]}</b>
+              <p>{t.deb[valide][1]}</p>
+              {valide < 3 && <div className="dg-suite" aria-label={t.ensuite}>{t.deb.slice(valide + 1).map(([a]) => <span key={a}>{a}</span>)}</div>}
+            </div>
+          )}
 
           <div className="dg-bloc">
             <h4>{t.priorites}</h4>
@@ -336,11 +345,15 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
             )}
           </div>
 
-          <div className={`dg-actions dg-noprint${valide < 4 ? ' dg-grise' : ''}`}>
-            <button type="button" className="dg-btn dg-primaire" disabled={valide < 4} onClick={imprimer}>{t.pdf}</button>
-            <button type="button" className="dg-btn" disabled={valide < 4} onClick={copier}>{copie ? t.copie : t.lien}</button>
-          </div>
+          {valide >= 4 && (
+            <div className="dg-actions dg-noprint">
+              <button type="button" className="dg-btn dg-primaire" onClick={imprimer}>{t.pdf}</button>
+              <button type="button" className="dg-btn" onClick={copier}>{copie ? t.copie : t.lien}</button>
+            </div>
+          )}
           <p className="dg-imprime">{t.imprimeLe} dentimetre.fr · Assurance Maladie {DATA_YEAR}, UNASA {UNASA_YEAR}</p>
+          </>)}
+          <p className="dg-confiance dg-noprint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 2.5 3v4.3c0 3.3 2.3 6.3 5.5 7.2 3.2-.9 5.5-3.9 5.5-7.2V3L8 1Z" fill="none" stroke="currentColor" strokeWidth="1.4" /></svg>{t.confiance}</p>
         </div>
       </div>
     </div>
@@ -350,7 +363,6 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
 function Chevron() {
   return <svg className="dg-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 7.5l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
-function Cadenas() { return <span className="dg-cadenas" aria-hidden="true" />; }
 
 /** Demande d'échange : enregistrée dans la base (Supabase, insertion seule), rapport joint. */
 function Echange({ lang, rapport, privacyHref, contactEmail }: { lang: L; rapport: () => unknown; privacyHref: string; contactEmail: string }) {
