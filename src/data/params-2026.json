@@ -1,7 +1,7 @@
 {
   "_lisezmoi": "Paramètres du site (RECETTE §4). Les honoraires par territoire vivent dans ameli.json (scripts/data/build-ameli.py), les comptes des cabinets dans unasa.json (scripts/data/build-unasa.py). Chaque bloc ci-dessous porte l'année de ses données et la clé de sa source.",
   "year": 2026,
-  "retrieved_at": "2026-10-15",
+  "retrieved_at": "2026-10-19",
   "valid_from": "2026-01-01",
   "valid_to": "2026-12-31",
   "defauts": {
@@ -34,6 +34,28 @@
     }
   },
   "revenus": {
+    "carcdsf_2024": {
+      "_source": "carcdsfRevenus2024",
+      "annee": 2024,
+      "champ": "revenus professionnels 2024 des chirurgiens-dentistes déclarés à la CARCDSF : revenu avant impôt sur le revenu (IRPP), c'est-à-dire bénéfice fiscal (BNC) avant déduction des cotisations assurance groupe et Madelin, DOM-TOM inclus ; évaluation de la caisse au 29 décembre 2025",
+      "_note": "Repère principal du revenu. Statistiques de la CARCDSF reprises par L'Information dentaire le 24 mars 2026 : la caisse ne les met pas en ligne sur carcdsf.fr. Pas de déciles ni de ventilation par ancienneté : pour la distribution, voir le bloc drees (revenus 2021).",
+      "nb_revenus": 40213,
+      "moyen": 119452,
+      "mediane": 94154,
+      "evolution_moyen": -0.0231,
+      "evolution_mediane": -0.036,
+      "seuil_haut": 188401,
+      "nb_haut": 6277,
+      "part_haut": 0.1561,
+      "moyen_haut": 307374,
+      "part_sous_2_pass": 0.5002,
+      "seuil_2_pass": 94200,
+      "part_femmes": 0.482,
+      "femmes_moyen": 97455,
+      "hommes_moyen": 139930,
+      "femmes_mediane": 81001,
+      "hommes_mediane": 111112
+    },
     "drees": {
       "_source": "dreesRevenus",
       "annee": 2021,
@@ -59,7 +81,8 @@
         "mediane": 83500,
         "d1": 32400,
         "d9": 192100
-      }
+      },
+      "_note": "Revenus 2021, dernière année publiée par la DREES : gardés pour la distribution (déciles, quartiles) et la ventilation par ancienneté, que la CARCDSF ne publie pas."
     },
     "insee": {
       "_source": "inseeNonSalaries",
@@ -158,20 +181,34 @@
     "_source_dividendes": "cssL136"
   },
   "depense": {
-    "_source": "dreesCns",
-    "annee": 2024,
-    "part_depassements": 0.495,
-    "soins_cabinets_meur": 13205,
-    "structure": {
-      "protheses": 0.42,
-      "soins_conservateurs": 0.23,
-      "orthodontie": 0.21,
-      "radiologie_consultations": 0.05
+    "_source": "dreesCns2025",
+    "annee": 2025,
+    "champ": "soins et prothèses dentaires fournis en ville (cabinets libéraux et centres de santé) par les chirurgiens-dentistes, orthodontistes et médecins spécialistes des soins dentaires, hors prévention",
+    "soins_protheses_meur": 16365,
+    "honoraires_meur": 15819,
+    "part_centres_sante": 0.162,
+    "structure_honoraires": {
+      "protheses": 0.502,
+      "protheses_100s": 0.24,
+      "protheses_maitrisees": 0.13,
+      "protheses_libres": 0.131,
+      "soins_conservateurs_radiologie_non_remboursables": 0.354,
+      "orthodontie_remboursable": 0.145
     },
     "financement": {
-      "securite_sociale": 0.36,
-      "complementaires": 0.485,
-      "menages": 0.155
+      "securite_sociale": 0.395,
+      "administrations_publiques": 0.002,
+      "complementaires": 0.457,
+      "menages": 0.146
+    },
+    "part_depassements_protheses": 0.77,
+    "part_depassements_orthodontie": 0.7,
+    "depassements_cabinets_2024": {
+      "_source": "dreesCns",
+      "annee": 2024,
+      "_note": "Part des dépassements dans les honoraires des dentistes en cabinet libéral (édition 2025). L'édition 2026 ne publie plus ce total, seulement des taux par type de soin.",
+      "part": 0.495,
+      "soins_cabinets_meur": 13205
     }
   },
   "specialites_rpps": {
@@ -183,33 +220,69 @@
   },
   "temps_travail": {
     "_source": "orsPdlPanel",
-    "_note": "Seule enquête publique trouvée sur le temps de travail des chirurgiens-dentistes libéraux : régionale (Pays de la Loire), 2015, 250 omnipraticiens. Aucune donnée nationale DREES, Insee, ONCD ou CARCDSF. Heures par an = 43,3 h × (52 − 6,3) semaines, calcul de Dentimètre. Temps de travail total, pas seulement au fauteuil.",
+    "_note": "Seule enquête publique trouvée qui donne une durée moyenne du travail des chirurgiens-dentistes libéraux : régionale (Pays de la Loire), 2015, 250 omnipraticiens. Plus récente, l'enquête de l'URPS et de l'ORS Nouvelle-Aquitaine (1 071 répondants en 2022, synthèse de mars 2023) ne publie que des classes : plus de la moitié déclarent plus de 35 heures par semaine au fauteuil seul, et les hors-fauteuil (administratif compris) jusqu'à 5 heures pour plus de la moitié ; pas de moyenne exploitable. Aucune donnée nationale DREES, Insee, ONCD ou CARCDSF. Heures par an = 43,3 h × (52 − 6,3) semaines, calcul de Dentimètre. Temps de travail total, pas seulement au fauteuil.",
     "annee_enquete": 2015,
     "champ": "omnipraticiens libéraux des Pays de la Loire, 250 praticiens interrogés",
     "heures_semaine": 43.3,
     "jours_semaine": 4,
     "semaines_conges": 6.3,
     "heures_journee_type": 9,
-    "heures_an": 1979
+    "heures_an": 1979,
+    "complement_na": {
+      "_source": "orsNaUrps2023",
+      "annee_enquete": 2022,
+      "repondants": 1071,
+      "_note": "Classes seulement, pas de moyenne : plus de la moitié > 35 h/semaine au fauteuil ; 45 % sur 4 ou 4,5 jours, 15 % moins de 4 jours, plus de 40 % 5 à 6 jours."
+    }
   },
   "delais_rdv": {
-    "_source": "dreesDelais",
-    "annee_enquete": "2016-2017",
-    "champ": "3 534 demandes de rendez-vous chez un chirurgien-dentiste, cohorte Constances, 20-71 ans, régime général, France métropolitaine",
-    "dentiste_median_jours": 17,
-    "dentiste_moyen_jours": 28,
-    "dentiste_q1_jours": 7,
-    "dentiste_q3_jours": 37,
-    "median_symptomes_jours": 8,
-    "median_autre_motif_jours": 24
+    "_source": "doctolibCartes2026",
+    "annee": 2025,
+    "champ": "rendez-vous pris via Doctolib chez les chirurgiens-dentistes libéraux utilisateurs, France métropolitaine, consultations de 2025 ; hors rendez-vous annulés, non honorés ou déplacés, suivis programmés et séries de soins (sauf le premier)",
+    "_note": "Cartes de France de l'accès aux soins 2026 (Doctolib, Fondation Jean-Jaurès), publiées le 19 mai 2026. Délai des seuls rendez-vous obtenus : les patients qui n'ont pas trouvé de créneau ne sont pas comptés. Les cartes départementales sont des images : seuls les départements cités dans le texte ont un chiffre (departements_cites).",
+    "dentiste_median_jours": 10,
+    "dentiste_median_jours_2023": 11,
+    "part_moins_24h": 0.14,
+    "part_moins_48h": 0.21,
+    "part_plus_7j": 0.59,
+    "part_moins_24h_2023": 0.14,
+    "part_moins_48h_2023": 0.21,
+    "part_plus_7j_2023": 0.6,
+    "departements_8_14j": 0.5,
+    "departements_15_30j": 0.46,
+    "departements_plus_30j": 0.03,
+    "departements_cites": {
+      "72": 35,
+      "55": 31,
+      "93": 7,
+      "06": 7,
+      "13": 8
+    },
+    "drees": {
+      "_source": "dreesDelais",
+      "annee_enquete": "2016-2017",
+      "champ": "3 534 demandes de rendez-vous chez un chirurgien-dentiste, cohorte Constances, 20-71 ans, régime général, France métropolitaine",
+      "dentiste_median_jours": 17,
+      "dentiste_moyen_jours": 28,
+      "dentiste_q1_jours": 7,
+      "dentiste_q3_jours": 37,
+      "median_symptomes_jours": 8,
+      "median_autre_motif_jours": 24
+    }
   },
   "rdv_non_honores": {
-    "_source": "anmRdv",
-    "annee": 2023,
-    "_note": "Médecins, pas chirurgiens-dentistes : extrapolation de l'Académie nationale de médecine et du Cnom, sans méthode publiée. Aucun chiffre officiel pour les dentistes.",
-    "part_hebdo_min": 0.06,
-    "part_hebdo_max": 0.1,
-    "rdv_par_an_millions": 27
+    "_source": "doctolibRdv2024",
+    "annee": 2024,
+    "champ": "rendez-vous des chirurgiens-dentistes utilisateurs de Doctolib (libéraux et salariés), moyennes tirées des agendas sur les 3 derniers mois (juin 2024) ; « pas venu, pas prévenu » = patient absent sans avoir prévenu",
+    "_note": "Seule mesure publiée propre aux chirurgiens-dentistes. Champ limité aux utilisateurs de Doctolib, pas une statistique officielle. Dernière édition : communiqué du 3 juillet 2024 (aucune édition 2025 ou 2026 trouvée).",
+    "dentistes_pas_venu": 0.047,
+    "dentistes_pas_venu_2023": 0.062,
+    "dentistes_nouveaux_patients": 0.074,
+    "dentistes_remplacement_48h": 0.49,
+    "dentistes_remplacement_48h_2023": 0.37,
+    "toutes_specialites_pas_venu": 0.033,
+    "centres_sante_pas_venu": 0.061,
+    "liberaux_pas_venu": 0.028
   },
   "cent_pour_cent_sante": {
     "_source": "dreesCns2025",
@@ -217,7 +290,7 @@
     "protheses_100s_meur": 3803,
     "protheses_total_meur": 7939,
     "honoraires_dentaires_meur": 15819,
-    "part_complementaires": 0.646,
+    "part_complementaires": 0.633,
     "cour_comptes_2021": {
       "_source": "ccomptes100s",
       "rac0_actes": 0.55,
@@ -343,8 +416,8 @@
     "dreesCns": {
       "url": "https://drees.solidarites-sante.gouv.fr/sites/default/files/2025-12/CNS%20-%20Fiche%2009%20-%20Les%20soins%20dentaires.pdf",
       "label": {
-        "fr": "DREES, Les dépenses de santé en 2024, fiche 09 « Les soins dentaires »",
-        "en": "DREES, Health spending in 2024, sheet 09 “Dental care”"
+        "fr": "DREES, Les dépenses de santé en 2024, édition 2025, fiche 09 « Les soins dentaires »",
+        "en": "DREES, Health spending in 2024, 2025 edition, sheet 09 “Dental care”"
       }
     },
     "ccn1619Salaires": {
@@ -424,13 +497,6 @@
         "en": "DREES, Études et résultats no. 1085, waiting times for an appointment (2016-2017 survey)"
       }
     },
-    "anmRdv": {
-      "url": "https://www.academie-medecine.fr/wp-content/uploads/2023/01/23.1.27-Communique-RV-non-honores.pdf",
-      "label": {
-        "fr": "Académie nationale de médecine et Ordre des médecins, communiqué « Rendez-vous non honorés », 27 janvier 2023",
-        "en": "French Academy of Medicine and Ordre des médecins, “Missed appointments” statement, 27 January 2023"
-      }
-    },
     "ccDecisionLfss2025": {
       "url": "https://www.conseil-constitutionnel.fr/decision/2025/2025875DC.htm",
       "label": {
@@ -439,10 +505,10 @@
       }
     },
     "dreesCns2025": {
-      "url": "https://drees.solidarites-sante.gouv.fr/publications-communique-de-presse-infographie-documents-de-reference/261001-les-d%C3%A9penses-de-sant%C3%A9-en-2025-edition-2026-panorama-de-la-drees",
+      "url": "https://drees.solidarites-sante.gouv.fr/sites/default/files/2026-09/CNS2026%20-%20Fiche%2014%20-%20Les%20soins%20et%20proth%C3%A8ses%20dentaires.pdf",
       "label": {
-        "fr": "DREES, Les dépenses de santé en 2025, édition 2026, fiche 14 « Les soins et prothèses dentaires »",
-        "en": "DREES, Health spending in 2025, 2026 edition, sheet 14 “Dental care and prosthetics”"
+        "fr": "DREES, Les dépenses de santé en 2025, édition 2026 (1er octobre 2026), fiche 14 « Les soins et prothèses dentaires »",
+        "en": "DREES, Health spending in 2025, 2026 edition (1 October 2026), sheet 14 “Dental care and prosthetics”"
       }
     },
     "ccomptes100s": {
@@ -591,6 +657,34 @@
         "en": "ORS and dentists’ URPS of Pays de la Loire, general dentists panel, 2012 wave (diary organisation)"
       },
       "url": "https://www.orspaysdelaloire.com/sites/default/files/pages/pdf/2013_PDF/2013_panel_chirurgiensdentistes.pdf"
+    },
+    "carcdsfRevenus2024": {
+      "url": "https://www.information-dentaire.fr/actualites/revenus-professionnels-2024-en-baisse-effectifs-en-hausse/",
+      "label": {
+        "fr": "CARCDSF, revenus professionnels 2024 des chirurgiens-dentistes (évaluation de la caisse au 29 décembre 2025), repris par L’Information dentaire le 24 mars 2026",
+        "en": "CARCDSF (dentists’ pension fund), dentists’ 2024 professional income (fund’s assessment of 29 December 2025), reported by L’Information dentaire on 24 March 2026"
+      }
+    },
+    "doctolibRdv2024": {
+      "url": "https://media.doctolib.com/image/upload/mkg/file/doctolib__actualise_ses_statistiques_annuelles_rendez_vous_non_honores.pdf",
+      "label": {
+        "fr": "Doctolib, communiqué du 3 juillet 2024 « Doctolib actualise ses statistiques annuelles sur les rendez-vous non honorés » (agendas des utilisateurs, juin 2024)",
+        "en": "Doctolib, press release of 3 July 2024 updating its annual missed-appointment statistics (users’ diaries, June 2024)"
+      }
+    },
+    "doctolibCartes2026": {
+      "url": "https://www.jean-jaures.org/publication/cartes-de-france-2026-de-lacces-aux-soins-soignants-et-patients-face-aux-inegalites-territoriales/",
+      "label": {
+        "fr": "Doctolib et Fondation Jean-Jaurès, Cartes de France de l’accès aux soins 2026 (19 mai 2026, délais de rendez-vous 2025)",
+        "en": "Doctolib and Fondation Jean-Jaurès, Cartes de France de l’accès aux soins 2026 (19 May 2026, 2025 appointment waits)"
+      }
+    },
+    "orsNaUrps2023": {
+      "url": "https://www.ors-na.org/wp-content/uploads/2023/06/Synth_URPS_Dentistes_2023.pdf",
+      "label": {
+        "fr": "ORS et URPS chirurgiens-dentistes de Nouvelle-Aquitaine, pratiques professionnelles et soins non programmés, enquête 2022 (synthèse de mars 2023)",
+        "en": "ORS and dentists’ URPS of Nouvelle-Aquitaine, professional practice and unscheduled care, 2022 survey (March 2023 summary)"
+      }
     }
   }
 }

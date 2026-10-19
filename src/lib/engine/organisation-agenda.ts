@@ -74,5 +74,5 @@ export function delaiFile(i: FileInput): FileOut {
   return { delaiJours, variation, semainesResorption, creneauxPourCible: (t) => (t > 0 ? Math.max(d, (f * 7) / t) : Infinity) };
 }
 
-/** Délai médian publié par la DREES pour un rendez-vous chez le chirurgien-dentiste (jours). */
+/** Délai médian publié par Doctolib et la Fondation Jean-Jaurès (rendez-vous 2025) chez le chirurgien-dentiste libéral (jours). */
 export const DELAI_MEDIAN = P.delais_rdv.dentiste_median_jours;

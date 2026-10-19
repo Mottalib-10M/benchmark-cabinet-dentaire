@@ -55,7 +55,7 @@ export default defineGuide({
   tool: 'benchmark',
   spec: 'stomato',
   related: ['omnipraticien', 'orthodontiste', 'classement-departements', 'taux-de-charges', 'selarl-ou-bnc'],
-  sources: ['ameliHonoraires', 'ameliEffectifs', 'ameliExercice', 'ameliPatientele', 'rpps', 'dreesCns', 'unasa'],
+  sources: ['ameliHonoraires', 'ameliEffectifs', 'ameliExercice', 'ameliPatientele', 'rpps', 'dreesCns2025', 'unasa'],
   fr: {
     slug: 'honoraires-stomatologue-chirurgie-orale',
     nav: 'Stomatologue',

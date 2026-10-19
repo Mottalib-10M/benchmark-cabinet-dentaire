@@ -4,7 +4,7 @@
  *
  * Deux sortes de nombres, jamais mélangées :
  *  - les REPÈRES viennent de sources publiques datées : honoraires moyens Assurance Maladie (ameli.json),
- *    comptes UNASA (unasa.json), délais DREES et coût salarial de la convention collective
+ *    comptes UNASA (unasa.json), délais et absences Doctolib et coût salarial de la convention collective
  *    (params-2026.json). Un repère sans source n'existe pas : la valeur vaut null et l'écran le dit ;
  *  - les HYPOTHÈSES de calcul (durée d'un rendez-vous, part récupérable d'un créneau perdu…) sont des
  *    choix de Dentimètre, regroupés dans params-2026.json > diagnostic et publiés sur la page Méthode.

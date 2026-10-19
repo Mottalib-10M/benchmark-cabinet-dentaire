@@ -18,6 +18,7 @@ import { regLabel } from '../lib/dep-fr';
 import { depPageByCode, type DepPage } from '../lib/departements';
 import { formatMoney, formatNumber, formatPercent, displayDate, fixOrdinals } from '../lib/format';
 import { AMELI } from '../lib/engine/data';
+import { P } from '../lib/engine/params';
 import { articleSchema, faqSchema, breadcrumbSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
 import { AUTHOR_NAME } from '../data/site-config';
 import type { DepDef, DepHelpers } from '../lib/dep-types';
@@ -53,6 +54,8 @@ const sources = [
   { name: fr ? `Assurance Maladie, data.ameli.fr : honoraires des professionnels de santé libéraux par territoire (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: private health professionals’ fees by territory (${DATA_YEAR})`, url: AMELI.meta.datasets['honoraires'] },
   { name: fr ? `Assurance Maladie, data.ameli.fr : effectifs et densités (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: headcount and density (${DATA_YEAR})`, url: AMELI.meta.datasets['demographie-effectifs-et-les-densites'] },
   { name: fr ? `Assurance Maladie, data.ameli.fr : patientèle (${DATA_YEAR})` : `Assurance Maladie, data.ameli.fr: patient numbers (${DATA_YEAR})`, url: AMELI.meta.datasets['patientele'] },
+  // Délai de rendez-vous : publié pour quelques départements seulement (voir dep-gen.ts).
+  ...(dep.code in P.delais_rdv.departements_cites ? [{ name: P.sources.doctolibCartes2026.label[lang], url: P.sources.doctolibCartes2026.url }] : []),
 ];
 const related = ['omnipraticien', 'orthodontiste', 'taux-de-charges', 'classement-departements'].filter((id) => ROUTES.some((r) => r.id === id)).map((id) => ({ href: route(id, lang), name: label(id, lang), description: '' }));
 const methodHref = route('method', lang);

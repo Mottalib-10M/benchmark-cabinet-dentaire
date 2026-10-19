@@ -124,7 +124,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
     { k: 'caF', vous: X.caFauteuil != null ? $(X.caFauteuil) : '–', rep: t.sansRepere, v: 'neutre', pas: t.pas, etape: 2 },
     { k: 'loyer', vous: X.partLoyer != null ? pc(X.partLoyer) : '–', rep: pc(X.U.loyer), v: verdict(X.partLoyer, X.U.loyer, false, 0.1), pas: t.pasInv, etape: 3 },
     { k: 'benef', vous: $(X.benefice / 12), rep: $(X.refBenefice / 12), v: verdict(X.benefice, X.refBenefice), pas: t.pas, etape: 3 },
-    { k: 'lapins', vous: lapins ? t.lapinsMots[lapins] : '–', rep: t.repLapins, v: X.tauxLapins == null ? 'neutre' : X.tauxLapins < 0.03 ? 'bon' : X.tauxLapins < 0.08 ? 'moyen' : 'faible', pas: t.pasLapins, etape: 4 },
+    { k: 'lapins', vous: lapins ? t.lapinsMots[lapins] : '–', rep: `${pc(P.rdv_non_honores.dentistes_pas_venu)} (Doctolib ${P.rdv_non_honores.annee})`, v: X.tauxLapins == null ? 'neutre' : X.tauxLapins < 0.03 ? 'bon' : X.tauxLapins < 0.08 ? 'moyen' : 'faible', pas: t.pasLapins, etape: 4 },
     { k: 'delai', vous: delai ? t.delaiOpt[delai] : '–', rep: med != null ? (lang === 'fr' ? `${n0(med)} jours (médiane)` : `${n0(med)} days (median)`) : t.sansRepere, v: med != null && X.delaiJours != null ? verdict(X.delaiJours, med, false, 0.25) : 'neutre', pas: t.pasDelai, etape: 4 },
   ];
 
@@ -139,7 +139,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
       case 'loyer': return `Le loyer prend ${pc(X.partLoyer ?? 0)} de votre chiffre d’affaires, contre ${pc(X.U.loyer)} dans les cabinets de taille comparable (UNASA ${UNASA_YEAR}). L’écart coûte ${$(p.data.ecart)} par an ; partager les locaux ou louer les créneaux vides en récupère une partie, ≈ ${g}.`;
       case 'equipe': return `Avec moins d’un mi-temps d’assistante, vous préparez, stérilisez et accueillez vous-même. Un mi-temps au minimum de la convention collective coûte ≈ ${$(coutEtpMinimal() / 2)} par an à l’employeur : à comparer aux heures de fauteuil qu’il libère.`;
       case 'fauteuil': return `${n0(p.data.libres)} fauteuil${p.data.libres > 1 ? 's' : ''} au-delà de deux pour un praticien reste${p.data.libres > 1 ? 'nt' : ''} souvent vide${p.data.libres > 1 ? 's' : ''} une partie de la semaine. Un collaborateur libéral qui l’utilise verse une redevance au cabinet ; aucun barème officiel n’en fixe le taux.`;
-      case 'delai': return med != null ? `Un nouveau patient attend ${t.delaiOpt[delai!].toLowerCase()}, quand la DREES mesure un délai médian de ${n0(med)} jours chez le chirurgien-dentiste (${P.delais_rdv!.annee_enquete}). Réserver chaque jour des créneaux aux nouveaux patients évite qu’ils aillent ailleurs.` : `Un nouveau patient attend ${t.delaiOpt[delai!].toLowerCase()}. Réserver chaque jour des créneaux aux nouveaux patients évite qu’ils aillent ailleurs.`;
+      case 'delai': return med != null ? `Un nouveau patient attend ${t.delaiOpt[delai!].toLowerCase()}, quand Doctolib mesure un délai médian de ${n0(med)} jours chez le chirurgien-dentiste libéral (${P.delais_rdv!.annee}). Réserver chaque jour des créneaux aux nouveaux patients évite qu’ils aillent ailleurs.` : `Un nouveau patient attend ${t.delaiOpt[delai!].toLowerCase()}. Réserver chaque jour des créneaux aux nouveaux patients évite qu’ils aillent ailleurs.`;
       default: return 'Vos indicateurs sont au niveau des repères ou au-dessus. Suivez-les chaque mois pour voir tôt une baisse.';
     }
     switch (p.id) {
@@ -149,7 +149,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
       case 'loyer': return `Rent takes ${pc(X.partLoyer ?? 0)} of your turnover, against ${pc(X.U.loyer)} in practices of similar size (UNASA ${UNASA_YEAR}). The gap costs ${$(p.data.ecart)} a year; sharing the premises or letting empty slots recovers part of it, ≈ ${g}.`;
       case 'equipe': return `With less than a half-time dental nurse you set up, sterilise and greet patients yourself. A half-timer at the collective agreement minimum costs the employer ≈ ${$(coutEtpMinimal() / 2)} a year: weigh it against the chair hours it frees.`;
       case 'fauteuil': return `${n0(p.data.libres)} chair${p.data.libres > 1 ? 's' : ''} beyond two per dentist often stand${p.data.libres > 1 ? '' : 's'} empty part of the week. An associate dentist using it pays the practice a fee; no official scale sets the rate.`;
-      case 'delai': return med != null ? `A new patient waits ${t.delaiOpt[delai!].toLowerCase()}, while DREES measured a median wait of ${n0(med)} days for a dentist (${P.delais_rdv!.annee_enquete}). Keeping slots for new patients every day stops them going elsewhere.` : `A new patient waits ${t.delaiOpt[delai!].toLowerCase()}. Keeping slots for new patients every day stops them going elsewhere.`;
+      case 'delai': return med != null ? `A new patient waits ${t.delaiOpt[delai!].toLowerCase()}, while Doctolib measured a median wait of ${n0(med)} days for a private dentist (${P.delais_rdv!.annee}). Keeping slots for new patients every day stops them going elsewhere.` : `A new patient waits ${t.delaiOpt[delai!].toLowerCase()}. Keeping slots for new patients every day stops them going elsewhere.`;
       default: return 'Your indicators are at or above the benchmarks. Track them monthly to spot any dip early.';
     }
   };
@@ -362,7 +362,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
               <button type="button" className="dg-btn" onClick={copier}>{copie ? t.copie : t.lien}</button>
             </div>
           )}
-          <p className="dg-imprime">{t.imprimeLe} {dateRapport} · dentimetre.fr · {t.sources} : Assurance Maladie {DATA_YEAR}, UNASA {UNASA_YEAR}, DREES</p>
+          <p className="dg-imprime">{t.imprimeLe} {dateRapport} · dentimetre.fr · {t.sources} : Assurance Maladie {DATA_YEAR}, UNASA {UNASA_YEAR}, Doctolib {P.delais_rdv.annee}</p>
           </>)}
           <p className="dg-confiance dg-noprint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 2.5 3v4.3c0 3.3 2.3 6.3 5.5 7.2 3.2-.9 5.5-3.9 5.5-7.2V3L8 1Z" fill="none" stroke="currentColor" strokeWidth="1.4" /></svg>{t.confiance}</p>
         </div>

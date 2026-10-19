@@ -28,8 +28,40 @@ describe('repères', () => {
     expect(refHoraire({ value: 197_900, level: 'fr' })).toBeCloseTo(197_900 / P.temps_travail.heures_an, 6);
     expect(refHoraire(null)).toBeNull();
   });
-  it('délai médian DREES lu dans les paramètres', () => {
+  it('délai médian lu dans les paramètres (Doctolib × Fondation Jean-Jaurès, rendez-vous 2025)', () => {
     expect(delaiMedianPublie()).toBe(P.delais_rdv.dentiste_median_jours);
+    // Valeurs relues dans les Cartes de France de l'accès aux soins 2026 (19 mai 2026).
+    expect(P.delais_rdv.annee).toBe(2025);
+    expect(P.delais_rdv.dentiste_median_jours).toBe(10);
+    expect(P.delais_rdv.dentiste_median_jours_2023).toBe(11);
+  });
+  it('lecture des réponses de délai face à la médiane de 10 jours (tolérance ±25 %)', () => {
+    const med = delaiMedianPublie()!;
+    expect(verdict(H.delai_jours.semaine, med, false, 0.25)).toBe('bon');
+    expect(verdict(H.delai_jours.deux, med, false, 0.25)).toBe('moyen');
+    expect(verdict(H.delai_jours.mois, med, false, 0.25)).toBe('faible');
+    expect(verdict(H.delai_jours.plus, med, false, 0.25)).toBe('faible');
+  });
+  it('repère des absences : Doctolib, chirurgiens-dentistes, 2024 (communiqué du 3 juillet 2024)', () => {
+    expect(P.rdv_non_honores.annee).toBe(2024);
+    expect(P.rdv_non_honores.dentistes_pas_venu).toBe(0.047);
+    expect(P.rdv_non_honores.dentistes_nouveaux_patients).toBe(0.074);
+    // 4,7 % tombe dans la bande « à surveiller » des seuils de lecture (3 % à 8 %).
+    expect(P.rdv_non_honores.dentistes_pas_venu).toBeGreaterThanOrEqual(0.03);
+    expect(P.rdv_non_honores.dentistes_pas_venu).toBeLessThan(0.08);
+  });
+  it('revenu CARCDSF 2024 : moyenne et médiane relues, médiane sous la moyenne', () => {
+    const k = P.revenus.carcdsf_2024;
+    expect(k.annee).toBe(2024);
+    expect(k.moyen).toBe(119_452); expect(k.mediane).toBe(94_154); expect(k.nb_revenus).toBe(40_213);
+    expect(k.nb_haut / k.nb_revenus).toBeCloseTo(k.part_haut, 3);
+    expect(k.mediane).toBeLessThan(k.moyen);
+  });
+  it('chaque bloc de repère renvoie à une source déclarée', () => {
+    const S = P.sources as Record<string, unknown>;
+    for (const b of [P.revenus.carcdsf_2024, P.revenus.drees, P.rdv_non_honores, P.delais_rdv, P.delais_rdv.drees, P.depense, P.depense.depassements_cabinets_2024, P.cent_pour_cent_sante, P.temps_travail, P.temps_travail.complement_na]) {
+      expect(S[b._source], b._source).toBeDefined();
+    }
   });
 });
 

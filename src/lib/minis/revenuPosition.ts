@@ -3,7 +3,8 @@ import { P } from '../engine/params';
 import { T, eur, type L } from './_kit';
 import { ordinal } from '../format';
 const D = P.revenus.drees;
-/** Situer un revenu dans la distribution DREES 2021 des chirurgiens-dentistes libéraux. */
+const KR = P.revenus.carcdsf_2024;
+/** Situer un revenu dans la distribution DREES (revenus 2021, seuls déciles publiés) des chirurgiens-dentistes libéraux ; repère CARCDSF 2024 en regard. */
 export default (l: L) => ({
   title: T(l, 'Votre revenu face à celui des confrères', 'Your income against your peers'),
   cta: T(l, 'Estimer votre bénéfice', 'Estimate your profit'),
@@ -17,8 +18,9 @@ export default (l: L) => ({
         [T(l, 'Médiane', 'Median'), eur(D.quantiles.mediane, l)],
         [T(l, 'Moyenne', 'Average'), eur(D.moyen, l)],
         [T(l, '1er et 9e décile', 'Bottom and top decile'), `${eur(D.quantiles.d1, l)} / ${eur(D.quantiles.d9, l)}`],
+        [T(l, `Médiane CARCDSF ${KR.annee}, revenus déclarés`, `CARCDSF ${KR.annee} median, declared income`), eur(KR.mediane, l)],
       ] as [string, string][],
-      note: T(l, 'DREES, revenus 2021 en euros courants ; position interpolée entre les déciles et quartiles publiés.', 'DREES, 2021 income in current euros; position interpolated between published deciles and quartiles.'),
+      note: T(l, `DREES, revenus ${D.annee} en euros courants, dernière distribution publiée ; position interpolée entre les déciles et quartiles publiés. La CARCDSF, plus récente, ne publie ni déciles ni quartiles.`, `DREES, ${D.annee} income in current euros, the latest published spread; position interpolated between published deciles and quartiles. CARCDSF, more recent, publishes no deciles or quartiles.`),
     };
   },
 });

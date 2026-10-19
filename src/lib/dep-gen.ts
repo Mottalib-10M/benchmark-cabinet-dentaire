@@ -11,6 +11,13 @@ import { depRank, depShare, growth } from './engine/benchmark';
 import { dansDep, deDep, dansReg, regLabel } from './dep-fr';
 import { formatMoney, formatNumber, formatPercent } from './format';
 import type { FAQItem } from './seo';
+import { P } from './engine/params';
+
+/** Délai médian d'un rendez-vous chez le dentiste, publié pour quelques départements seulement
+ *  (Cartes de France de l'accès aux soins 2026, Doctolib et Fondation Jean-Jaurès) : les cartes sont
+ *  des images, seuls les départements cités dans le texte ont un chiffre. */
+const DL = P.delais_rdv;
+const delaiDep = (code: string): number | undefined => (DL.departements_cites as Record<string, number>)[code];
 
 type L = 'fr' | 'en';
 const eur = (x: number, l: L) => formatMoney(x, 0, l);
@@ -63,7 +70,9 @@ export function depGen(code: string, l: L): DepGen {
     const s4 = odfOk ? `Les ${num(odf!.eff!, l)} orthodontistes qualifiés en orthopédie dento-faciale y ont perçu ${eur(odf!.tot!, l)} en moyenne, pour ${eur(fodf.tot!, l)} au niveau national.` : `L'Assurance Maladie ne publie pas de moyenne pour les orthodontistes du département ${odf?.eff ? `(${num(odf.eff, l)} praticiens)` : ''} : le secret statistique s'applique sous cinq praticiens actifs à part entière.`;
     const s5 = g != null ? `Entre 2019 et ${Y}, les honoraires moyens des omnipraticiens ont évolué de ${g >= 0 ? '+' : '−'}${pct(Math.abs(g), l, 1)}.` : '';
     const s6 = `Ces chiffres sont des moyennes de l'Assurance Maladie, pas un revenu : les charges du cabinet, de l'ordre de la moitié des recettes, restent à déduire, et les actes non remboursables comme les implants n'y figurent pas.`;
-    const resume = [s1, s2, s3, s4, s5, s6].filter(Boolean).join(' ').replace(/\s+/g, ' ');
+    const dd = delaiDep(code);
+    const s7 = dd != null ? `Selon les Cartes de France de l'accès aux soins 2026 de Doctolib et de la Fondation Jean-Jaurès, le délai médian pour obtenir un rendez-vous chez un chirurgien-dentiste libéral ${dansDep(code)} était de ${num(dd, l)} jours en ${DL.annee}, contre ${num(DL.dentiste_median_jours, l)} jours en France métropolitaine (rendez-vous pris sur Doctolib).` : '';
+    const resume = [s1, s2, s3, s4, s5, s6, s7].filter(Boolean).join(' ').replace(/\s+/g, ' ');
     const faqs: FAQItem[] = [
       { q: `Quels honoraires moyens pour un dentiste ${dansDep(code)} en ${Y} ?`, a: `${eur(o.tot!, l)} par omnipraticien actif à part entière en ${Y}, dont ${eur(o.hsd!, l)} au tarif de convention et ${eur(o.dep!, l)} de dépassements, selon l'open data de l'Assurance Maladie. La moyenne ${dansReg(z.region)} est de ${reg?.p.omni?.tot ? eur(reg.p.omni.tot, l) : 'non publiée'}, celle de la France de ${eur(fo.tot!, l)}. Ce sont des honoraires, avant charges et cotisations.` },
       odfOk
@@ -94,7 +103,9 @@ export function depGen(code: string, l: L): DepGen {
   const s4 = odfOk ? `The ${num(odf!.eff!, l)} orthodontists qualified in dentofacial orthopaedics (ODF) billed ${eur(odf!.tot!, l)} on average, against ${eur(fodf.tot!, l)} nationally.` : `Assurance Maladie publishes no orthodontist average for the département${odf?.eff ? ` (${num(odf.eff, l)} practitioners)` : ''}: statistical confidentiality applies below five full-time active practitioners.`;
   const s5 = g != null ? `Between 2019 and ${Y}, general dentists’ average fees moved by ${g >= 0 ? '+' : '−'}${pct(Math.abs(g), l, 1)}.` : '';
   const s6 = `These are health insurance averages, not take-home pay: practice costs, roughly half of receipts, still come off, and non-reimbursable work such as implants is not included.`;
-  const resume = [s1, s2, s3, s4, s5, s6].filter(Boolean).join(' ').replace(/\s+/g, ' ');
+  const dd = delaiDep(code);
+  const s7 = dd != null ? `According to the 2026 Cartes de France de l'accès aux soins by Doctolib and the Fondation Jean-Jaurès, the median wait for an appointment with a private dentist in ${n} was ${num(dd, l)} days in ${DL.annee}, against ${num(DL.dentiste_median_jours, l)} days across mainland France (appointments booked through Doctolib).` : '';
+  const resume = [s1, s2, s3, s4, s5, s6, s7].filter(Boolean).join(' ').replace(/\s+/g, ' ');
   const faqs: FAQItem[] = [
     { q: `What do dentists in ${n} bill on average in ${Y}?`, a: `${eur(o.tot!, l)} per full-time active general dentist in ${Y}: ${eur(o.hsd!, l)} at agreed tariffs plus ${eur(o.dep!, l)} in extra fees, according to Assurance Maladie open data. The ${regName} average is ${reg?.p.omni?.tot ? eur(reg.p.omni.tot, l) : 'not published'} and the French average ${eur(fo.tot!, l)}. These are fees, before practice costs and social contributions.` },
     odfOk

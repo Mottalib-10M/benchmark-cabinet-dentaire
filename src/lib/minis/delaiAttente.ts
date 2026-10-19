@@ -17,14 +17,14 @@ export default (l: L) => ({
     return {
       head: [T(l, 'Délai estimé du premier rendez-vous', 'Estimated wait for a first appointment'), r.delaiJours != null ? `${num(r.delaiJours, l)} ${j}` : T(l, 'aucun créneau', 'no slot')],
       rows: [
-        [T(l, `Délai médian mesuré par la DREES (${P.delais_rdv.annee_enquete})`, `Median wait measured by DREES (${P.delais_rdv.annee_enquete})`), `${num(DELAI_MEDIAN, l)} ${j}`],
+        [T(l, `Délai médian mesuré par Doctolib (${P.delais_rdv.annee})`, `Median wait measured by Doctolib (${P.delais_rdv.annee})`), `${num(DELAI_MEDIAN, l)} ${j}`],
         [T(l, 'La file d’attente, chaque semaine', 'The queue, each week'), r.variation > 0 ? T(l, `s’allonge de ${num(r.variation, l)}`, `grows by ${num(r.variation, l)}`) : r.variation < 0 ? T(l, `raccourcit de ${num(-r.variation, l)}`, `shrinks by ${num(-r.variation, l)}`) : T(l, 'reste stable', 'stays the same')],
         [T(l, 'Semaines pour la résorber', 'Weeks to clear it'), r.semainesResorption != null ? num(r.semainesResorption, l, 1) : T(l, 'jamais à ce rythme', 'never at this pace')],
         [T(l, 'Créneaux par semaine pour revenir à la médiane', 'Weekly slots to get back to the median'), Number.isFinite(cible) ? num(Math.ceil(cible), l) : '–'],
       ] as [string, string][],
       note: T(l,
-        'Loi de Little : le délai moyen égale la file d’attente divisée par le nombre de patients reçus par semaine. Un ordre de grandeur, qui suppose une demande régulière.',
-        'Little’s law: the average wait equals the queue divided by the number of patients seen per week. A rough guide that assumes steady demand.'),
+        `Loi de Little : le délai moyen égale la file d’attente divisée par le nombre de patients reçus par semaine. Un ordre de grandeur, qui suppose une demande régulière. Médiane : chirurgiens-dentistes libéraux utilisateurs de Doctolib, ${P.delais_rdv.annee} (Cartes de France de l’accès aux soins 2026).`,
+        `Little’s law: the average wait equals the queue divided by the number of patients seen per week. A rough guide that assumes steady demand. Median: private dentists using Doctolib, ${P.delais_rdv.annee} (Cartes de France de l’accès aux soins 2026).`),
     };
   },
 });

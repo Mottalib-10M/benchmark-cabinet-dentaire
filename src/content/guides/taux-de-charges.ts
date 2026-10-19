@@ -23,6 +23,7 @@ const evoRec = part(A, 'Montant net des recettes (évolution, %)'), evoExt = par
 const ex = reference('omni', P.defauts.omni.recettes);
 const exCharges = P.defauts.omni.recettes * ex.taux;
 const D = P.revenus.drees;
+const KR = P.revenus.carcdsf_2024;
 const retro = (i: number) => val(A, 'Honoraires rétrocédés', i);
 const encaisse = val(A, 'Recettes encaissées');
 const ameliOmni = FR.p.omni!.tot!;
@@ -53,7 +54,7 @@ export default defineGuide({
   order: 40,
   mini: 'tauxCharges',
   related: ['organisation-cabinet', 'ca-par-fauteuil', 'salaire-assistante-dentaire', 'collaboration-liberale', 'cotisations-carcdsf', 'revenu-dentiste'],
-  sources: ['unasa', 'dreesRevenus', 'ameliHonoraires'],
+  sources: ['unasa', 'carcdsfRevenus2024', 'dreesRevenus', 'ameliHonoraires'],
   fr: {
     slug: 'taux-de-charges-cabinet-dentaire',
     nav: 'Taux de charges',
@@ -97,7 +98,7 @@ ${tableau('fr', h)}
 <p>Un taux se calcule sur des recettes, et toutes les recettes ne se valent pas. L'UNASA part des recettes encaissées (${h.eur(encaisse)} en moyenne), retire les débours et les honoraires rétrocédés (${h.eur(retro(0))}), et obtient le montant net de ${h.eur(G.recettes)}. Les rétrocessions pèsent plus lourd dans les petits cabinets, ${h.eur(retro(1))} dans le premier quart contre ${h.eur(retro(4))} dans le dernier : un praticien qui travaille en partie comme collaborateur reverse une fraction de ce qu'il facture.</p>
 <p>Ce montant net ne se confond pas avec les honoraires publiés par l'Assurance Maladie. La moyenne ${DATA_YEAR} d'un omnipraticien actif à part entière, ${h.eur(ameliOmni)}, ne compte que les actes enregistrés par l'assurance maladie et laisse de côté l'implantologie, la parodontie ou les autres actes hors nomenclature non remboursables. Les recettes UNASA, elles, comprennent tout ce qui entre au cabinet. Rapporter vos charges à vos honoraires Ameli plutôt qu'à vos recettes totales gonfle donc mécaniquement le taux.</p>
 <h2>Du taux de charges au revenu du praticien</h2>
-<p>Le bénéfice que laisse le taux de charges est un revenu avant impôt, après cotisations dans la version UNASA. La DREES mesure un revenu voisin, avec un autre champ et une autre année : ${h.eur(D.liberal_moyen)} de revenu libéral moyen en ${D.annee}, ${h.eur(D.moyen)} en ajoutant les salaires, pour une médiane de ${h.eur(D.quantiles.mediane)} (${h.src('dreesRevenus', 'DREES')}). Placez votre bénéfice dans cette distribution :</p>
+<p>Le bénéfice que laisse le taux de charges est un revenu avant impôt, après cotisations dans la version UNASA. La CARCDSF mesure un revenu voisin, le revenu professionnel déclaré avant impôt : ${h.eur(KR.moyen)} en moyenne en ${KR.annee}, pour une médiane de ${h.eur(KR.mediane)} (${h.src('carcdsfRevenus2024', 'CARCDSF')}). Elle ne publie pas de déciles ; la seule distribution publiée est celle de la DREES, plus ancienne (revenus ${D.annee}, médiane ${h.eur(D.quantiles.mediane)}, ${h.src('dreesRevenus', 'DREES')}). Placez votre bénéfice dans cette distribution :</p>
 <!--mini:revenuPosition-->
 <p>Un taux de charges élevé n'est pas une faute de gestion en soi. Un cabinet qui sous-traite beaucoup de prothèse, emploie deux assistantes ou loue un plateau technique récent dépense plus et peut encaisser davantage ; la page ${h.a('ca-par-fauteuil', 'chiffre d’affaires par fauteuil')} regarde l'autre côté du ratio. Les comptes détaillés sont publiés par l'${h.src('unasa', 'UNASA')} ; les honoraires de référence par département viennent de l'${h.src('ameliHonoraires', 'Assurance Maladie')}.</p>`,
   },
@@ -144,7 +145,7 @@ ${tableau('en', h)}
 <p>A ratio is only as good as the receipts underneath it. UNASA starts from cash collected (${h.eur(encaisse)} on average), takes off pass-through items and fees handed on to other dentists (${h.eur(retro(0))}), and lands on ${h.eur(G.recettes)} of net receipts. Those hand-ons matter most at the small end: ${h.eur(retro(1))} in the bottom quarter, ${h.eur(retro(4))} in the top one, which fits dentists who partly work as associates in someone else’s surgery and return a share of what they bill.</p>
 <p>Net receipts are also a wider measure than the fees Assurance Maladie, the national health insurer, publishes. Its ${DATA_YEAR} average for a full-time general dentist, ${h.eur(ameliOmni)}, covers only work recorded by the insurer, so implants, periodontal treatment and other non-reimbursable procedures are missing. Divide your costs by that narrower figure instead of your total takings and the ratio comes out higher than it really is.</p>
 <h2>From cost ratio to take-home income</h2>
-<p>What the ratio leaves is profit before income tax, already net of contributions in the UNASA version. DREES, the health ministry’s statistics office, measures something close on a different scope and year: ${h.eur(D.liberal_moyen)} of average self-employed income in ${D.annee}, ${h.eur(D.moyen)} with salaried work added, and a median of ${h.eur(D.quantiles.mediane)} (${h.src('dreesRevenus', 'DREES')}). See where your own profit falls:</p>
+<p>What the ratio leaves is profit before income tax, already net of contributions in the UNASA version. CARCDSF, the dentists’ pension fund, measures something close, the professional income dentists declare before income tax: ${h.eur(KR.moyen)} on average in ${KR.annee}, with a median of ${h.eur(KR.mediane)} (${h.src('carcdsfRevenus2024', 'CARCDSF')}). It publishes no deciles; the only published spread comes from DREES, the health ministry’s statistics office, and is older (${D.annee} income, median ${h.eur(D.quantiles.mediane)}, ${h.src('dreesRevenus', 'DREES')}). See where your own profit falls:</p>
 <!--mini:revenuPosition-->
 <p>A high ratio is not bad management by itself. Outsourcing a lot of prosthetics, employing two nurses or leasing new imaging raises costs and often receipts too; the page on ${h.a('ca-par-fauteuil', 'revenue per dental chair')} looks at that side. Full accounts are on the ${h.src('unasa', 'UNASA statistics page')}; département fee averages come from ${h.src('ameliHonoraires', 'Assurance Maladie open data')}.</p>`,
   },

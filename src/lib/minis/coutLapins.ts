@@ -22,11 +22,12 @@ export default (l: L) => ({
         [T(l, 'Rendez-vous manqués par an', 'Missed appointments a year'), num(c.rdvParAn, l)],
         [T(l, `Valeur d’un créneau de ${H.duree_rdv_min} min`, `Value of a ${H.duree_rdv_min}-minute slot`), c.valeurRdv != null ? eur(c.valeurRdv, l) : '–'],
         [T(l, 'Part des rendez-vous de la journée', 'Share of the day’s appointments'), c.taux != null ? pct(c.taux, l) : '–'],
+        [T(l, `Repère Doctolib, chirurgiens-dentistes (${P.rdv_non_honores.annee})`, `Doctolib benchmark, dentists (${P.rdv_non_honores.annee})`), pct(P.rdv_non_honores.dentistes_pas_venu, l)],
         [T(l, `Récupérable (hypothèse Dentimètre : ${pct(H.part_recuperable_lapins, l, 0)})`, `Recoverable (Dentimètre assumption: ${pct(H.part_recuperable_lapins, l, 0)})`), eur(c.recuperable, l)],
       ] as [string, string][],
       note: T(l,
-        `Créneau de ${H.duree_rdv_min} minutes valorisé à votre chiffre d’affaires horaire. La part récupérable est une hypothèse prudente de Dentimètre, pas une statistique : aucune donnée publique ne mesure les absences chez le dentiste.`,
-        `Each ${H.duree_rdv_min}-minute slot is valued at your turnover per hour. The recoverable share is a cautious Dentimètre assumption, not a statistic: no public data measures no-shows at the dentist.`),
+        `Créneau de ${H.duree_rdv_min} minutes valorisé à votre chiffre d’affaires horaire. La part récupérable est une hypothèse prudente de Dentimètre, pas une statistique. Le repère vient des agendas des utilisateurs de Doctolib (juin 2024) : aucune statistique officielle ne mesure les absences chez le dentiste.`,
+        `Each ${H.duree_rdv_min}-minute slot is valued at your turnover per hour. The recoverable share is a cautious Dentimètre assumption, not a statistic. The benchmark comes from Doctolib users’ diaries (June 2024): no official statistic measures no-shows at the dentist.`),
     };
   },
 });
