@@ -155,6 +155,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
   };
   const gainVu = gainTotal(prios);
 
+  const dateRapport = new Date().toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   const lienPartage = () => `${window.location.origin}${window.location.pathname}?${encodeState(etat())}`;
   const copier = () => { navigator.clipboard?.writeText(lienPartage()).then(() => { setCopie(true); setTimeout(() => setCopie(false), 1800); }); };
   const imprimer = () => { document.body.classList.add('dg-print'); const off = () => { document.body.classList.remove('dg-print'); window.removeEventListener('afterprint', off); }; window.addEventListener('afterprint', off); window.print(); setTimeout(off, 1500); };
@@ -268,6 +269,16 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
               </ul>
             </div>
           ) : (<>
+          <div className="dg-marque" aria-hidden="true">
+            <img src="/logo.svg" alt="" width="44" height="44" />
+            <div className="dg-marque-txt">
+              <b>Dentimètre</b>
+              <span>{t.marqueSous}</span>
+              <strong>dentimetre.fr</strong>
+              <em>{t.marqueTitre} · {t.imprimeLe} {dateRapport}</em>
+            </div>
+            <figure><img src={`/qr-${lang}.svg`} alt="" width="84" height="84" /><figcaption>{t.qrTexte}<br />dentimetre.fr/{lang}/</figcaption></figure>
+          </div>
           <div className="dg-tete" aria-live="polite">
             <div className="dg-jauge">
               <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--dg-ligne)" strokeWidth="12" /><circle cx="60" cy="60" r="52" fill="none" stroke={score == null ? 'var(--dg-accent)' : couleur(score)} strokeWidth="12" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={arc} /></svg>
@@ -312,7 +323,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
               <span className="dg-eyebrow">{t.apres(valide + 1)}</span>
               <b>{t.deb[valide][0]}</b>
               <p>{t.deb[valide][1]}</p>
-              {valide < 3 && <div className="dg-suite" aria-label={t.ensuite}>{t.deb.slice(valide + 1).map(([a]) => <span key={a}>{a}</span>)}</div>}
+              {valide < 3 && <div className="dg-suite" aria-label={t.suite}>{t.deb.slice(valide + 1).map(([a]) => <span key={a}>{a}</span>)}</div>}
             </div>
           )}
 
@@ -351,7 +362,7 @@ export default function Diagnostic({ lang = 'fr', links, privacyHref, contactEma
               <button type="button" className="dg-btn" onClick={copier}>{copie ? t.copie : t.lien}</button>
             </div>
           )}
-          <p className="dg-imprime">{t.imprimeLe} dentimetre.fr · Assurance Maladie {DATA_YEAR}, UNASA {UNASA_YEAR}</p>
+          <p className="dg-imprime">{t.imprimeLe} {dateRapport} · dentimetre.fr · {t.sources} : Assurance Maladie {DATA_YEAR}, UNASA {UNASA_YEAR}, DREES</p>
           </>)}
           <p className="dg-confiance dg-noprint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 2.5 3v4.3c0 3.3 2.3 6.3 5.5 7.2 3.2-.9 5.5-3.9 5.5-7.2V3L8 1Z" fill="none" stroke="currentColor" strokeWidth="1.4" /></svg>{t.confiance}</p>
         </div>

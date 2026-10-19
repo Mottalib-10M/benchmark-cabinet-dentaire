@@ -112,6 +112,16 @@
   .dg-recoit .dg-rondn { border: 0; background: var(--dg-accent-soft); color: var(--dg-accent); }
   .dg-recoit b { display: block; font-size: 14.5px; font-weight: 600; }
   .dg-recoit small { display: block; color: var(--dg-muted); font-size: 12.5px; }
+  /* En-tête de marque du rapport imprimé (PDF) : nom, adresse du site et QR code vers l'accueil ; masqué à l'écran. */
+  .dg-marque { display: none; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--dg-accent); }
+  .dg-marque-txt { display: grid; gap: 1px; min-width: 0; }
+  .dg-marque-txt b { font-family: var(--font-serif); font-size: 22px; line-height: 1.1; color: var(--dg-accent); }
+  .dg-marque-txt span { font-size: 11.5px; color: var(--dg-muted); }
+  .dg-marque-txt strong { font-size: 14px; color: var(--dg-ink); }
+  .dg-marque-txt em { font-style: normal; font-size: 11px; color: var(--dg-muted); margin-top: 3px; }
+  .dg-marque figure { margin: 0; display: grid; justify-items: center; gap: 3px; }
+  .dg-marque figure img { width: 84px; height: 84px; }
+  .dg-marque figcaption { font-size: 9.5px; color: var(--dg-muted); text-align: center; max-width: 120px; line-height: 1.3; }
   /* Prochaine partie du rapport, en pointillés */
   .dg-prochain { border: 1.5px dashed var(--dg-accent); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; }
   .dg-prochain b { font-family: var(--font-serif); font-size: 17px; }
@@ -214,19 +224,22 @@
 
 /* Impression du rapport (bouton « Télécharger le rapport (PDF) ») : seule la zone du diagnostic sort. */
 @media print {
-  body.dg-print > :not(main), body.dg-print main > *:not(:has(#diagnostic)) { display: none !important; }
-  body.dg-print main { padding: 0 !important; }
-  body.dg-print main * { visibility: hidden; }
-  body.dg-print #diagnostic, body.dg-print #diagnostic * { visibility: visible; }
-  body.dg-print #diagnostic { position: absolute; left: 0; top: 0; width: 100%; margin: 0; }
-  body.dg-print .dg-grille { display: flex; flex-direction: column; }
-  body.dg-print .dg-rapport { order: -1; }
+  /* Impression du rapport : seuls le rapport et le plan d'action ; tout le reste de la page est retiré du flux
+     (display: none, pas visibility, sinon les sections masquées gardent leur hauteur et font des pages blanches). */
+  @page { size: A4; margin: 12mm; }
+  body.dg-print :not(:has(#diagnostic)):not(#diagnostic):not(#diagnostic *) { display: none !important; }
+  body.dg-print, body.dg-print main, body.dg-print main * :has(#diagnostic) { padding: 0 !important; margin: 0 !important; }
+  body.dg-print #diagnostic { margin: 0; width: 100%; font-size: 12.5px; line-height: 1.4; }
+  body.dg-print .dg-grille { display: flex; flex-direction: column; gap: 10px; }
+  body.dg-print .dg-rapport { order: -1; padding: 0; gap: 12px; }
   body.dg-print .dg-panneau { border: 0; break-inside: auto; }
-  body.dg-print .dg-noprint, body.dg-print .dg-prochain, body.dg-print .dg-teaser { display: none !important; }
-  body.dg-print .dg-rapport { padding: 0 0 12px; }
-  body.dg-print .dg-parcours { margin-top: 16px; }
-  body.dg-print .dg-imprime { display: block; font-size: 11px; color: #555; margin: 0; }
-  body.dg-print .dg-reco, body.dg-print .dg-indic, body.dg-print .dg-frise li { break-inside: avoid; }
+  body.dg-print .dg-parcours:not(:has(.dg-plan)) { display: none !important; }
+  body.dg-print .dg-noprint, body.dg-print .dg-prochain, body.dg-print .dg-teaser, body.dg-print .dg-confiance { display: none !important; }
+  body.dg-print .dg-plan { padding: 0; }
+  body.dg-print .dg-marque { display: grid !important; }
+  body.dg-print .dg-imprime { display: block; font-size: 10px; color: #555; margin: 0; }
+  body.dg-print .dg-reco, body.dg-print .dg-indic, body.dg-print .dg-frise li, body.dg-print .dg-tete { break-inside: avoid; }
+  body.dg-print h2, body.dg-print h3, body.dg-print h4 { break-after: avoid; }
   body.dg-print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  @page { margin: 14mm; }
 }
+

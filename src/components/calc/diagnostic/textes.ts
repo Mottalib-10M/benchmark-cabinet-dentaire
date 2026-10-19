@@ -37,7 +37,7 @@ export const TX = {
     feuille: 'Rapport de votre cabinet',
     recoit: [['Votre cabinet face aux confrères de votre département', 'Moyennes 2025 de l’Assurance Maladie'], ['Une note sur 100 et 7 indicateurs expliqués', 'Chaque repère a sa source et son année'], ['Vos 3 priorités, chiffrées en euros par an', 'Puis un plan d’action sur 3 mois']] as Array<[string, string]>,
     confiance: 'Le calcul se fait dans votre navigateur. Vos chiffres ne sont ni enregistrés ni envoyés, sauf si vous demandez l’échange.',
-    apres: (i: number) => `Après l’étape ${i}`, etapesFaites: 'étapes faites', ensuite: 'Ensuite',
+    apres: (i: number) => `Après l’étape ${i}`, etapesFaites: 'étapes faites', suite: 'Parties suivantes',
     complete: (p: number) => `Rapport complété à ${p} %`,
     sur100: '/ 100', provisoire: 'provisoire',
     deb: [['Votre cabinet', 'La moyenne de vos confrères du département'], ['Votre activité', 'Votre note de production, le CA horaire et le CA par fauteuil'], ['Équipe et locaux', 'Votre bénéfice estimé et le poids du loyer'], ['Organisation', 'La note sur 100 et vos 3 priorités chiffrées']] as Array<[string, string]>,
@@ -92,7 +92,8 @@ export const TX = {
     fErr: 'L’envoi n’a pas abouti. Réessayez dans un instant ou écrivez à',
     fMailInvalide: 'Vérifiez l’adresse e-mail.',
     quand: { s1: 'Semaine 1', s2: 'Semaine 2', m1: 'Mois 1', m2: 'Mois 2', m3: 'Mois 3', cm: 'Chaque mois' } as Record<string, string>,
-    imprimeLe: 'Rapport établi le',
+    imprimeLe: 'Rapport établi le', sources: 'Sources',
+    marqueSous: 'Diagnostic de cabinet dentaire · moyennes officielles 2025', marqueTitre: 'Rapport de votre cabinet', qrTexte: 'Scannez pour refaire ou partager le diagnostic',
   },
   en: {
     etapes: ['Your practice', 'Your activity', 'Team and premises', 'Organisation'],
@@ -126,7 +127,7 @@ export const TX = {
     feuille: 'Your practice report',
     recoit: [['Your practice against peers in your département', 'Assurance Maladie 2025 averages'], ['A score out of 100 and 7 explained indicators', 'Every benchmark shows its source and year'], ['Your 3 priorities, priced in euros a year', 'Then a 3-month action plan']] as Array<[string, string]>,
     confiance: 'The calculation runs in your browser. Your figures are neither stored nor sent, unless you ask for the call.',
-    apres: (i: number) => `After step ${i}`, etapesFaites: 'steps done', ensuite: 'Next',
+    apres: (i: number) => `After step ${i}`, etapesFaites: 'steps done', suite: 'Next parts',
     complete: (p: number) => `Report ${p}% complete`,
     sur100: '/ 100', provisoire: 'provisional',
     deb: [['Your practice', 'The average of peers in your département'], ['Your activity', 'Your production score, hourly and per-chair turnover'], ['Team and premises', 'Your estimated profit and the weight of rent'], ['Organisation', 'The score out of 100 and your 3 priced priorities']] as Array<[string, string]>,
@@ -180,7 +181,8 @@ export const TX = {
     fErr: 'The request did not go through. Try again in a moment or write to',
     fMailInvalide: 'Check the email address.',
     quand: { s1: 'Week 1', s2: 'Week 2', m1: 'Month 1', m2: 'Month 2', m3: 'Month 3', cm: 'Every month' } as Record<string, string>,
-    imprimeLe: 'Report produced on',
+    imprimeLe: 'Report produced on', sources: 'Sources',
+    marqueSous: 'Dental practice check-up · official 2025 averages', marqueTitre: 'Your practice report', qrTexte: 'Scan to redo or share the check-up',
   },
 };
 
