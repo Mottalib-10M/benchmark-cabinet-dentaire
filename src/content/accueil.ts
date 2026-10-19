@@ -2,6 +2,7 @@
  * Accueil (page pilier, RECETTE §5) : le texte des deux langues. Chaque chiffre vient des fichiers de
  * données (ameli.json, unasa.json, params-2026.json) par le code ; aucun n'est tapé à la main.
  */
+import { YEAR } from '../data/site-config';
 import type { PageText } from '../lib/guide-types';
 import { FR, DEPS, REGS, DATA_YEAR, depName, DEP_CODES } from '../lib/engine/data';
 import { classement, densiteHonoraires, depShare } from '../lib/engine/benchmark';
@@ -45,8 +46,8 @@ const hist = (l: L) => ['2015', '2019', '2020', '2021', '2023', String(Y)].map((
 
 export const HOME: Record<L, Home> = {
   fr: {
-    title: `Honoraires dentiste ${Y} : votre cabinet face au département`,
-    description: `Comparez honoraires, bénéfice et ratios de votre cabinet dentaire aux moyennes ${Y} de l'Assurance Maladie de votre département. Gratuit, sans inscription.`,
+    title: `Honoraires dentiste ${YEAR} : votre cabinet face au département`,
+    description: `Comparez votre cabinet dentaire aux dernières moyennes publiées par l'Assurance Maladie (${Y}) dans votre département : honoraires, bénéfice, ratios. Gratuit.`,
     h1: 'Votre cabinet face aux autres, et quoi faire pour progresser',
     intro: `Vos chiffres face aux moyennes ${Y} de l'Assurance Maladie et aux comptes de la profession, puis vos trois priorités chiffrées et un plan d'action.`,
     resume: `En ${Y}, un chirurgien-dentiste omnipraticien libéral a perçu ${e(o.tot!, 'fr')} d'honoraires en moyenne, un orthodontiste ${e(d.tot!, 'fr')} et un stomatologue ${e(s.tot!, 'fr')}, selon l'open data de l'Assurance Maladie publié le 12 octobre 2026. Ces moyennes varient fortement d'un département à l'autre : de ${e(co[co.length - 1].tot, 'fr')} à ${e(co[0].tot, 'fr')} pour les omnipraticiens. Le comparateur place vos propres honoraires face à la moyenne de votre spécialité dans votre département, votre région et la France, après avoir retiré les actes non remboursables que ces statistiques ignorent. Il estime ensuite votre bénéfice et votre taux de charges à partir des comptes ${UNASA_YEAR} de ${n(U.echantillon, 'fr')} cabinets dentaires (UNASA), situe ce bénéfice dans la distribution des revenus des dentistes publiée par la DREES, et calcule vos honoraires par fauteuil, par jour et par salarié. Aucune donnée ne quitte votre navigateur.`,
@@ -92,8 +93,8 @@ ${h.table(['Année', 'Omnipraticiens', 'Orthodontistes', 'Stomatologues'], hist(
 ${depLinks('fr')}`,
   },
   en: {
-    title: `Dentist fees France ${Y}: benchmark your practice locally`,
-    description: `Benchmark your French dental practice’s fees, profit and ratios against ${Y} Assurance Maladie averages for your département and specialty. Free, no sign-up.`,
+    title: `Dentist fees France ${YEAR}: benchmark your practice locally`,
+    description: `Benchmark your dental practice against the latest Assurance Maladie averages (${Y}) for your département: fees, profit and ratios. Free, no sign-up needed.`,
     h1: 'Your practice against the rest, and what to do next',
     intro: `Your figures against ${Y} Assurance Maladie averages and the profession’s accounts, then your three priced priorities and an action plan.`,
     resume: `In ${Y}, a general dentist in private practice in France billed ${e(o.tot!, 'en')} in fees on average, an orthodontist ${e(d.tot!, 'en')} and a stomatologist ${e(s.tot!, 'en')}, according to Assurance Maladie open data released on 12 October 2026. Those averages swing widely between départements, from ${e(co[co.length - 1].tot, 'en')} to ${e(co[0].tot, 'en')} for general dentists. The fee benchmark sets your own fees against the average for your specialty in your département, your region and France, after removing the non-reimbursable work those statistics never see. It then estimates your profit and cost ratio from the ${UNASA_YEAR} accounts of ${n(U.echantillon, 'en')} dental practices (UNASA), places that profit in the DREES distribution of dentists’ income, and works out fees per chair, per day and per staff member. Nothing you type leaves your browser.`,

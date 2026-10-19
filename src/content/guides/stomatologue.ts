@@ -1,3 +1,4 @@
+import { YEAR } from '../../data/site-config';
 import { defineGuide, type Helpers } from '../../lib/guide-types';
 import { classement, depShare, growth, effGrowth } from '../../lib/engine/benchmark';
 import { FR, DEPS, DEP_CODES, DATA_YEAR, depName } from '../../lib/engine/data';
@@ -59,7 +60,7 @@ export default defineGuide({
     slug: 'honoraires-stomatologue-chirurgie-orale',
     nav: 'Stomatologue',
     card: `Honoraires moyens ${Y} des stomatologues, effectifs en baisse, et ce que l'on sait de la chirurgie orale.`,
-    title: `Honoraires stomatologue ${Y} : chiffres et chirurgie orale`,
+    title: `Honoraires stomatologue ${YEAR} : chiffres et chirurgie orale`,
     description: `Un stomatologue libéral a facturé ${e(s.tot!, 'fr')} d'honoraires en moyenne en ${Y} (Ameli), pour ${n(s.eff!, 'fr')} praticiens libéraux : effectifs, départements et limites.`,
     h1: 'Honoraires du stomatologue et de la chirurgie orale',
     intro: `Des médecins spécialistes de la bouche, une catégorie à part dans les données de l'Assurance Maladie.`,
@@ -102,7 +103,7 @@ ${tableDeps(h)}
     slug: 'stomatologist-oral-surgeon-fees',
     nav: 'Stomatologist',
     card: `${Y} average fees of stomatologists in France, a shrinking headcount, and what is known about oral surgery.`,
-    title: `Stomatologist fees France ${Y}: data and oral surgery`,
+    title: `Stomatologist fees France ${YEAR}: data and oral surgery`,
     description: `French stomatologists in private practice billed ${e(s.tot!, 'en')} in fees on average in ${Y}, with ${n(s.eff!, 'en')} practitioners left: headcount, départements and data gaps.`,
     h1: 'Stomatologist and oral surgeon fees in France',
     intro: `Physicians specialised in the mouth and jaws, filed apart from dentists in Assurance Maladie data.`,

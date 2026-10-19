@@ -1,3 +1,4 @@
+import { YEAR } from '../../data/site-config';
 import { defineGuide } from '../../lib/guide-types';
 import { classement, densiteHonoraires, METRO } from '../../lib/engine/benchmark';
 import { DEPS, FR, DATA_YEAR, depName, DEP_CODES } from '../../lib/engine/data';
@@ -51,7 +52,7 @@ export default defineGuide({
     slug: 'honoraires-dentistes-par-departement',
     nav: 'Classement des départements',
     card: 'Les honoraires moyens des dentistes et orthodontistes dans les 101 départements.',
-    title: `Honoraires dentiste par département ${Y} : le classement`,
+    title: `Honoraires dentiste par département ${YEAR} : le classement`,
     description: `Honoraires moyens ${Y} des dentistes dans les 101 départements, de ${e(co[co.length - 1].tot, 'fr')} à ${e(co[0].tot, 'fr')} : classement complet, orthodontistes, densité, données Ameli.`,
     h1: 'Les honoraires des dentistes, département par département',
     intro: `Le classement ${Y} des 101 départements, d'après l'open data de l'Assurance Maladie.`,
@@ -81,7 +82,7 @@ ${profil('fr')}`,
     slug: 'dentist-fees-by-departement',
     nav: 'Ranking of départements',
     card: 'Average fees of dentists and orthodontists in all 101 départements.',
-    title: `Dentist fees by département ${Y}: the full French ranking`,
+    title: `Dentist fees by département ${YEAR}: the full French ranking`,
     description: `${Y} average fees of French dentists in all 101 départements, from ${e(co[co.length - 1].tot, 'en')} to ${e(co[0].tot, 'en')}: full ranking, orthodontists, density, Assurance Maladie data.`,
     h1: 'Dentists’ fees in France, département by département',
     intro: `The ${Y} ranking of all 101 départements, from Assurance Maladie open data.`,

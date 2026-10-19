@@ -1,3 +1,4 @@
+import { YEAR } from '../../data/site-config';
 import { defineGuide, type Helpers } from '../../lib/guide-types';
 import { classement, depShare, growth, effGrowth, depRank } from '../../lib/engine/benchmark';
 import { FR, DEPS, DEP_CODES, DATA_YEAR, depName } from '../../lib/engine/data';
@@ -90,7 +91,7 @@ export default defineGuide({
     slug: 'honoraires-orthodontiste',
     nav: 'Orthodontiste',
     card: `Honoraires moyens ${Y} des orthodontistes, poids des dépassements, départements et comptes de cabinets.`,
-    title: `Honoraires orthodontiste ${Y} : moyennes Ameli et cabinets`,
+    title: `Honoraires orthodontiste ${YEAR} : moyennes Ameli et cabinets`,
     description: `Un orthodontiste libéral a facturé ${e(d.tot!, 'fr')} d'honoraires en moyenne en ${Y}, dont ${p(part, 'fr', 0)} de dépassements : écarts entre départements, évolution, comptes UNASA.`,
     h1: 'Honoraires de l’orthodontiste libéral',
     intro: `Les chiffres ${Y} de l'Assurance Maladie pour l'orthodontie dento-faciale (ODF), et leurs limites.`,
@@ -134,7 +135,7 @@ ${tableComptes(h)}
     slug: 'orthodontist-fees',
     nav: 'Orthodontist',
     card: `${Y} average fees of orthodontists in France, extra-billing, départements and practice accounts.`,
-    title: `Orthodontist fees in France ${Y}: averages and practices`,
+    title: `Orthodontist fees in France ${YEAR}: averages and practices`,
     description: `Orthodontists in French private practice billed ${e(d.tot!, 'en')} on average in ${Y}, ${p(part, 'en', 0)} of it extra-billing: ten-year trend, départements, UNASA practice accounts.`,
     h1: 'Orthodontist fees in French private practice',
     intro: `Assurance Maladie ${Y} figures for dentofacial orthopaedics (ODF), with what they leave out.`,

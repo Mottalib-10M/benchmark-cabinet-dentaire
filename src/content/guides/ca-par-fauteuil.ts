@@ -1,3 +1,4 @@
+import { YEAR } from '../../data/site-config';
 import { defineGuide } from '../../lib/guide-types';
 import { cabinet } from '../../lib/engine/cabinet';
 import { reference, UNASA_YEAR } from '../../lib/engine/references';
@@ -61,7 +62,7 @@ export default defineGuide({
     slug: 'chiffre-affaires-par-fauteuil',
     nav: 'Chiffre d’affaires par fauteuil',
     card: 'Honoraires par fauteuil, par jour et par patient : le calcul à faire soi-même.',
-    title: `Chiffre d'affaires par fauteuil dentaire ${Y} : le calcul`,
+    title: `Chiffre d'affaires par fauteuil dentaire ${YEAR} : le calcul`,
     description: `Aucune moyenne officielle par fauteuil : avec ${e(fo.tot!, 'fr')} d'honoraires moyens ${Y} et ${n(df.fauteuils, 'fr')} fauteuils, un omnipraticien fait ${e(omni2.parFauteuil!, 'fr')} par fauteuil et par an.`,
     h1: 'Le chiffre d’affaires par fauteuil d’un cabinet dentaire',
     intro: 'Un ratio que tout le monde cite et qu’aucune statistique publique ne mesure : voici comment le construire.',
@@ -103,7 +104,7 @@ ${tableauQuarts('fr', h)}
     slug: 'revenue-per-dental-chair',
     nav: 'Revenue per chair',
     card: 'Fees per chair, per day and per patient: the ratio you have to build yourself.',
-    title: `Revenue per dental chair in France ${Y}: build the ratio`,
+    title: `Revenue per dental chair in France ${YEAR}: build the ratio`,
     description: `No official per-chair average exists in France. ${Y} average fees of ${e(fo.tot!, 'en')} over ${n(df.fauteuils, 'en')} chairs give a general dentist ${e(omni2.parFauteuil!, 'en')} per chair per year, on paper.`,
     h1: 'Revenue per chair in a French dental practice',
     intro: 'A ratio everyone quotes and no public statistic measures, and how to work it out.',

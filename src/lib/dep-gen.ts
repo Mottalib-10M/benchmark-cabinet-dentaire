@@ -5,6 +5,7 @@
  * blocs restent un gabarit : ils sont marqués `data-chrome` dans la page (RECETTE §6.4) et le texte
  * propre au département vit dans `src/content/departements/<code>.ts`.
  */
+import { YEAR } from '../data/site-config';
 import { DEPS, FR, REGS, DATA_YEAR, type Stat } from './engine/data';
 import { depRank, depShare, growth } from './engine/benchmark';
 import { dansDep, deDep, dansReg, regLabel } from './dep-fr';
@@ -41,13 +42,13 @@ export function depGen(code: string, l: L): DepGen {
   const g = growth(o, 2019, Y);
   if (l === 'fr') {
     const title = fit([
-      `Honoraires dentistes ${n} ${Y} : moyenne et orthodontistes`,
-      `Honoraires dentistes ${n} ${Y} : moyennes et simulateur`,
-      `Honoraires dentistes ${n} ${Y} : moyenne et simulateur`,
-      `Honoraires dentistes ${n} ${Y} : moyennes, simulateur`,
-      `Dentistes ${n} : honoraires moyens ${Y}, simulateur`,
-      `Dentistes ${n} : honoraires ${Y} et simulateur`,
-      `Dentistes ${n} ${Y} : honoraires moyens`,
+      `Honoraires dentistes ${n} ${YEAR} : moyenne et orthodontistes`,
+      `Honoraires dentistes ${n} ${YEAR} : moyennes et simulateur`,
+      `Honoraires dentistes ${n} ${YEAR} : moyenne et simulateur`,
+      `Honoraires dentistes ${n} ${YEAR} : moyennes, simulateur`,
+      `Dentistes ${n} : honoraires moyens ${YEAR}, simulateur`,
+      `Dentistes ${n} : honoraires ${YEAR} et simulateur`,
+      `Dentistes ${n} ${YEAR} : honoraires moyens`,
     ], 50, 60, `titre ${code}`);
     const base = `En ${Y}, un chirurgien-dentiste omnipraticien ${dansDep(code)} a perçu ${eur(o.tot!, l)} d'honoraires en moyenne (France : ${eur(fo.tot!, l)}).`;
     const description = fit([
@@ -73,12 +74,12 @@ export function depGen(code: string, l: L): DepGen {
     return { title, description, h1, intro, resume, faqs };
   }
   const title = fit([
-    `Dentist fees ${n} ${Y}: averages, orthodontists, benchmark`,
-    `Dentist fees ${n} ${Y}: averages and orthodontists`,
-    `Dentist fees ${n} ${Y}: averages and benchmark tool`,
-    `Dentist fees ${n} ${Y}: averages, benchmark`,
-    `Dentist fees in ${n} ${Y}: averages`,
-    `Dentist fees ${n} ${Y}: averages`,
+    `Dentist fees ${n} ${YEAR}: averages, orthodontists, benchmark`,
+    `Dentist fees ${n} ${YEAR}: averages and orthodontists`,
+    `Dentist fees ${n} ${YEAR}: averages and benchmark tool`,
+    `Dentist fees ${n} ${YEAR}: averages, benchmark`,
+    `Dentist fees in ${n} ${YEAR}: averages`,
+    `Dentist fees ${n} ${YEAR}: averages`,
   ], 50, 60, `title ${code}`);
   const base = `In ${Y}, a general dentist in ${n} billed ${eur(o.tot!, l)} in fees on average (France: ${eur(fo.tot!, l)}).`;
   const description = fit([

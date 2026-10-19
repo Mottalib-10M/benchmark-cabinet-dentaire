@@ -1,3 +1,4 @@
+import { YEAR } from '../../data/site-config';
 import { defineGuide } from '../../lib/guide-types';
 import { classement, depShare, growth, effGrowth, depsBelow } from '../../lib/engine/benchmark';
 import { FR, DEPS, DATA_YEAR, depName } from '../../lib/engine/data';
@@ -63,7 +64,7 @@ export default defineGuide({
     slug: 'honoraires-chirurgien-dentiste',
     nav: 'Omnipraticien',
     card: `Honoraires moyens ${Y} des chirurgiens-dentistes omnipraticiens, évolution depuis 2015 et comptes des cabinets.`,
-    title: `Honoraires chirurgien-dentiste ${Y} : moyenne et écarts`,
+    title: `Honoraires chirurgien-dentiste ${YEAR} : moyenne et écarts`,
     description: `Un omnipraticien a facturé ${e(o.tot!, 'fr')} d'honoraires en moyenne en ${Y} (Ameli) : part des dépassements, écarts entre départements, évolution et comptes UNASA.`,
     h1: 'Honoraires du chirurgien-dentiste omnipraticien',
     intro: `Les moyennes ${Y} de l'Assurance Maladie, l'historique depuis 2015 et le simulateur réglé sur l'omnipratique.`,
@@ -111,7 +112,7 @@ ${tableQuarts(h)}
     slug: 'general-dentist-fees',
     nav: 'General dentist',
     card: `${Y} average fees of general dentists in France, trend since 2015 and practice accounts.`,
-    title: `General dentist fees France ${Y}: averages and spread`,
+    title: `General dentist fees France ${YEAR}: averages and spread`,
     description: `French general dentists billed ${e(o.tot!, 'en')} in fees on average in ${Y} (Assurance Maladie): extra-billing share, départements, ten-year trend, practice accounts.`,
     h1: 'Fees of a general dentist in France',
     intro: `Assurance Maladie ${Y} averages, the series since 2015 and the calculator set for general practice.`,
